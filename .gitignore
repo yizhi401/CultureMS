@@ -7,3 +7,6 @@
 /oldversion/
 /gen
 .gradle
+local.properties
+gradle.properties
+*.iml
