@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/spot_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1号温湿检测点"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spot_name"
+        android:layout_marginTop="10dp"
+        android:text="温度：28度" />
+
+    <TextView
+        android:id="@+id/humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/temperature"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/temperature"
+        android:text="相对湿度：2%RH" />
+
+    <ImageView
+        android:id="@+id/pointer"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

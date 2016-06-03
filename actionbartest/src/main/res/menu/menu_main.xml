@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.peter.actionbartest.MainActivity">
+
+    <item
+        android:id="@+id/my_menu"
+        android:icon="@drawable/pointer"
+        android:title="my_menu"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/a"
+                android:title="A" />
+            <item
+                android:id="@+id/b"
+                android:title="B" />
+        </menu>
+
+    </item>
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/pointer"
+        android:title="HAHA"
+        app:showAsAction="never" />
+</menu>

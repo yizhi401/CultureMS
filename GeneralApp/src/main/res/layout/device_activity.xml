@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/send_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="send message" />
+
+
+        <com.gov.culturems.views.DeviceItemView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            custom:item_description="1号温度监测点"
+            custom:item_title="名称"
+            custom:item_type="alone" />
+
+        <com.gov.culturems.views.DeviceItemView
+            android:id="@+id/id_num"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            custom:item_description="1"
+            custom:item_title="ID号"
+            custom:item_type="upper" />
+
+        <com.gov.culturems.views.DeviceItemView
+            android:id="@+id/sn_num"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            custom:item_description="sIII505280003"
+            custom:item_title="SN号"
+            custom:item_type="middle" />
+
+        <com.gov.culturems.views.DeviceItemView
+            android:id="@+id/mac_addr"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            custom:item_description="A1c2n3ueoaueock"
+            custom:item_title="MAC地址"
+            custom:item_type="middle" />
+
+        <com.gov.culturems.views.DeviceItemView
+            android:id="@+id/insert_time"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            custom:item_description="2015-05-01 18:00"
+            custom:item_title="创建时间"
+            custom:item_type="middle" />
+
+        <com.gov.culturems.views.DeviceItemView
+            android:id="@+id/online_status"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            custom:item_description="在线"
+            custom:item_title="在线状态"
+            custom:item_type="middle" />
+
+        <com.gov.culturems.views.DeviceItemView
+            android:id="@+id/voltage"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            custom:item_description="3.3v"
+            custom:item_title="电池电压"
+            custom:item_type="middle" />
+
+        <com.gov.culturems.views.DeviceItemView
+            android:id="@+id/alert"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            custom:item_description="温度高"
+            custom:item_title="报警状态"
+            custom:item_type="bottom" />
+    </LinearLayout>
+</ScrollView>
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DeviceItemView">
+        <attr name="item_type" format="enum">
+            <enum name="alone" value="0" />
+            <enum name="upper" value="1" />
+            <enum name="middle" value="2" />
+            <enum name="bottom" value="3" />
+        </attr>
+        <attr name="item_title" format="string" />
+        <attr name="item_description" format="string" />
+    </declare-styleable>
+    <declare-styleable name="NumberView">
+        <attr name="NumberViewDefaultNum" format="float" />
+    </declare-styleable>
+
+</resources>

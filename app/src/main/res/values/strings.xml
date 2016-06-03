@@ -1,0 +1,7 @@
+<resources>
+    <!--<string name="app_name">恭王府</string>-->
+    <string name="app_name">白沙溪烘房</string>
+    <!--<string name="app_name">SEAN智能环境</string>-->
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+</resources>

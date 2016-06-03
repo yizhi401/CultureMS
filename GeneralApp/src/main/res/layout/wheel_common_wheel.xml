@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/title_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="20dp"
+            android:text="@string/cancel"
+            android:textColor="@color/blue"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="20dp"
+            android:text="@string/ok"
+            android:textColor="@color/blue"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/wheel_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <kankan.wheel.widget.WheelView
+            android:id="@+id/left"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:layout_weight="1" />
+
+        <kankan.wheel.widget.WheelView
+            android:id="@+id/center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:layout_weight="1" />
+
+        <kankan.wheel.widget.WheelView
+            android:id="@+id/right"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</LinearLayout>

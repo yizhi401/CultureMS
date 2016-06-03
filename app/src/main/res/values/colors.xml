@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="white">#FFFFFF</color>
+    <color name="gray_bg">#FFe7e7e7</color>
+    <color name="black">#FF000000</color>
+    <color name="red">#ff000c</color>
+    <color name="transparent">#00000000</color>
+    <color name="text_gray">#808080</color>
+    <color name="text_green">#a7cd0e</color>
+    <color name="text_gray_deep">#ff5e5e5e</color>
+    <color name="text_gray_light">#ffcdcdcd</color>
+    <color name="divider_gray">#b5b5b5</color>
+    <color name="green">#ff00ff00</color>
+
+    <!-- used in red theme -->
+    <!--<color name="theme_color">@color/main_red</color>-->
+    <!--<color name="theme_color_light">@color/main_red_light</color>-->
+    <!--<color name="theme_button_normal">@color/button_yellow_normal</color>-->
+    <!--<color name="theme_button_pressed">@color/button_yellow_pressed</color>-->
+
+    <!-- used in green theme -->
+    <color name="theme_color">@color/main_green</color>
+    <color name="theme_color_light">@color/main_green_light</color>
+    <color name="theme_button_normal">@color/button_yellow_light_normal</color>
+    <color name="theme_button_pressed">@color/button_yellow_light_pressed</color>
+
+    <!--used in blue theme -->
+    <!--<color name="theme_color">@color/main_blue</color>-->
+    <!--<color name="theme_color_light">@color/main_blue_light</color>-->
+    <!--<color name="theme_button_normal">@color/button_blue_normal</color>-->
+    <!--<color name="theme_button_pressed">@color/button_blue_pressed</color>-->
+
+
+    <color name="main_red">#FF970303</color>
+    <color name="main_red_light">#FFCEA7AC</color>
+    <color name="button_yellow_normal">#FFFC8B13</color>
+    <color name="button_yellow_pressed">#FFCB7213</color>
+
+
+    <color name="main_green">#FF51bd48</color>
+    <color name="main_green_light">#FFa0f599</color>
+    <color name="button_yellow_light_normal">#FFf7ac1a</color>
+    <color name="button_yellow_light_pressed">#FFba840f</color>
+
+    <color name="main_blue">#FF1381c5</color>
+    <color name="main_blue_light">#FF89d8ec</color>
+    <color name="button_blue_normal">#FF1075ad</color>
+    <color name="button_blue_pressed">#FF0d547b</color>
+
+</resources>

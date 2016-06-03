@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/decrease_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:padding="10dp"
+        android:src="@drawable/number_view_decreaser_disable" />
+
+    <EditText
+        android:id="@+id/number_text"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/decrease_img"
+        android:layout_alignTop="@id/decrease_img"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/decrease_img"
+        android:background="@drawable/bg_round_gray"
+        android:gravity="center"
+        android:inputType="number"
+        android:minWidth="60dp"
+        android:text="2"
+        android:textColor="@color/text_gray_deep" />
+
+    <ImageView
+        android:id="@+id/increase_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/number_text"
+        android:padding="10dp"
+        android:src="@drawable/number_view_increaser_enable" />
+
+</RelativeLayout>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/room_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="烘房1" />
+
+    <RelativeLayout
+        android:id="@+id/temprature_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/room_name"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/temperature_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="温度:" />
+
+        <TextView
+            android:id="@+id/temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/temperature_hint"
+            android:text="37摄氏度" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/humidity_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/temprature_layout"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/temprature_layout">
+
+        <TextView
+            android:id="@+id/humidity_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="湿度:" />
+
+        <TextView
+            android:id="@+id/humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/humidity_hint"
+            android:text="50%" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/drop_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/temprature_layout"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/drop_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="漏水:" />
+
+        <TextView
+            android:id="@+id/drop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/drop_hint"
+            android:text="无" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/pm_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/drop_layout"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/drop_layout">
+
+        <TextView
+            android:id="@+id/pm_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PM2.5:" />
+
+        <TextView
+            android:id="@+id/pm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/pm_hint"
+            android:text="36" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/good_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pm_layout"
+        android:layout_marginTop="5dp"
+        android:text="货品类型：黑砖" />
+
+    <TextView
+        android:id="@+id/start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/good_type"
+        android:layout_marginTop="5dp"
+        android:text="开始监控时间：10-20" />
+
+</RelativeLayout>

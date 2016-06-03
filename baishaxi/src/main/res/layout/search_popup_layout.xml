@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingBottom="10dp">
+
+    <LinearLayout
+        android:id="@+id/btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/search_by_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/tab_selector"
+            android:text="按黑茶类型" />
+
+        <Button
+            android:id="@+id/search_by_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/tab_selector"
+            android:text="按烘房状态" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/search_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_layout"
+        android:background="@color/gray_bg"
+        android:padding="10dp"
+        android:text="黑茶类别选择"
+        android:textColor="@color/text_gray_deep" />
+
+    <com.gov.culturems.views.SearchGridView
+        android:id="@+id/search_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_hint" />
+
+</RelativeLayout>
