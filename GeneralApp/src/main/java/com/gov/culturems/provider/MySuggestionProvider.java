@@ -13,7 +13,7 @@ public class MySuggestionProvider extends SearchRecentSuggestionsProvider {
 
     public static final String ALL = "全部";
 
-    public final static String AUTHORITY = "com.gov.baishaxi.MySuggestionProvider";
+    public final static String AUTHORITY = "com.sean.tea.general.MySuggestionProvider";
 
     public final static int MODE = DATABASE_MODE_QUERIES;
 

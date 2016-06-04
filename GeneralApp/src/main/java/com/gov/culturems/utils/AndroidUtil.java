@@ -21,6 +21,7 @@ import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.text.ClipboardManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +37,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 @SuppressWarnings("deprecation")
 public class AndroidUtil {
+
+    private static String UUID_STR;
+
     /**
      * whether the mobile phone network is Connecting
      *
@@ -64,6 +69,23 @@ public class AndroidUtil {
         } else {
             return "000000000";
         }
+    }
+
+
+    public static String getMyUUID(Context context) {
+        if (TextUtils.isEmpty(UUID_STR)) {
+            final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            final String tmDevice, tmSerial, tmPhone, androidId;
+            tmDevice = "" + tm.getDeviceId();
+            tmSerial = "" + tm.getSimSerialNumber();
+            androidId = "" + android.provider.Settings.Secure.getString(context
+                    .getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+            UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32) | tmSerial.hashCode());
+            UUID_STR = deviceUuid.toString();
+            Log.d("debug", "uuid=" + UUID_STR);
+
+        }
+        return UUID_STR;
     }
 
     public static String getAndroidId(Context context) {

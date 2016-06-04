@@ -1,5 +1,7 @@
 package com.gov.culturems.entities;
 
+import com.gov.culturems.common.http.response.DryingRoomResp;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -57,6 +59,16 @@ public class DeviceInfo implements Serializable {
     private String ActionFeedback;
     private String GateId;
     private String UseType;
+    private List<BaseSensor> SensorTypes;
+    private List<DeviceRule> Rules;
+
+    public List<BaseSensor> getSensorTypes() {
+        return SensorTypes;
+    }
+
+    public List<DeviceRule> getRules() {
+        return Rules;
+    }
 
     public String getSceneName() {
         return SceneName;

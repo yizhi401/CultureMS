@@ -66,7 +66,7 @@ public class DeviceInfoActivity extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage();
+//                sendMessage();
             }
         });
     }
@@ -127,7 +127,7 @@ public class DeviceInfoActivity extends Activity {
                 if (result.getRc() == 200) {
                     deviceInfo = result.getData();
                     refreshView();
-                    startWebsocketTest();
+//                    startWebsocketTest();
                 }
             }
 
