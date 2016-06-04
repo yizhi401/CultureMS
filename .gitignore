@@ -4,10 +4,9 @@
 **/build
 **/*.iml
 .idea
-/oldversion/
 /gen
 .gradle
 local.properties
 gradle.properties
 *.iml
-/gradle/gradle-wrapper.properties
+/gradle/wrapper/gradle-wrapper.properties
