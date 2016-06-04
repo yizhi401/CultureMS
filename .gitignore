@@ -2,7 +2,7 @@
 /build
 **/*.apk
 **/build
-**/.iml
+**/*.iml
 .idea
 /oldversion/
 /gen
