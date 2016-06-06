@@ -169,7 +169,8 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         String ai;
         String gi;
         String di;
-        List<Rule> ruels;
+        List<Rule> rules;
+        List<Rule> alarms;
     }
 
     class WebsocketResponse {
@@ -200,9 +201,22 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         humi.lower = humidityThresholDown.getCurrentNumStr();
         humi.upper = humidityThresholUp.getCurrentNumStr();
         humi.type = BaseSensor.SENSOR_HUMIDITY;
-        newMessage.ruels = new ArrayList<>();
-        newMessage.ruels.add(temp);
-        newMessage.ruels.add(humi);
+        newMessage.rules = new ArrayList<>();
+        newMessage.rules.add(temp);
+        newMessage.rules.add(humi);
+
+        newMessage.alarms = new ArrayList<>();
+        temp = new Rule();
+        temp.type = BaseSensor.SENSOR_TEMPERATURE;
+        temp.upper = warningTemperatureThresholUp.getCurrentNumStr();
+        temp.lower = warningTemperatureThresholDown.getCurrentNumStr();
+        newMessage.alarms.add(temp);
+        temp = new Rule();
+        temp.type = BaseSensor.SENSOR_HUMIDITY;
+        temp.upper = warningHumidityThresholUp.getCurrentNumStr();
+        temp.lower = warningHumidityThresholDown.getCurrentNumStr();
+        newMessage.alarms.add(temp);
+
         String sentMessage = GsonUtils.toJson(newMessage);
         Log.e("mInfo", "send message: " + sentMessage);
         Intent intent = new Intent();
