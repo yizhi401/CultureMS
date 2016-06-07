@@ -149,6 +149,9 @@ public class WebsocketService extends Service {
     }
 
     public void sendMessage(String message) {
+        if(!isConnected){
+            connetToServer();
+        }
         try {
             if (client != null) {
                 client.send(message);

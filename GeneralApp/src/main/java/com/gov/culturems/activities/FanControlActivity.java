@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.R;
 import com.gov.culturems.WebsocketService;
+import com.gov.culturems.common.CommonConstant;
 import com.gov.culturems.common.http.CommonResponse;
 import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.RequestParams;
@@ -27,12 +30,14 @@ import com.gov.culturems.entities.DeviceInfo;
 import com.gov.culturems.entities.DeviceRule;
 import com.gov.culturems.utils.AndroidUtil;
 import com.gov.culturems.utils.GsonUtils;
+import com.gov.culturems.utils.UIUtil;
 import com.gov.culturems.views.NumberView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 风扇类，控制规则和告警规则查看以及修改
  * Created by peter on 11/10/15.
  */
 public class FanControlActivity extends Activity implements View.OnClickListener {
@@ -52,11 +57,22 @@ public class FanControlActivity extends Activity implements View.OnClickListener
     private Button finishedBtn;
 
     //新版的device接口，为了获取全部的device相关数据
-    private DeviceInfo fullDeviceInfo;
+//    private DeviceInfo fullDeviceInfo;
+    private DeviceRulesResponse deviceRulesResponse;
+
+    private Handler waitingDialogHandler;
+    private Runnable handlerCallback = new Runnable() {
+        @Override
+        public void run() {
+            UIUtil.dismissTipDialog(FanControlActivity.this);
+            Toast.makeText(FanControlActivity.this, "修改失败，请重试！", Toast.LENGTH_SHORT).show();
+        }
+    };
 
     private BroadcastReceiver websocketResponseReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            UIUtil.dismissTipDialog(FanControlActivity.this);
             String message = intent.getStringExtra(WebsocketService.WEBSOCKET_MESSAGE);
             WebsocketResponse response = GsonUtils.fromJson(message, WebsocketResponse.class);
             Log.i(TAG, "intent received! message = " + message);
@@ -69,6 +85,7 @@ public class FanControlActivity extends Activity implements View.OnClickListener
                         startMainActivity();
                     } else {
                         Log.e(TAG, "websocket request failed");
+                        Toast.makeText(FanControlActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
                     }
                 }
             } else {
@@ -99,7 +116,13 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         warningHumidityThresholUp = (NumberView) findViewById(R.id.warning_humidty_thresholdup);
         warningTemperatureThresholDown = (NumberView) findViewById(R.id.warning_temperature_thresholddown);
         warningTemperatureThresholUp = (NumberView) findViewById(R.id.warning_temperature_thresholdup);
-
+        findViewById(R.id.outer_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
+        });
 
         finishedBtn = (Button) findViewById(R.id.finish_button);
         finishedBtn.setOnClickListener(this);
@@ -108,61 +131,74 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         filter.addAction(WebsocketService.WEBSOCKET_SERVICE_RESPONSE);
         registerReceiver(websocketResponseReceiver, filter);
 
-        getDeviceInfo(deviceInfo.getId());
-//        getDeviceRules();
+        getDeviceRules(deviceInfo.getId());
     }
 
     @Override
     protected void onDestroy() {
         unregisterReceiver(websocketResponseReceiver);
         websocketResponseReceiver = null;
+        if (waitingDialogHandler != null) {
+            waitingDialogHandler.removeCallbacks(handlerCallback);
+            waitingDialogHandler = null;
+            handlerCallback = null;
+        }
         super.onDestroy();
     }
 
     private class DeviceRulesResponse {
+        String mt;
+        String gi;
+        String di;
+        List<Rule> rules;
+        List<AlarmRsp> alarms;
+    }
+
+    class AlarmRsp {
         String DeviceId;
-        String DeviceName;
-        List<Rule> Rules;
-
-        class Rule {
-            String DeviceId;
-            String SensorType;
-            String SensorTypeName;
-            String ThresholdUp;
-            String ThresholdDown;
-        }
+        String SensorType;
+        String SensorTypeName;
+        String ThresholdUp;
+        String ThresholdDown;
+        String SceneId;
     }
 
-    private void getDeviceInfo(String deviceId) {
-        RequestParams params = new RequestParams();
-        params.put("DeviceId", deviceId);
-        HttpUtil.jsonRequestGet(this, URLRequest.DEVICE_GET, params, new VolleyRequestListener() {
-            @Override
-            public void onSuccess(String response) {
-                CommonResponse<DeviceInfo> result = GsonUtils.fromJson(response, new TypeToken<CommonResponse<DeviceInfo>>() {
-                });
-                if (result.getRc() == 200) {
-                    fullDeviceInfo = result.getData();
-                    if (fullDeviceInfo != null && fullDeviceInfo.getRules() != null) {
-                        for (DeviceRule temp : fullDeviceInfo.getRules()) {
-                            if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.SensorType)) {
-                                temperatureThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
-                                temperatureThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
-                            }
-                            if (BaseSensor.SENSOR_HUMIDITY.equals(temp.SensorType)) {
-                                humidityThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
-                                humidityThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
-                            }
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onNetError(VolleyError error) {
-            }
-        });
+    class AlarmReq {
+        String SensorType;
+        String ThresholdUp;
+        String ThresholdDown;
     }
+
+//    private void getDeviceInfo(String deviceId) {
+//        RequestParams params = new RequestParams();
+//        params.put("DeviceId", deviceId);
+//        HttpUtil.jsonRequestGet(this, URLRequest.DEVICE_GET, params, new VolleyRequestListener() {
+//            @Override
+//            public void onSuccess(String response) {
+//                CommonResponse<DeviceInfo> result = GsonUtils.fromJson(response, new TypeToken<CommonResponse<DeviceInfo>>() {
+//                });
+//                if (result.getRc() == 200) {
+//                    fullDeviceInfo = result.getData();
+//                    if (fullDeviceInfo != null && fullDeviceInfo.getRules() != null) {
+//                        for (DeviceRule temp : fullDeviceInfo.getRules()) {
+//                            if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.SensorType)) {
+//                                temperatureThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
+//                                temperatureThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
+//                            }
+//                            if (BaseSensor.SENSOR_HUMIDITY.equals(temp.SensorType)) {
+//                                humidityThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
+//                                humidityThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onNetError(VolleyError error) {
+//            }
+//        });
+//    }
 
     class WebsocketRequest {
         String mt;
@@ -170,7 +206,7 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         String gi;
         String di;
         List<Rule> rules;
-        List<Rule> alarms;
+        List<AlarmReq> alarms;
     }
 
     class WebsocketResponse {
@@ -189,9 +225,9 @@ public class FanControlActivity extends Activity implements View.OnClickListener
      */
     private void uploadDeviceDataUsingWebsocket() {
         WebsocketRequest newMessage = new WebsocketRequest();
-        newMessage.gi = fullDeviceInfo.getGateId();
-        newMessage.di = fullDeviceInfo.getDeviceId();
-        newMessage.mt = "rule";
+        newMessage.gi = deviceRulesResponse.gi;
+        newMessage.di = deviceRulesResponse.di;
+        newMessage.mt = deviceRulesResponse.mt;
         newMessage.ai = AndroidUtil.getMyUUID(this);
         Rule temp = new Rule();
         temp.lower = temperatureThresholDown.getCurrentNumStr();
@@ -206,16 +242,16 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         newMessage.rules.add(humi);
 
         newMessage.alarms = new ArrayList<>();
-        temp = new Rule();
-        temp.type = BaseSensor.SENSOR_TEMPERATURE;
-        temp.upper = warningTemperatureThresholUp.getCurrentNumStr();
-        temp.lower = warningTemperatureThresholDown.getCurrentNumStr();
-        newMessage.alarms.add(temp);
-        temp = new Rule();
-        temp.type = BaseSensor.SENSOR_HUMIDITY;
-        temp.upper = warningHumidityThresholUp.getCurrentNumStr();
-        temp.lower = warningHumidityThresholDown.getCurrentNumStr();
-        newMessage.alarms.add(temp);
+        AlarmReq alarmReq = new AlarmReq();
+        alarmReq.SensorType = BaseSensor.SENSOR_TEMPERATURE;
+        alarmReq.ThresholdUp = warningTemperatureThresholUp.getCurrentNumStr();
+        alarmReq.ThresholdDown = warningTemperatureThresholDown.getCurrentNumStr();
+        newMessage.alarms.add(alarmReq);
+        alarmReq = new AlarmReq();
+        alarmReq.SensorType = BaseSensor.SENSOR_HUMIDITY;
+        alarmReq.ThresholdUp = warningHumidityThresholUp.getCurrentNumStr();
+        alarmReq.ThresholdDown = warningHumidityThresholDown.getCurrentNumStr();
+        newMessage.alarms.add(alarmReq);
 
         String sentMessage = GsonUtils.toJson(newMessage);
         Log.e("mInfo", "send message: " + sentMessage);
@@ -223,6 +259,11 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         intent.setAction(WebsocketService.WEBSOCKET_SERVICE_REQUEST);
         intent.putExtra(WebsocketService.WEBSOCKET_MESSAGE, sentMessage);
         sendBroadcast(intent);
+        UIUtil.showTipDialog(FanControlActivity.this, CommonConstant.DIALOG_TYPE_WAITING, "正在修改规则...");
+        if (waitingDialogHandler == null) {
+            waitingDialogHandler = new Handler();
+        }
+        waitingDialogHandler.postDelayed(handlerCallback, 10000);
     }
 
     private List<UploadParam> getUploadData() {
@@ -241,6 +282,47 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         return list;
     }
 
+    public void getDeviceRules(String deviceId) {
+        RequestParams params = new RequestParams();
+        params.put("DeviceId", deviceId);
+        HttpUtil.jsonRequestGet(this, URLRequest.DEVICE_RULES_GET, params, new VolleyRequestListener() {
+                    @Override
+                    public void onSuccess(String response) {
+                        CommonResponse<DeviceRulesResponse> commonResponse = GsonUtils.fromJson(response, new TypeToken<CommonResponse<DeviceRulesResponse>>() {
+                        });
+                        deviceRulesResponse = commonResponse.getData();
+                        if (commonResponse.getRc() == 200 && deviceRulesResponse != null) {
+                            for (Rule temp : commonResponse.getData().rules) {
+                                if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.type)) {
+                                    temperatureThresholDown.setNumberText(Float.parseFloat(temp.lower));
+                                    temperatureThresholUp.setNumberText(Float.parseFloat(temp.upper));
+                                }
+                                if (BaseSensor.SENSOR_HUMIDITY.equals(temp.type)) {
+                                    humidityThresholDown.setNumberText(Float.parseFloat(temp.lower));
+                                    humidityThresholUp.setNumberText(Float.parseFloat(temp.upper));
+                                }
+                            }
+                            for (AlarmRsp temp : commonResponse.getData().alarms) {
+                                if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.SensorType)) {
+                                    warningTemperatureThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
+                                    warningTemperatureThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
+                                }
+                                if (BaseSensor.SENSOR_HUMIDITY.equals(temp.SensorType)) {
+                                    warningHumidityThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
+                                    warningHumidityThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onNetError(VolleyError error) {
+
+                    }
+                }
+
+        );
+    }
 
 //    public void getDeviceRules() {
 //        RequestParams params = new RequestParams();
@@ -337,7 +419,6 @@ public class FanControlActivity extends Activity implements View.OnClickListener
                 if (checkDataValidity()) {
 //                    uploadDeviceControl();
                     uploadDeviceDataUsingWebsocket();
-                    startMainActivity();
                 }
                 break;
             default:

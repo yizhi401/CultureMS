@@ -546,7 +546,7 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
 
         flagMaxMin(yVals1);
         flagMaxMin(yVals2);
-        setDataInChart1(yVals1,yVals2);
+        setDataInChart1(yVals1);
         setDataInChart2(yVals2);
 
     }
@@ -605,7 +605,7 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
     }
 
 
-    private void setDataInChart1(ArrayList<Entry> yVals1,ArrayList<Entry> yVals2) {
+    private void setDataInChart1(ArrayList<Entry> yVals1) {
         // create a dataset and give it a type
         LineDataSet set1 = new LineDataSet(yVals1, "温度");
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -622,23 +622,9 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
         set1.setDrawValues(true);
 //        set1.setValueTextColor(getColorByColumnName(BaseSensor.SENSOR_TEMPERATURE));
 
-        LineDataSet set2 = new LineDataSet(yVals2, "湿度");
-        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set2.setColor(getColorByColumnName(BaseSensor.SENSOR_TEMPERATURE));
-        set2.setCircleColor(getColorByColumnName(BaseSensor.SENSOR_TEMPERATURE));
-        set2.setLineWidth(2f);
-        set2.setCircleSize(4f);
-        set2.setFillAlpha(65);
-        set2.setFillColor(getColorByColumnName(BaseSensor.SENSOR_TEMPERATURE));
-        set2.setHighLightColor(Color.rgb(244, 117, 117));
-        set2.setCircleColorHole(Color.WHITE);
-        set2.setDrawCircleHole(true);
-        set2.setValueFormatter(new FloatValueFormatter());
-        set2.setDrawValues(true);
 
         ArrayList<LineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1); // add the datasets
-        dataSets.add(set2);
         // create a data object with the datasets
         LineData data = new LineData(getXVals(), dataSets);
         data.setValueTextColor(getColorByColumnName(BaseSensor.SENSOR_TEMPERATURE));

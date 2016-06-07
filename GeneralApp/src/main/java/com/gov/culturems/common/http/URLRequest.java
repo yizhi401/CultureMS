@@ -97,6 +97,13 @@ public class URLRequest {
     /**
      * 获取设备上下限信息
      */
+    @Deprecated
     public static final String DEVICE_CK_RULES_GET = "mgr/deviceckrulesget";
+
+
+    /**
+     * 获取设备上下限信息
+     */
+    public static final String DEVICE_RULES_GET = "api/RulesGet";
 
 }
