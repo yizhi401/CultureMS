@@ -208,7 +208,8 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
     }
 
     private void handlePieData(DryingRoomHelper.SceneDataListResponse listResponse) {
-        if (listResponse.rc == 200 && listResponse.Data != null && listResponse.Data.size() >= 2) {
+        if (listResponse.rc == 200 && listResponse.Data != null && listResponse.Data.size() >= 1) {
+
             DryingRoomHelper.SceneData data0 = listResponse.Data.get(0);
             DryingRoomHelper.SceneData data1 = listResponse.Data.get(1);
             if (data0 == null || data1 == null ||

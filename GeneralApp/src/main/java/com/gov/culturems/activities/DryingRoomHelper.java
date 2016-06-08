@@ -135,13 +135,19 @@ public class DryingRoomHelper {
             @Override
             public void onSuccess(String response) {
                 SceneDataListResponse listResponse = GsonUtils.fromJson(response, SceneDataListResponse.class);
-                if (listResponse.rc == 200 && listResponse.Data != null && listResponse.Data.size() >= 2) {
-                    if (SceneData.STATUS_OFFLINE.equals(listResponse.Data.get(0).Status) ||
-                            SceneData.STATUS_OFFLINE.equals(listResponse.Data.get(1).Status)) {
+                if (listResponse.rc == 200 && listResponse.Data != null && listResponse.Data.size() >= 1) {
+                    boolean hasOnlineSensor = false;
+                    for (SceneData temp : listResponse.Data) {
+                        if (SceneData.STATUS_ONLINE.equals(temp.Status)) {
+                            hasOnlineSensor = true;
+                            break;
+                        }
+                    }
+                    if (hasOnlineSensor) {
+                        listener.onInitSucceed();
+                    } else {
                         Toast.makeText(context, "设备已离线", Toast.LENGTH_LONG).show();
                         listener.onInitFailed();
-                    } else {
-                        listener.onInitSucceed();
                     }
                 } else {
                     Toast.makeText(context, "数据出错", Toast.LENGTH_LONG).show();
