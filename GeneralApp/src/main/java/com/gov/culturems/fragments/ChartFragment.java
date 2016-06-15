@@ -209,24 +209,48 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
 
     private void handlePieData(DryingRoomHelper.SceneDataListResponse listResponse) {
         if (listResponse.rc == 200 && listResponse.Data != null && listResponse.Data.size() >= 1) {
-
-            DryingRoomHelper.SceneData data0 = listResponse.Data.get(0);
-            DryingRoomHelper.SceneData data1 = listResponse.Data.get(1);
-            if (data0 == null || data1 == null ||
-                    DryingRoomHelper.SceneData.STATUS_OFFLINE.equals(data0.Status) ||
-                    DryingRoomHelper.SceneData.STATUS_OFFLINE.equals(data1.Status)) {
+            int i = 0;
+            DryingRoomHelper.SceneData data0 = null;
+            DryingRoomHelper.SceneData data1 = null;
+            while (i < listResponse.Data.size()) {
+                //先取出Data0
+                if (DryingRoomHelper.SceneData.STATUS_ONLINE.equals(listResponse.Data.get(i).Status)) {
+                    data0 = listResponse.Data.get(i);
+                    break;
+                }
+                i++;
+            }
+            i++;
+            if (data0 == null) {
                 handleOffline();
+                return;
+            }
+
+            isFirstEnter = false;
+            //保证温度在前
+            if (data0.SensorType.equals(BaseSensor.SENSOR_TEMPERATURE)) {
+                setPieData(data0.SensorValue, data0.SensorType, pieChart1);
             } else {
-                isFirstEnter = false;
-                //保证温度在前
+                setPieData(data0.SensorValue, data0.SensorType, pieChart2);
+            }
+            while (i < listResponse.Data.size()) {
+                if (DryingRoomHelper.SceneData.STATUS_ONLINE.equals(listResponse.Data.get(i).Status)) {
+                    if (!listResponse.Data.get(i).SensorType.equals(data0.SensorType)) {
+                        data1 = listResponse.Data.get(i);
+                        break;
+                    }
+                }
+                i++;
+            }
+            if (data1 != null) {
+                //设置湿度
                 if (data0.SensorType.equals(BaseSensor.SENSOR_TEMPERATURE)) {
-                    setPieData(data0.SensorValue, data0.SensorType, pieChart1);
                     setPieData(data1.SensorValue, data1.SensorType, pieChart2);
                 } else {
-                    setPieData(data0.SensorValue, data0.SensorType, pieChart2);
                     setPieData(data1.SensorValue, data1.SensorType, pieChart1);
                 }
             }
+
         } else {
             if (getActivity() != null) {
                 Toast.makeText(getActivity(), "数据出错", Toast.LENGTH_SHORT).show();
@@ -520,7 +544,11 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
         mChart2.getXAxis().setLabelsToSkip(1);
 
         ArrayList<Entry> yVals1 = new ArrayList<>();
+        ArrayList<Entry> yVals1Upper = new ArrayList<>();
+        ArrayList<Entry> yVals1Lower = new ArrayList<>();
         ArrayList<Entry> yVals2 = new ArrayList<>();
+        ArrayList<Entry> yVals2Upper = new ArrayList<>();
+        ArrayList<Entry> yVals2Lower = new ArrayList<>();
 
         try {
             for (int i = 0; i < tableValueList.size(); ++i) {
@@ -532,12 +560,26 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
                         Entry entry = new Entry(Float.valueOf(dataResponse.SensorValue), getXIndexByTime(dataResponse.RepHour));
                         entry.setData(new ShouldDraw(false));
                         yVals1.add(entry);
+                        Entry entryUpper = new Entry(Float.valueOf("80"), getXIndexByTime(dataResponse.RepHour));
+                        entry.setData(new ShouldDraw(false));
+                        yVals1Upper.add(entryUpper);
+                        Entry entryLower = new Entry(Float.valueOf("10"), getXIndexByTime(dataResponse.RepHour));
+                        entry.setData(new ShouldDraw(false));
+                        yVals1Lower.add(entryLower);
+
                     }
                     if (dataResponse.SensorType.equals(BaseSensor.SENSOR_HUMIDITY)) {
                         //已经有第二序列的值了
                         Entry entry = new Entry(Float.valueOf(dataResponse.SensorValue), getXIndexByTime(dataResponse.RepHour));
                         entry.setData(new ShouldDraw(false));
                         yVals2.add(entry);
+                        Entry entryUpper = new Entry(Float.valueOf("70"), getXIndexByTime(dataResponse.RepHour));
+                        entry.setData(new ShouldDraw(false));
+                        yVals2Upper.add(entryUpper);
+                        Entry entryLower = new Entry(Float.valueOf("20"), getXIndexByTime(dataResponse.RepHour));
+                        entry.setData(new ShouldDraw(false));
+                        yVals2Lower.add(entryLower);
+
                     }
                 }
             }
@@ -547,8 +589,8 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
 
         flagMaxMin(yVals1);
         flagMaxMin(yVals2);
-        setDataInChart1(yVals1);
-        setDataInChart2(yVals2);
+        setDataInChart1(yVals1, yVals1Upper, yVals1Lower, BaseSensor.SENSOR_TEMPERATURE);
+        setDataInChart1(yVals2, yVals2Upper, yVals2Lower, BaseSensor.SENSOR_HUMIDITY);
 
     }
 
@@ -572,69 +614,84 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
     }
 
     /**
+     * 图标1 用于湿度
      * 图表2 用于湿度
      *
-     * @param yVals2
+     * @param yVals1      温度/湿度 值
+     * @param yVals1Upper 温湿度上限
+     * @param yVals1Lower 温湿度下限
+     * @param sensorType  温度还是湿度，类型
      */
-    private void setDataInChart2(ArrayList<Entry> yVals2) {
-        //存在第二系列
+    private void setDataInChart1(ArrayList<Entry> yVals1, ArrayList<Entry> yVals1Upper, ArrayList<Entry> yVals1Lower, String sensorType) {
         // create a dataset and give it a type
-        LineDataSet set2 = new LineDataSet(yVals2, "湿度");
-        set2.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set2.setColor(getColorByColumnName(BaseSensor.SENSOR_HUMIDITY));
-        set2.setCircleColor(getColorByColumnName(BaseSensor.SENSOR_HUMIDITY));
-        set2.setLineWidth(2f);
-        set2.setCircleSize(4f);
-        set2.setFillAlpha(65);
-        set2.setFillColor(getColorByColumnName(BaseSensor.SENSOR_HUMIDITY));
-        set2.setDrawCircleHole(true);
-        set2.setHighLightColor(Color.rgb(244, 117, 117));
-        set2.setDrawValues(true);
-        set2.setValueFormatter(new FloatValueFormatter());
-        set2.setValueTextColor(getColorByColumnName(BaseSensor.SENSOR_HUMIDITY));
+        LineDataSet set1;
+        LineDataSet setUpper;
+        LineDataSet setLower;
+        if (BaseSensor.SENSOR_TEMPERATURE.equals(sensorType)) {
+            set1 = new LineDataSet(yVals1, "温度");
+        } else {
+            //不是温度就是湿度
+            set1 = new LineDataSet(yVals1, "温度");
+        }
+        setUpper = new LineDataSet(yVals1Upper, "");
+        setLower = new LineDataSet(yVals1Lower, "");
 
-        ArrayList<LineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set2); // add the datasets
-        // create a data object with the datasets
-        LineData data = new LineData(getXVals(), dataSets);
-        data.setValueTextColor(getColorByColumnName(BaseSensor.SENSOR_HUMIDITY));
-        data.setValueTextSize(9f);
-        // set data
-        mChart2.setData(data);
-        mChart2.animateX(2500);
-        mChart2.invalidate();
-    }
-
-
-    private void setDataInChart1(ArrayList<Entry> yVals1) {
-        // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals1, "温度");
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-        set1.setColor(getColorByColumnName(BaseSensor.SENSOR_TEMPERATURE));
-        set1.setCircleColor(getColorByColumnName(BaseSensor.SENSOR_TEMPERATURE));
+        set1.setColor(getColorByColumnName(sensorType));
+        set1.setCircleColor(getColorByColumnName(sensorType));
         set1.setLineWidth(2f);
         set1.setCircleSize(4f);
         set1.setFillAlpha(65);
-        set1.setFillColor(getColorByColumnName(BaseSensor.SENSOR_TEMPERATURE));
+        set1.setFillColor(getColorByColumnName(sensorType));
         set1.setHighLightColor(Color.rgb(244, 117, 117));
         set1.setCircleColorHole(Color.WHITE);
         set1.setDrawCircleHole(true);
         set1.setValueFormatter(new FloatValueFormatter());
         set1.setDrawValues(true);
-//        set1.setValueTextColor(getColorByColumnName(BaseSensor.SENSOR_TEMPERATURE));
+        set1.setValueTextColor(getColorByColumnName(sensorType));
 
+        generateSet(setUpper, sensorType);
+
+        generateSet(setLower, sensorType);
 
         ArrayList<LineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1); // add the datasets
+        dataSets.add(setUpper);
+        dataSets.add(setLower);
         // create a data object with the datasets
         LineData data = new LineData(getXVals(), dataSets);
-        data.setValueTextColor(getColorByColumnName(BaseSensor.SENSOR_TEMPERATURE));
+        data.setValueTextColor(getColorByColumnName(sensorType));
         data.setValueTextSize(9f);
-        // set data
-        mChart1.setData(data);
-        mChart1.animateX(2500);
-        mChart1.invalidate();
+        if (BaseSensor.SENSOR_TEMPERATURE.equals(sensorType)) {
+            // set data
+            mChart1.setData(data);
+            mChart1.animateX(2500);
+            mChart1.invalidate();
+        } else {
+            // set data
+            mChart2.setData(data);
+            mChart2.animateX(2500);
+            mChart2.invalidate();
 
+        }
+
+    }
+
+    private void generateSet(LineDataSet set1, String sensorType) {
+        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set1.setColor(getColorByColumnName(sensorType));
+        set1.setCircleColor(getColorByColumnName(sensorType));
+        set1.setLineWidth(1f);
+        set1.setFillAlpha(65);
+        set1.enableDashedLine(20f, 10f, 0);
+        set1.setFillColor(getColorByColumnName(sensorType));
+        set1.setHighLightColor(Color.rgb(244, 117, 117));
+        set1.setCircleColorHole(Color.WHITE);
+        set1.setDrawCircleHole(false);
+        set1.setDrawCircles(false);
+        set1.setValueFormatter(new FloatValueFormatter());
+        set1.setDrawValues(true);
+        set1.setValueTextColor(getColorByColumnName(sensorType));
     }
 
     private int getColorByColumnName(String columnName) {

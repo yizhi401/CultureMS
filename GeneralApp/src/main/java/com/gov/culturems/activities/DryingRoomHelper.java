@@ -67,6 +67,8 @@ public class DryingRoomHelper {
         public String RepHour;
         public String SceneId;
         public String SensorValue;
+        public String upper;
+        public String lower;
     }
 
     public void initDryingRoomInfo(DryingRoom thisRoom, DryingRoomInitListener listener) {
@@ -137,6 +139,7 @@ public class DryingRoomHelper {
                 SceneDataListResponse listResponse = GsonUtils.fromJson(response, SceneDataListResponse.class);
                 if (listResponse.rc == 200 && listResponse.Data != null && listResponse.Data.size() >= 1) {
                     boolean hasOnlineSensor = false;
+                    //此处认为，只要有一个设备在线，就都在线
                     for (SceneData temp : listResponse.Data) {
                         if (SceneData.STATUS_ONLINE.equals(temp.Status)) {
                             hasOnlineSensor = true;
@@ -209,6 +212,8 @@ public class DryingRoomHelper {
             if (!addedFlag) {
                 //hasn't added to the table
                 TableValues tableValues = new TableValues();
+//                temp.upper = "80";
+//                temp.lower = "10";
                 tableValues.repHour = temp.RepHour;
                 tableValues.dataList = new ArrayList<>();
                 tableValues.dataList.add(temp);

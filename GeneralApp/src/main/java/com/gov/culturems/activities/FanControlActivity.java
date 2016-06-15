@@ -292,26 +292,28 @@ public class FanControlActivity extends Activity implements View.OnClickListener
                         });
                         deviceRulesResponse = commonResponse.getData();
                         if (commonResponse.getRc() == 200 && deviceRulesResponse != null) {
-                            for (Rule temp : commonResponse.getData().rules) {
-                                if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.type)) {
-                                    temperatureThresholDown.setNumberText(Float.parseFloat(temp.lower));
-                                    temperatureThresholUp.setNumberText(Float.parseFloat(temp.upper));
+                            if (commonResponse.getData().rules != null)
+                                for (Rule temp : commonResponse.getData().rules) {
+                                    if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.type)) {
+                                        temperatureThresholDown.setNumberText(Float.parseFloat(temp.lower));
+                                        temperatureThresholUp.setNumberText(Float.parseFloat(temp.upper));
+                                    }
+                                    if (BaseSensor.SENSOR_HUMIDITY.equals(temp.type)) {
+                                        humidityThresholDown.setNumberText(Float.parseFloat(temp.lower));
+                                        humidityThresholUp.setNumberText(Float.parseFloat(temp.upper));
+                                    }
                                 }
-                                if (BaseSensor.SENSOR_HUMIDITY.equals(temp.type)) {
-                                    humidityThresholDown.setNumberText(Float.parseFloat(temp.lower));
-                                    humidityThresholUp.setNumberText(Float.parseFloat(temp.upper));
+                            if (commonResponse.getData().alarms != null)
+                                for (AlarmRsp temp : commonResponse.getData().alarms) {
+                                    if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.SensorType)) {
+                                        warningTemperatureThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
+                                        warningTemperatureThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
+                                    }
+                                    if (BaseSensor.SENSOR_HUMIDITY.equals(temp.SensorType)) {
+                                        warningHumidityThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
+                                        warningHumidityThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
+                                    }
                                 }
-                            }
-                            for (AlarmRsp temp : commonResponse.getData().alarms) {
-                                if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.SensorType)) {
-                                    warningTemperatureThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
-                                    warningTemperatureThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
-                                }
-                                if (BaseSensor.SENSOR_HUMIDITY.equals(temp.SensorType)) {
-                                    warningHumidityThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
-                                    warningHumidityThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
-                                }
-                            }
                         }
                     }
 
