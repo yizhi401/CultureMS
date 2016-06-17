@@ -168,7 +168,7 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="高于" />
+                    android:text="低于该值报警" />
 
                 <com.gov.culturems.views.NumberView
                     android:id="@+id/warning_temperature_thresholddown"
@@ -200,7 +200,7 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="低于" />
+                    android:text="高于该值报警" />
 
                 <com.gov.culturems.views.NumberView
                     android:id="@+id/warning_temperature_thresholdup"
@@ -244,7 +244,7 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="高于" />
+                    android:text="低于该值报警" />
 
                 <com.gov.culturems.views.NumberView
                     android:id="@+id/warning_humidity_thresholddown"
@@ -277,7 +277,7 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="低于" />
+                    android:text="高于该值报警" />
 
                 <com.gov.culturems.views.NumberView
                     android:id="@+id/warning_humidty_thresholdup"
