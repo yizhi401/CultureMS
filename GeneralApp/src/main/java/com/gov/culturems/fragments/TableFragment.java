@@ -173,7 +173,7 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
             TextView text1;
             TextView text2;
             TextView text3;
-            TextView text5;
+//            TextView text5;
             TextView text4;
         }
 
@@ -186,7 +186,7 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
                 holder.text1 = (TextView) convertView.findViewById(R.id.text1);
                 holder.text2 = (TextView) convertView.findViewById(R.id.text2);
                 holder.text3 = (TextView) convertView.findViewById(R.id.text3);
-                holder.text5 = (TextView) convertView.findViewById(R.id.text5);
+//                holder.text5 = (TextView) convertView.findViewById(R.id.text5);
                 holder.text4 = (TextView) convertView.findViewById(R.id.text4);
                 convertView.setTag(holder);
             } else {
@@ -204,23 +204,23 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
             holder.text2.setText(temp.SensorValueT);
             holder.text2.setTextColor(getActivity().getResources().getColor(R.color.black));
             holder.text3.setText(temp.SensorValueH);
-            holder.text5.setTextColor(getActivity().getResources().getColor(R.color.black));
-            if (DeviceDataForChart.ALERT_STATUS_NORMAL.equals(temp.AlertStatusH)) {
-                if (DeviceDataForChart.ALERT_STATUS_NORMAL.equals(temp.AlertStatusT)) {
-                    alertInfo = "正常";
-                } else {
-                    holder.text5.setTextColor(getActivity().getResources().getColor(R.color.red));
-                    alertInfo = temp.AlertStatusT;
-                }
-            } else {
-                holder.text5.setTextColor(getActivity().getResources().getColor(R.color.red));
-                alertInfo = temp.AlertStatusH;
-                if (DeviceDataForChart.ALERT_STATUS_NORMAL.equals(temp.AlertStatusT)) {
-                } else {
-                    alertInfo = alertInfo + "\n" + temp.AlertStatusT;
-                }
-            }
-            holder.text5.setText(alertInfo);
+//            holder.text5.setTextColor(getActivity().getResources().getColor(R.color.black));
+//            if (DeviceDataForChart.ALERT_STATUS_NORMAL.equals(temp.AlertStatusH)) {
+//                if (DeviceDataForChart.ALERT_STATUS_NORMAL.equals(temp.AlertStatusT)) {
+//                    alertInfo = "正常";
+//                } else {
+//                    holder.text5.setTextColor(getActivity().getResources().getColor(R.color.red));
+//                    alertInfo = temp.AlertStatusT;
+//                }
+//            } else {
+//                holder.text5.setTextColor(getActivity().getResources().getColor(R.color.red));
+//                alertInfo = temp.AlertStatusH;
+//                if (DeviceDataForChart.ALERT_STATUS_NORMAL.equals(temp.AlertStatusT)) {
+//                } else {
+//                    alertInfo = alertInfo + "\n" + temp.AlertStatusT;
+//                }
+//            }
+//            holder.text5.setText(alertInfo);
             return convertView;
         }
 
