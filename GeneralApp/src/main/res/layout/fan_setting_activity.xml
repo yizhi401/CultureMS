@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/gray_bg">
 
     <LinearLayout
@@ -53,6 +54,7 @@
                     android:id="@+id/temperature_thresholddown"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:Unit="@string/temperature_unit"
                     android:layout_weight="3" />
 
                 <TextView
@@ -67,6 +69,7 @@
                     android:id="@+id/temperature_thresholdup"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:Unit="@string/temperature_unit"
                     android:layout_weight="3" />
 
             </LinearLayout>
@@ -105,6 +108,7 @@
                 <com.gov.culturems.views.NumberView
                     android:id="@+id/humidity_thresholddown"
                     android:layout_width="0dp"
+                    app:Unit="@string/humidity_unit"
                     android:layout_height="wrap_content"
                     android:layout_weight="3" />
 
@@ -119,6 +123,7 @@
                 <com.gov.culturems.views.NumberView
                     android:id="@+id/humidty_thresholdup"
                     android:layout_width="0dp"
+                    app:Unit="@string/humidity_unit"
                     android:layout_height="wrap_content"
                     android:layout_weight="3" />
 
@@ -174,6 +179,7 @@
                     android:id="@+id/warning_temperature_thresholddown"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
+                    app:Unit="@string/temperature_unit"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_toRightOf="@id/temperature_higher_than" />
@@ -205,6 +211,7 @@
                 <com.gov.culturems.views.NumberView
                     android:id="@+id/warning_temperature_thresholdup"
                     android:layout_width="match_parent"
+                    app:Unit="@string/temperature_unit"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
@@ -250,6 +257,7 @@
                     android:id="@+id/warning_humidity_thresholddown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:Unit="@string/humidity_unit"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
@@ -282,6 +290,7 @@
                 <com.gov.culturems.views.NumberView
                     android:id="@+id/warning_humidty_thresholdup"
                     android:layout_width="match_parent"
+                    app:Unit="@string/humidity_unit"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"

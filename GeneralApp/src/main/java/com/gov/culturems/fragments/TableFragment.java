@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import hirondelle.date4j.DateTime;
@@ -48,7 +49,7 @@ import hirondelle.date4j.DateTime;
  */
 public class TableFragment extends Fragment implements DeviceDataActivity.DeviceDataListener {
 
-    private static final int PAGE_SIZE = 10;//每页显示条数
+    private static final int PAGE_SIZE = 12;//每页显示条数,必须是4的倍数
     private DateTime currentDate;
 
     /**
@@ -147,7 +148,7 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
                     //页码+1，然后刷新列表
                     if (listResponse.getListData().size() != 0) {
                         pageIndex++;
-                        sensorData.addAll(listResponse.getListData());
+                        addDataAndResort(listResponse.getListData());
                     }
                     adapter.notifyDataSetChanged();
                     dataList.onLoadMoreComplete();
@@ -162,6 +163,31 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
         });
     }
 
+    private void addDataAndResort(ArrayList<DeviceDataForChart> listData) {
+        if (listData == null || listData.size() == 0) {
+            return;
+        }
+        Iterator<DeviceDataForChart> iterator = listData.iterator();
+        DeviceDataForChart newData;
+        //首先去除可能重复的数据
+        while (iterator.hasNext()) {
+            newData = iterator.next();
+            for (DeviceDataForChart oldData : sensorData) {
+                if(newData.InsertTime.equals(oldData.InsertTime)){
+                    iterator.remove();
+                    break;
+                }
+            }
+        }
+        Collections.sort(listData, new Comparator<DeviceDataForChart>() {
+            @Override
+            public int compare(DeviceDataForChart lhs, DeviceDataForChart rhs) {
+                return -TimeUtil.compareTwoUnformattedTimeStr(lhs.InsertTime, rhs.InsertTime);
+            }
+        });
+        sensorData.addAll(listData);
+    }
+
 
     private class SensorAdapter extends MyBaseAdapter<DeviceDataForChart> {
 
@@ -173,7 +199,7 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
             TextView text1;
             TextView text2;
             TextView text3;
-//            TextView text5;
+            //            TextView text5;
             TextView text4;
         }
 
@@ -194,16 +220,17 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
             }
             DeviceDataForChart temp = data.get(position);
             holder.text1.setText(temp.SensorId + "号");
-            holder.text4.setText(temp.InsertTime);
+            int firstSpace = temp.InsertTime.indexOf(" ");
+            holder.text4.setText(temp.InsertTime.substring(firstSpace+1,temp.InsertTime.length()));
 
             holder.text3.setVisibility(View.GONE);
             String alertInfo = "";
             holder.text3.setVisibility(View.VISIBLE);
             holder.text3.setText("");
             //set column1
-            holder.text2.setText(temp.SensorValueT);
+            holder.text2.setText(temp.SensorValueT + getResources().getString(R.string.temperature_unit));
             holder.text2.setTextColor(getActivity().getResources().getColor(R.color.black));
-            holder.text3.setText(temp.SensorValueH);
+            holder.text3.setText(temp.SensorValueH + getResources().getString(R.string.humidity_unit));
 //            holder.text5.setTextColor(getActivity().getResources().getColor(R.color.black));
 //            if (DeviceDataForChart.ALERT_STATUS_NORMAL.equals(temp.AlertStatusH)) {
 //                if (DeviceDataForChart.ALERT_STATUS_NORMAL.equals(temp.AlertStatusT)) {

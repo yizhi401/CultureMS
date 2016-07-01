@@ -19,5 +19,8 @@
     <string name="end_time">结束: %1$s</string>
     <string name="good_type">货品: (%1$s)</string>
 
+    <string name="humidity_unit">%RH</string>
+    <string name="temperature_unit">℃</string>
+
 
 </resources>

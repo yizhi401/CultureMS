@@ -127,7 +127,7 @@
                 android:id="@+id/humidity_text_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="( 湿度% )"
+                android:text="( 湿度%RH)"
                 android:textColor="@color/text_gray_deep" />
 
             <com.github.mikephil.charting.charts.LineChart

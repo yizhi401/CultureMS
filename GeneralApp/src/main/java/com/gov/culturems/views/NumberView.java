@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.gov.culturems.R;
 
@@ -28,6 +29,8 @@ public class NumberView extends RelativeLayout {
     private LayoutInflater inflater;
 
     private EditText numberView;
+    private TextView unitText;
+    private String unit;
 
     /**
      * 输入框小数的位数
@@ -61,6 +64,7 @@ public class NumberView extends RelativeLayout {
                 R.styleable.NumberView);
         try {
             currentNum = ta.getFloat(R.styleable.NumberView_NumberViewDefaultNum, 1.0f);
+            unit = ta.getString(R.styleable.NumberView_Unit);
         } finally {
             ta.recycle();
         }
@@ -72,6 +76,8 @@ public class NumberView extends RelativeLayout {
         inflater.inflate(R.layout.num_view_layout, this);
         // TODO 这种写法不对，平白多了一层layout
         numberView = (EditText) findViewById(R.id.number_text);
+        unitText = (TextView)findViewById(R.id.unit);
+        unitText.setText(unit);
         InputFilter lengthfilter = new InputFilter() {
             public CharSequence filter(CharSequence source, int start, int end,
                                        Spanned dest, int dstart, int dend) {
@@ -140,6 +146,10 @@ public class NumberView extends RelativeLayout {
 
     }
 
+    public void setUnit(String unit){
+        this.unit = unit;
+        unitText.setText(unit);
+    }
 
     public void setNumberText(float num) {
         currentNum = num;
@@ -147,7 +157,7 @@ public class NumberView extends RelativeLayout {
     }
 
     public String getFormattedFloat(float num) {
-        DecimalFormat decimalFormat = new DecimalFormat(".0");//构造方法的字符格式这里如果小数不足2位,会以0补足.
+        DecimalFormat decimalFormat = new DecimalFormat("0.0");//构造方法的字符格式这里如果小数不足2位,会以0补足.
         String p = decimalFormat.format(num);//format 返回的是字符串
         return p;
     }

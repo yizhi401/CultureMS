@@ -650,14 +650,15 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
         set1.setDrawValues(true);
         set1.setValueTextColor(getColorByColumnName(sensorType));
 
+        //生成上限
         generateSet(setUpper, sensorType);
-
+        //生成下限
         generateSet(setLower, sensorType);
 
         ArrayList<LineDataSet> dataSets = new ArrayList<>();
         dataSets.add(set1); // add the datasets
-        dataSets.add(setUpper);
-        dataSets.add(setLower);
+//        dataSets.add(setUpper); //暂时不需要上下限
+//        dataSets.add(setLower); //暂时不需要上下限
         // create a data object with the datasets
         LineData data = new LineData(getXVals(), dataSets);
         data.setValueTextColor(getColorByColumnName(sensorType));

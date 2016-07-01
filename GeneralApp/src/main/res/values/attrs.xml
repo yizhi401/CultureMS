@@ -12,6 +12,7 @@
     </declare-styleable>
     <declare-styleable name="NumberView">
         <attr name="NumberViewDefaultNum" format="float" />
+        <attr name="Unit" format="string"/>
     </declare-styleable>
 
 </resources>
