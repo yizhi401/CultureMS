@@ -176,12 +176,12 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
 
 
     private boolean showFanControl() {
-        if (UserManager.getInstance().getUserType() == User.USER_TYPE_MANAGER
-                || UserManager.getInstance().getUserType() == User.USER_TYPE_SUPER_MANAGER) {
+//        if (UserManager.getInstance().getUserType() == User.USER_TYPE_MANAGER
+//                || UserManager.getInstance().getUserType() == User.USER_TYPE_SUPER_MANAGER) {
             if (device instanceof DCDevice) {
                 return true;
             }
-        }
+//        }
         return false;
     }
 

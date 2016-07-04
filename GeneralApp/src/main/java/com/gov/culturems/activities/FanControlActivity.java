@@ -19,6 +19,7 @@ import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.R;
 import com.gov.culturems.WebsocketService;
 import com.gov.culturems.common.CommonConstant;
+import com.gov.culturems.common.UserManager;
 import com.gov.culturems.common.http.CommonResponse;
 import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.RequestParams;
@@ -77,7 +78,7 @@ public class FanControlActivity extends Activity implements View.OnClickListener
             WebsocketResponse response = GsonUtils.fromJson(message, WebsocketResponse.class);
             Log.i(TAG, "intent received! message = " + message);
             if (response != null) {
-                if (AndroidUtil.getMyUUID(FanControlActivity.this).equals(response.ai)) {
+                if (UserManager.getInstance().getUserId().equals(response.ai)) {
                     //确保是我发的信息
                     if ("1".equals(response.iscmded)) {
                         //请求成功
@@ -228,7 +229,8 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         newMessage.gi = deviceRulesResponse.gi;
         newMessage.di = deviceRulesResponse.di;
         newMessage.mt = deviceRulesResponse.mt;
-        newMessage.ai = AndroidUtil.getMyUUID(this);
+//        newMessage.ai = AndroidUtil.getMyUUID(this);
+        newMessage.ai = UserManager.getInstance().getUserId();
         Rule temp = new Rule();
         temp.lower = temperatureThresholDown.getCurrentNumStr();
         temp.upper = temperatureThresholUp.getCurrentNumStr();
