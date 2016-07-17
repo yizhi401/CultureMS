@@ -1,8 +1,10 @@
 package com.gov.culturems.common.http;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -11,9 +13,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.gov.culturems.activities.FactoryChooseActivity;
+import com.gov.culturems.activities.LoginActivity;
+import com.gov.culturems.common.UserManager;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.utils.LogUtil;
 import com.gov.culturems.utils.SharePreferUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
@@ -49,7 +57,7 @@ public class VolleyRequest extends com.android.volley.Request<String> {
      * @param params
      * @param listener
      */
-    public <T> VolleyRequest(int method, Context context, String url, RequestParams params, final VolleyRequestListener listener) {
+    public <T> VolleyRequest(int method, final Context context, String url, RequestParams params, final VolleyRequestListener listener) {
         //目前只允许使用post方式传输
         super(method, url, new Response.ErrorListener() {
             @Override
@@ -66,11 +74,32 @@ public class VolleyRequest extends com.android.volley.Request<String> {
             @Override
             public void onResponse(String jsonObject) {
                 //尚未测试volley返回的JSONObject是何种类型
-                LogUtil.i("ResponseBody = " + jsonObject.toString());
+                LogUtil.i("ResponseBody = " + jsonObject);
+                JSONObject jo = null;
+                try {
+                    jo = new JSONObject(jsonObject);
+                    if("6006".equals(jo.getString("rc"))){
+                        //用户不存在
+                        logout(context,jo.getString("rm"));
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 listener.onSuccess(jsonObject);
             }
         };
 
+    }
+
+    private void logout(Context context,String errorMsg) {
+        UserManager.getInstance().logout();
+        Toast.makeText(context,errorMsg,Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(context,FactoryChooseActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
     }
 
     private void generateParams() {
