@@ -58,6 +58,11 @@ public class SharePreferUtil {
     public static String getCookie() {
         return getStringDataFromSharePreference("cookie");
     }
+    public static void clearCookie(){
+        Editor editor = MyApplication.getInstance().getApplicationContext().getSharedPreferences(CommonConstant.SHAREPREFERENCE_NAME, Activity.MODE_PRIVATE).edit();
+        editor.clear();
+        editor.apply();
+    }
 
     public static void saveIsApproveDataChang(boolean isChange) {
         saveBooleanToSharePrefer("is_approve_change", isChange);

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import com.gov.culturems.common.http.response.LoginResp;
 import com.gov.culturems.entities.TeaFactory;
 import com.gov.culturems.entities.User;
+import com.gov.culturems.utils.SharePreferUtil;
 
 /**
  * this class manages all the user info, including:
@@ -111,6 +112,7 @@ public class UserManager {
     public void logout() {
         if (user != null)
             user.clearSP(userSP);
+        SharePreferUtil.clearCookie();
         user = null;
         isLogin = false;
     }
