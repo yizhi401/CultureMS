@@ -96,9 +96,7 @@ public class VolleyRequest extends com.android.volley.Request<String> {
         UserManager.getInstance().logout();
         Toast.makeText(context,errorMsg,Toast.LENGTH_LONG).show();
         Intent intent = new Intent(context,FactoryChooseActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
     }
 
