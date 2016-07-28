@@ -6,8 +6,11 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,10 +31,15 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.gson.reflect.TypeToken;
+import com.gov.culturems.MyApplication;
 import com.gov.culturems.R;
 import com.gov.culturems.adapters.DryingRoomAdapter;
+import com.gov.culturems.common.CommonConstant;
 import com.gov.culturems.common.UserManager;
 import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.ListResponse;
@@ -39,6 +47,7 @@ import com.gov.culturems.common.http.RequestParams;
 import com.gov.culturems.common.http.URLRequest;
 import com.gov.culturems.common.http.VolleyRequestListener;
 import com.gov.culturems.common.http.response.DryingRoomResp;
+import com.gov.culturems.entities.ChangeLog;
 import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.provider.MySuggestionProvider;
 import com.gov.culturems.utils.GsonUtils;
@@ -46,12 +55,16 @@ import com.gov.culturems.utils.LogUtil;
 import com.gov.culturems.views.SearchGridView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by peter on 2015/11/7.
  */
 public class DryingRoomActivity extends Activity {
+
+    private static final String TAG = DryingRoomActivity.class.getName();
 
     private static final int MENU_LOG_OUT = 1002;
     private static final int MENU_ITEM_SEARCH = 1000;
@@ -95,10 +108,66 @@ public class DryingRoomActivity extends Activity {
             getActionBar().setTitle(UserManager.getInstance().getFactoryName());
         }
 
+        checkUpdate();
         setUpViews();
         initPopupWindow();
         getDryingRooms();
     }
+
+    private void checkUpdate() {
+        String firUrl = "http://api.fir.im/apps/latest/" + CommonConstant.APP_ID+"?api_token="+CommonConstant.API_TOKEN;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,firUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, "response -> " + response);
+                        ChangeLog changeLog = GsonUtils.fromJson(response,ChangeLog.class);
+                        checkUpdate(changeLog);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, error.getMessage(), error);
+            }
+        });
+        MyApplication.getInstance().getRequestQueue().add(stringRequest);
+
+    }
+
+    private void checkUpdate(ChangeLog changeLog) {
+        try {
+            PackageInfo pi = this.getPackageManager().getPackageInfo(this.getPackageName(),0);
+            if(changeLog.version > pi.versionCode){
+                //有新版本
+                showDownloadDialog(changeLog);
+
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showDownloadDialog(final ChangeLog changeLog) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("提示").setMessage("发现新版本，是否升级？").setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setPositiveButton("更新", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String url = changeLog.update_url; // web address
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+
+            }
+        });
+        builder.show();
+    }
+
 
     @Override
     protected void onDestroy() {
