@@ -161,11 +161,14 @@ public class DryingRoom extends BaseScene implements Serializable {
     }
 
     public boolean query(String query) {
-        if (this.toString().contains(query)) {
+        if (getQuerableStr().toLowerCase().contains(query.toLowerCase())) {
             return true;
         } else {
             return false;
         }
+    }
+    private String getQuerableStr(){
+        return name+id+getGoodsName();
     }
 
     @Override

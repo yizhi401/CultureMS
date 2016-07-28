@@ -120,6 +120,7 @@ public class DryingRoomActivity extends Activity {
         }
 
         RequestParams params = new RequestParams();
+        params.put("ps","99999");
         HttpUtil.jsonRequest(this, URLRequest.SCENE_GOODS_LIST_GET, params, new VolleyRequestListener() {
             @Override
             public void onSuccess(String response) {
