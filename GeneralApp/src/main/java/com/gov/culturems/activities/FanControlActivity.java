@@ -397,23 +397,35 @@ public class FanControlActivity extends Activity implements View.OnClickListener
     }
 
     public boolean checkDataValidity() {
-        if (temperatureThresholUp.getCurrentNum() <= 0 ||
-                temperatureThresholUp.getCurrentNum() > 100 ||
-                temperatureThresholDown.getCurrentNum() <= 0 ||
-                temperatureThresholDown.getCurrentNum() > 100 ||
-                humidityThresholUp.getCurrentNum() <= 0 ||
-                humidityThresholUp.getCurrentNum() > 100 ||
-                humidityThresholDown.getCurrentNum() <= 0 ||
-                humidityThresholDown.getCurrentNum() > 100) {
+        if (!permissible(temperatureThresholUp.getCurrentNum()) ||
+                !permissible(temperatureThresholDown.getCurrentNum()) ||
+                !permissible(humidityThresholUp.getCurrentNum()) ||
+                !permissible(humidityThresholDown.getCurrentNum())) {
             Toast.makeText(this, "请输入0-100之间的值", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (temperatureThresholDown.getCurrentNum() >= temperatureThresholUp.getCurrentNum()
-                || humidityThresholDown.getCurrentNum() >= humidityThresholUp.getCurrentNum()) {
+        if (temperatureThresholDown.getCurrentNum() > temperatureThresholUp.getCurrentNum()
+                || humidityThresholDown.getCurrentNum() > humidityThresholUp.getCurrentNum()) {
+            Toast.makeText(this, "最低值必须小于最高值！", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (!permissible(warningTemperatureThresholUp.getCurrentNum()) ||
+                !permissible(warningTemperatureThresholDown.getCurrentNum()) ||
+                !permissible(warningHumidityThresholUp.getCurrentNum()) ||
+                !permissible(warningHumidityThresholDown.getCurrentNum())) {
+            Toast.makeText(this, "请输入0-100之间的值", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (warningTemperatureThresholDown.getCurrentNum() > warningTemperatureThresholUp.getCurrentNum()
+                || warningHumidityThresholDown.getCurrentNum() > warningHumidityThresholUp.getCurrentNum()) {
             Toast.makeText(this, "最低值必须小于最高值！", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
+    }
+
+    private boolean permissible(float num) {
+        return num >= 0 && num <= 100;
     }
 
     @Override
