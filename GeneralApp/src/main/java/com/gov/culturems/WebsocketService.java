@@ -26,7 +26,7 @@ import java.net.URI;
 public class WebsocketService extends Service {
 
     private static final String TAG = WebsocketService.class.getName();
-    private static final String SERVER_IP = "ws://42.120.48.207:8016/CmdTran";
+    private static final String SERVER_IP = "ws://121.41.230.252:8019:8016/CmdTran";
 
     public static final String WEBSOCKET_SERVICE_REQUEST = "com.sean.action.websocket.request";
     public static final String WEBSOCKET_SERVICE_RESPONSE = "com.sean.action.websocket.response";

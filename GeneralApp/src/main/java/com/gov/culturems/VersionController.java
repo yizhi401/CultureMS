@@ -118,13 +118,13 @@ public class VersionController {
      */
     public static String getURLServer() {
         if (CURRENT_VERSION == GONGWANGFU) {
-            return "http://42.120.48.207:8018/";
+            return "http://121.41.230.252:8018/";
         } else if (CURRENT_VERSION == GENERAL) {
-            return "http://42.120.48.207:8019/";
+            return "http://121.41.230.252:8019/";
         } else if (CURRENT_VERSION == TEACORP) {
-            return "http://42.120.48.207:8019/";
+            return "http://121.41.230.252:8019/";
         }
-        return "http://42.120.48.207:8019/";
+        return "http://121.41.230.252:8019/";
     }
 
     /**
@@ -133,7 +133,7 @@ public class VersionController {
      * @return
      */
     public static String getURLServerWithoutPort() {
-        return "http://42.120.48.207";
+        return "http://121.41.230.252";
     }
 
 
