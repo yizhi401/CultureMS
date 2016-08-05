@@ -14,8 +14,8 @@ android {
         applicationId "com.sean.tea.general"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 67
-        versionName "4.4.13"
+        versionCode 70
+        versionName "4.4.16"
     }
     buildTypes {
         release {

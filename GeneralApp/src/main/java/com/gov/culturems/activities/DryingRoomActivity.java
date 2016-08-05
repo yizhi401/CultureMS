@@ -55,6 +55,8 @@ import com.gov.culturems.utils.LogUtil;
 import com.gov.culturems.views.SearchGridView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -190,7 +192,7 @@ public class DryingRoomActivity extends Activity {
 
         RequestParams params = new RequestParams();
         params.put("ps","99999");
-        HttpUtil.jsonRequest(this, URLRequest.SCENE_GOODS_LIST_GET, params, new VolleyRequestListener() {
+        HttpUtil.jsonRequestGet(this, URLRequest.SCENE_GOODS_LIST_GET, params, new VolleyRequestListener() {
             @Override
             public void onSuccess(String response) {
 //                UIUtil.dismissTipDialog(DryingRoomActivity.this);
@@ -200,6 +202,12 @@ public class DryingRoomActivity extends Activity {
                 if (listResponse.getRc() == 200) {
                     if (listResponse.getListData() != null && listResponse.getListData().size() > 0) {
                         fullData = DryingRoomResp.convertToDryingRoomList(listResponse.getListData());
+                        Collections.sort(fullData, new Comparator<DryingRoom>() {
+                            @Override
+                            public int compare(DryingRoom dryingRoom, DryingRoom t1) {
+                                return dryingRoom.getName().compareTo(t1.getName());
+                            }
+                        });
                         adapter.setData(fullData);
                         adapter.notifyDataSetChanged();
                     }
@@ -525,6 +533,12 @@ public class DryingRoomActivity extends Activity {
                 searchData.add(temp);
             }
         }
+        Collections.sort(searchData, new Comparator<DryingRoom>() {
+            @Override
+            public int compare(DryingRoom dryingRoom, DryingRoom t1) {
+                return dryingRoom.getName().compareTo(t1.getName());
+            }
+        });
         adapter.setData(searchData);
         adapter.notifyDataSetChanged();
     }
