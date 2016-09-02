@@ -360,6 +360,19 @@ public class DryingRoomActivity extends Activity {
                 menuPopup.dismiss();
             }
         });
+        Button appInfoBtn = (Button)popupMenuView.findViewById(R.id.app_info);
+        appInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                jumpToAppInfo();
+                menuPopup.dismiss();
+            }
+        });
+    }
+
+    private void jumpToAppInfo() {
+        Intent i = new Intent(this,AppInfoActivity.class);
+        startActivity(i);
     }
 
     private void showLogOutDialog() {

@@ -1,5 +1,6 @@
 package com.gov.culturems.entities;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.io.Serializable;
@@ -107,7 +108,8 @@ public class DryingRoom extends BaseScene implements Serializable {
         return GoodsName;
     }
 
-    public String getGoodsNameWithoutNullString() {
+    @NonNull
+    public String getGoodsNameNonNull() {
         if (TextUtils.isEmpty(GoodsName)) {
             return "暂无";
         }
@@ -122,7 +124,8 @@ public class DryingRoom extends BaseScene implements Serializable {
         return BeginTime;
     }
 
-    public String getBeginTimeWithoutNullString() {
+    @NonNull
+    public String getBeginTimeNonNull() {
         if (TextUtils.isEmpty(BeginTime)) {
             return "未知";
         }

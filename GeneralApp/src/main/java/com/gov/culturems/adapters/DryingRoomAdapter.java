@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.gov.culturems.R;
 import com.gov.culturems.activities.DeviceDataActivity;
-import com.gov.culturems.activities.DeviceInfoActivity;
 import com.gov.culturems.activities.DryingRoomActivity;
 import com.gov.culturems.activities.DryingRoomHelper;
 import com.gov.culturems.common.base.MyBaseAdapter;
@@ -62,8 +61,8 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
 
         final DryingRoom dryingRoom = data.get(position);
         holder.roomName.setText(dryingRoom.getName());
-        holder.teaType.setText(String.format(context.getResources().getString(R.string.good_type), dryingRoom.getGoodsNameWithoutNullString()));
-        holder.startTime.setText(String.format(context.getResources().getString(R.string.begin_time), dryingRoom.getBeginTimeWithoutNullString()));
+        holder.teaType.setText(String.format(context.getResources().getString(R.string.good_type), dryingRoom.getGoodsNameNonNull()));
+        holder.startTime.setText(String.format(context.getResources().getString(R.string.begin_time), dryingRoom.getBeginTimeNonNull()));
         holder.endTime.setText(String.format(context.getResources().getString(R.string.end_time), dryingRoom.getEndTimeWithoutNullString()));
         holder.endTime.setVisibility(View.GONE);
 
@@ -71,6 +70,22 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         holder.sensor1.setText(dryingRoom.getTempatureTxt());
         holder.sensor2.setVisibility(View.VISIBLE);
         holder.sensor2.setText(dryingRoom.getHumidityTxt());
+        if(!hasOnlineDevice(dryingRoom)){
+            holder.sensor1.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
+            holder.sensor2.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
+        }else{
+            if("未知".equals(dryingRoom.getTempatureTxt())){
+                 holder.sensor1.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
+            }else{
+                holder.sensor1.setTextColor(context.getResources().getColor(R.color.main_green));
+            }
+
+            if("未知".equals(dryingRoom.getHumidityTxt())){
+                 holder.sensor2.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
+            }else{
+                holder.sensor2.setTextColor(context.getResources().getColor(R.color.main_green));
+            }
+        }
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,13 +99,18 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         return convertView;
     }
 
-    private void tryStartDeviceActivity(DryingRoom chosenRoom) {
+    private boolean hasOnlineDevice(DryingRoom chosenRoom){
         boolean hasOnlineDevice = false;
         for (BaseDevice temp : chosenRoom.getDeviceDatas()) {
             if (!BaseDevice.DEVICE_STATUS_OFFLINE.equals(temp.getDeviceStatus())) {
                 hasOnlineDevice = true;
             }
         }
+        return hasOnlineDevice;
+    }
+
+    private void tryStartDeviceActivity(DryingRoom chosenRoom) {
+        boolean hasOnlineDevice = hasOnlineDevice(chosenRoom);
         if (!hasOnlineDevice) {
             Toast.makeText(context, "设备离线!", Toast.LENGTH_SHORT).show();
         } else {
