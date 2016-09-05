@@ -9,12 +9,13 @@ import com.gov.culturems.entities.DryingRoom;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by peter on 4/6/16.
  */
-public class DryingRoomResp {
+public class DryingRoomResp implements Comparable<DryingRoomResp> {
 
     private String SGI;
     private String GoodsId;
@@ -31,6 +32,12 @@ public class DryingRoomResp {
     private String TemperatureValueTxt;
     private String HumidityValueTxt;
     private String DeviceDispTxt;
+
+
+    @Override
+    public int compareTo(DryingRoomResp another) {
+        return convertToDryingRoom().compareTo(another.convertToDryingRoom());
+    }
 
     public class SensorData implements Serializable {
         private String SensorType;

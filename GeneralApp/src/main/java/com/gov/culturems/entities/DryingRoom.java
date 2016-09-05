@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.Map;
 /**
  * Created by peter on 2015/11/7.
  */
-public class DryingRoom extends BaseScene implements Serializable {
+public class DryingRoom extends BaseScene implements Serializable, Comparable<DryingRoom> {
 
     public static final String STATE_FINISHED = "已完成";
     public static final String STATE_ONGOING = "进行中";
@@ -108,6 +109,10 @@ public class DryingRoom extends BaseScene implements Serializable {
         return GoodsName;
     }
 
+    public void setGoodsName(String goodsName) {
+        GoodsName = goodsName;
+    }
+
     @NonNull
     public String getGoodsNameNonNull() {
         if (TextUtils.isEmpty(GoodsName)) {
@@ -116,12 +121,12 @@ public class DryingRoom extends BaseScene implements Serializable {
         return GoodsName;
     }
 
-    public void setGoodsName(String goodsName) {
-        GoodsName = goodsName;
-    }
-
     public String getBeginTime() {
         return BeginTime;
+    }
+
+    public void setBeginTime(String beginTime) {
+        BeginTime = beginTime;
     }
 
     @NonNull
@@ -141,10 +146,6 @@ public class DryingRoom extends BaseScene implements Serializable {
         int dividerIndex = EndTime.indexOf("-");
         int spaceIndex = EndTime.indexOf(" ");
         return EndTime.substring(dividerIndex + 1, spaceIndex + 6);
-    }
-
-    public void setBeginTime(String beginTime) {
-        BeginTime = beginTime;
     }
 
     public String getEndTime() {
@@ -170,8 +171,9 @@ public class DryingRoom extends BaseScene implements Serializable {
             return false;
         }
     }
-    private String getQuerableStr(){
-        return name+id+getGoodsName();
+
+    private String getQuerableStr() {
+        return name + id + getGoodsName();
     }
 
     @Override
@@ -186,5 +188,32 @@ public class DryingRoom extends BaseScene implements Serializable {
                 ", HumidityValueTxt='" + HumidityValueTxt + '\'' +
                 ", DeviceDispTxt='" + DeviceDispTxt + '\'' +
                 '}';
+    }
+
+    public boolean hasOnlineDevice() {
+        boolean hasOnlineDevice = false;
+        for (BaseDevice temp : getDeviceDatas()) {
+            if (!BaseDevice.DEVICE_STATUS_OFFLINE.equals(temp.getDeviceStatus())) {
+                hasOnlineDevice = true;
+            }
+        }
+        return hasOnlineDevice;
+    }
+
+    @Override
+    public int compareTo(DryingRoom another) {
+        if (hasOnlineDevice()) {
+            if (another.hasOnlineDevice()) {
+                return getName().compareTo(another.getName());
+            } else {
+                return -1;
+            }
+        } else {
+            if (another.hasOnlineDevice()) {
+                return 1;
+            } else {
+                return getName().compareTo(another.getName());
+            }
+        }
     }
 }

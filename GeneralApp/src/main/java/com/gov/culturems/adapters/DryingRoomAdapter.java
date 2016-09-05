@@ -70,7 +70,7 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         holder.sensor1.setText(dryingRoom.getTempatureTxt());
         holder.sensor2.setVisibility(View.VISIBLE);
         holder.sensor2.setText(dryingRoom.getHumidityTxt());
-        if(!hasOnlineDevice(dryingRoom)){
+        if(!dryingRoom.hasOnlineDevice()){
             holder.sensor1.setText("未知");
             holder.sensor1.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
             holder.sensor2.setText("未知");
@@ -92,18 +92,18 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         return convertView;
     }
 
-    private boolean hasOnlineDevice(DryingRoom chosenRoom){
-        boolean hasOnlineDevice = false;
-        for (BaseDevice temp : chosenRoom.getDeviceDatas()) {
-            if (!BaseDevice.DEVICE_STATUS_OFFLINE.equals(temp.getDeviceStatus())) {
-                hasOnlineDevice = true;
-            }
-        }
-        return hasOnlineDevice;
-    }
+//    private boolean hasOnlineDevice(DryingRoom chosenRoom){
+//        boolean hasOnlineDevice = false;
+//        for (BaseDevice temp : chosenRoom.getDeviceDatas()) {
+//            if (!BaseDevice.DEVICE_STATUS_OFFLINE.equals(temp.getDeviceStatus())) {
+//                hasOnlineDevice = true;
+//            }
+//        }
+//        return hasOnlineDevice;
+//    }
 
     private void tryStartDeviceActivity(DryingRoom chosenRoom) {
-        boolean hasOnlineDevice = hasOnlineDevice(chosenRoom);
+        boolean hasOnlineDevice = chosenRoom.hasOnlineDevice();
         if (!hasOnlineDevice) {
             Toast.makeText(context, "设备离线!", Toast.LENGTH_SHORT).show();
         } else {

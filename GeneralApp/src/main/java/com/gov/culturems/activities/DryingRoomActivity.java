@@ -202,12 +202,7 @@ public class DryingRoomActivity extends Activity {
                 if (listResponse.getRc() == 200) {
                     if (listResponse.getListData() != null && listResponse.getListData().size() > 0) {
                         fullData = DryingRoomResp.convertToDryingRoomList(listResponse.getListData());
-                        Collections.sort(fullData, new Comparator<DryingRoom>() {
-                            @Override
-                            public int compare(DryingRoom dryingRoom, DryingRoom t1) {
-                                return dryingRoom.getName().compareTo(t1.getName());
-                            }
-                        });
+                        Collections.sort(fullData);
                         adapter.setData(fullData);
                         adapter.notifyDataSetChanged();
                     }
