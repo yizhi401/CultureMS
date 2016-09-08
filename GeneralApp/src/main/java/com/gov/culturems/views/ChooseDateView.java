@@ -1,6 +1,7 @@
 package com.gov.culturems.views;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -9,10 +10,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.gov.culturems.R;
 
+import java.text.DecimalFormat;
 import java.util.TimeZone;
 
 import hirondelle.date4j.DateTime;
@@ -29,13 +32,17 @@ public class ChooseDateView extends RelativeLayout {
     private Context context;
     private DateTime dateTime;
     private Button preBtn;
-    private TextView dateText;
+    private Button dateText;
     private String currentDate;
     private Button nextBtn;
     private OnDateChangeListener listener;
     private DateTime today;
+    private Button timeView;
     private final StringBuilder monthYearStringBuilder = new StringBuilder(50);
     private int viewType;
+    private int hourOfDay;
+    private int minute;
+    private boolean hasTimeChosen;
 
     public interface OnDateChangeListener {
         void onDateChange(DateTime dateTime, String monthStr);
@@ -65,11 +72,18 @@ public class ChooseDateView extends RelativeLayout {
         LayoutInflater.from(context).inflate(R.layout.choose_date_view, this);
         preBtn = (Button) findViewById(R.id.calendar_left_arrow);
         nextBtn = (Button) findViewById(R.id.calendar_right_arrow);
-        dateText = (TextView) findViewById(R.id.calendar_date_textview);
+        dateText = (Button) findViewById(R.id.calendar_date_textview);
         dateText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePicker();
+            }
+        });
+        timeView = (Button)findViewById(R.id.calendar_time_text);
+        timeView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePicker();
             }
         });
         preBtn.setOnClickListener(getCalendarOnClickListener());
@@ -77,6 +91,37 @@ public class ChooseDateView extends RelativeLayout {
         currentDate = dateTime.format("YYYY-MM-DD");
         dateText.setText(currentDate);
 //        refreshDateTextView();
+    }
+
+    private void showTimePicker() {
+        new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                ChooseDateView.this.hourOfDay = hourOfDay;
+                ChooseDateView.this.minute = minute;
+                timeView.setText(format00(hourOfDay) + ":" + format00(minute));
+                hasTimeChosen = true;
+                 if (listener != null) {
+                    listener.onDateChange(dateTime, currentDate);
+                }
+            }
+        },hourOfDay,minute,true).show();
+   }
+
+    private String format00(int num){
+        DecimalFormat mFormat = new DecimalFormat("00");
+        return mFormat.format(num);
+    }
+
+    public String getSelectedBeginTime(){
+        return "00:00:00";
+   }
+
+    public String getSelectedEndTime(){
+         if(hasTimeChosen)
+            return format00(hourOfDay) + ":"+format00(minute)+":59";
+        else
+            return "23:59:59";
     }
 
     private void showDatePicker() {
@@ -91,7 +136,7 @@ public class ChooseDateView extends RelativeLayout {
                 }
             }
         }, dateTime.getYear(), dateTime.getMonth() - 1, dateTime.getDay()).show();
-    }
+   }
 
     /**
      * Refresh month title text view when user swipe
@@ -135,8 +180,17 @@ public class ChooseDateView extends RelativeLayout {
                     DateTime temp = new DateTime(dateTime.toString());
                     listener.onDateChange(temp, currentDate);
                 }
+                //当日期改变的时候，恢复时间选择器
+                restoreTimeView();
             }
         };
+    }
+
+    private void restoreTimeView(){
+        hasTimeChosen = false;
+        hourOfDay = 0;
+        minute = 0;
+        timeView.setText(getResources().getString(R.string.choose_time));
     }
 
     public int getViewType() {
@@ -149,6 +203,14 @@ public class ChooseDateView extends RelativeLayout {
 
     public DateTime getDateTime() {
         return dateTime;
+    }
+
+    public void isTimeViewShow(boolean isShow){
+        if(isShow){
+            timeView.setVisibility(View.VISIBLE);
+        }else{
+            timeView.setVisibility(View.GONE);
+        }
     }
 
     public String getCurrentDate() {

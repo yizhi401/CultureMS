@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.R;
 import com.gov.culturems.activities.DeviceDataActivity;
+import com.gov.culturems.common.CommonConstant;
 import com.gov.culturems.common.base.MyBaseAdapter;
 import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.ListResponse;
@@ -30,6 +31,8 @@ import com.gov.culturems.entities.DeviceDataForChart;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.utils.LogUtil;
 import com.gov.culturems.utils.TimeUtil;
+import com.gov.culturems.utils.UIUtil;
+import com.gov.culturems.views.ChooseDateView;
 import com.gov.culturems.views.CustomListView;
 import com.gov.culturems.views.LoadMoreListView;
 
@@ -39,6 +42,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
 
 import hirondelle.date4j.DateTime;
 
@@ -62,6 +67,7 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
     private CustomListView dataList;
     private SensorAdapter adapter;
     private List<DeviceDataForChart> sensorData;
+    private ChooseDateView chooseDateView;
 
     private int pageIndex = 1;
 
@@ -102,7 +108,7 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
             }
         });
 
-        sensorData = new ArrayList<>();
+        sensorData = new CopyOnWriteArrayList<>();
         adapter = new SensorAdapter(sensorData, getActivity());
         dataList.setAdapter(adapter);
 
@@ -124,6 +130,10 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
         params.putWithoutFilter("BeginTime", getBeginTimeStr());
         params.putWithoutFilter("EndTime", getEndTimeStr());
 
+        if (pageIndex <= 1) {
+            //请求第一页的时候，给一个提示框，否则用户不知道请求在进行
+            UIUtil.showTipDialog(getActivity(), CommonConstant.DIALOG_TYPE_WAITING, "正在请求数据");
+        }
         HttpUtil.jsonRequestGet(getActivity(), URLRequest.DATAS_HT_GET, params, new VolleyRequestListener() {
             @Override
             public void onSuccess(String response) {
@@ -152,7 +162,7 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
                     }
                     adapter.notifyDataSetChanged();
                     dataList.onLoadMoreComplete();
-
+                    UIUtil.dismissTipDialog(getActivity());
                 }
             }
 
@@ -173,7 +183,7 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
         while (iterator.hasNext()) {
             newData = iterator.next();
             for (DeviceDataForChart oldData : sensorData) {
-                if(newData.InsertTime.equals(oldData.InsertTime)){
+                if (newData.InsertTime.equals(oldData.InsertTime)) {
                     iterator.remove();
                     break;
                 }
@@ -221,7 +231,7 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
             DeviceDataForChart temp = data.get(position);
             holder.text1.setText(temp.SensorId + "号");
             int firstSpace = temp.InsertTime.indexOf(" ");
-            holder.text4.setText(temp.InsertTime.substring(firstSpace+1,temp.InsertTime.length()));
+            holder.text4.setText(temp.InsertTime.substring(firstSpace + 1, temp.InsertTime.length()));
 
             holder.text3.setVisibility(View.GONE);
             String alertInfo = "";
@@ -262,7 +272,11 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
      */
     private String getBeginTimeStr() {
         String nowStr = currentDate.format("YYYY-MM-DD");
-        return nowStr + "%2000:00:00";
+        if (chooseDateView != null) {
+            return nowStr + "%20" + chooseDateView.getSelectedBeginTime();
+        } else {
+            return nowStr + "%2000:00:00";
+        }
     }
 
     /**
@@ -273,17 +287,26 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
      */
     private String getEndTimeStr() {
         String nowStr = currentDate.format("YYYY-MM-DD");
-        return nowStr + "%2023:59:59";
+        if (chooseDateView != null) {
+            return nowStr + "%20" + chooseDateView.getSelectedEndTime();
+        } else {
+            return nowStr + "%2023:59:59";
+        }
     }
 
     @Override
     public void onDataChanged(DateTime changedDate) {
         currentDate = changedDate;
         pageIndex = 1;
+        //如果正在加载更多，取消加载，否则会在小米手机上导致crash
+        dataList.onLoadMoreComplete();
         sensorData.clear();
         getDeviceDatas();
     }
 
+    public void setChooseDateView(ChooseDateView chooseDateView) {
+        this.chooseDateView = chooseDateView;
+    }
 
     public void setCurrentDate(DateTime currentDate) {
         this.currentDate = currentDate;

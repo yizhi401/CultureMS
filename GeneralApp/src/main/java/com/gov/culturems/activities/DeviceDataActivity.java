@@ -76,12 +76,14 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
     }
 
     private void initViews() {
+        chooseDateView = (ChooseDateView) findViewById(R.id.choose_date);
+        chooseDateView.setViewType(ChooseDateView.TYPE_DAY);
+
         chartFragment = ChartFragment.newInstance(dryingRoom);
         chartFragment.setDeviceDataActivity(this);
         tableFragment = TableFragment.newInstance(device);
+        tableFragment.setChooseDateView(chooseDateView);
 
-        chooseDateView = (ChooseDateView) findViewById(R.id.choose_date);
-        chooseDateView.setViewType(ChooseDateView.TYPE_DAY);
 
         verticalViewPager = (VerticalViewPager) findViewById(R.id.verticalviewpager);
         initVerticalViewPager();
@@ -102,7 +104,26 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
         verticalViewPager.setAdapter(new DummyAdapter(getSupportFragmentManager()));
         verticalViewPager.setPageMargin(getResources().getDimensionPixelSize(R.dimen.pagemargin));
         verticalViewPager.setPageMarginDrawable(new ColorDrawable(getResources().getColor(VersionController.getMainColor())));
+        verticalViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 0){
+                    chooseDateView.isTimeViewShow(false);
+                }else{
+                    chooseDateView.isTimeViewShow(true);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         verticalViewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
             @Override
             public void transformPage(View view, float position) {

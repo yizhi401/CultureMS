@@ -21,6 +21,7 @@
 
     <string name="humidity_unit">%RH</string>
     <string name="temperature_unit">℃</string>
+    <string name="choose_time">选择时间</string>
 
 
 </resources>

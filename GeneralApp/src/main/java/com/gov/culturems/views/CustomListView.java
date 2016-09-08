@@ -18,10 +18,19 @@ public class CustomListView extends LoadMoreListView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if (getFirstVisiblePosition() == 0 && mGestureDetector.onTouchEvent(ev))
-            return false;
-        else
-            return super.onTouchEvent(ev);
+
+        boolean flag;
+        if (getFirstVisiblePosition() == 0 && mGestureDetector.onTouchEvent(ev)) {
+            flag = false;
+        } else {
+            try{
+                flag = super.onTouchEvent(ev);
+            }catch (Exception e){
+                e.printStackTrace();
+                flag = false;
+            }
+        }
+        return flag;
     }
 
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {

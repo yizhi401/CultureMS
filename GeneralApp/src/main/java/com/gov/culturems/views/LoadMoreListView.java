@@ -144,6 +144,10 @@ public class LoadMoreListView extends ListView implements AbsListView.OnScrollLi
 
     }
 
+    public boolean isLoadingMore(){
+        return mIsLoadingMore;
+    }
+
     public void onLoadMore() {
         Log.d(TAG, "onLoadMore");
         if (mOnLoadMoreListener != null) {
