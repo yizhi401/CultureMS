@@ -56,10 +56,7 @@ import com.gov.culturems.views.SearchGridView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by peter on 2015/11/7.
@@ -541,12 +538,7 @@ public class DryingRoomActivity extends Activity {
                 searchData.add(temp);
             }
         }
-        Collections.sort(searchData, new Comparator<DryingRoom>() {
-            @Override
-            public int compare(DryingRoom dryingRoom, DryingRoom t1) {
-                return dryingRoom.getName().compareTo(t1.getName());
-            }
-        });
+        Collections.sort(searchData);
         adapter.setData(searchData);
         adapter.notifyDataSetChanged();
     }

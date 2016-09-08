@@ -299,8 +299,9 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
         currentDate = changedDate;
         pageIndex = 1;
         //如果正在加载更多，取消加载，否则会在小米手机上导致crash
-        dataList.onLoadMoreComplete();
         sensorData.clear();
+        dataList.onLoadMoreComplete();
+        adapter.notifyDataSetChanged();
         getDeviceDatas();
     }
 

@@ -43,6 +43,7 @@ public class ChooseDateView extends RelativeLayout {
     private int hourOfDay;
     private int minute;
     private boolean hasTimeChosen;
+    private boolean canChoseData = true;
 
     public interface OnDateChangeListener {
         void onDateChange(DateTime dateTime, String monthStr);
@@ -73,19 +74,9 @@ public class ChooseDateView extends RelativeLayout {
         preBtn = (Button) findViewById(R.id.calendar_left_arrow);
         nextBtn = (Button) findViewById(R.id.calendar_right_arrow);
         dateText = (Button) findViewById(R.id.calendar_date_textview);
-        dateText.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePicker();
-            }
-        });
+        dateText.setOnClickListener(getButtonOnClickLlistener());
         timeView = (Button)findViewById(R.id.calendar_time_text);
-        timeView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTimePicker();
-            }
-        });
+        timeView.setOnClickListener(getButtonOnClickLlistener());
         preBtn.setOnClickListener(getCalendarOnClickListener());
         nextBtn.setOnClickListener(getCalendarOnClickListener());
         currentDate = dateTime.format("YYYY-MM-DD");
@@ -154,6 +145,19 @@ public class ChooseDateView extends RelativeLayout {
 //        dateText.setText(monthTitle.toUpperCase(Locale.getDefault()));
 
 //    }
+
+    private View.OnClickListener getButtonOnClickLlistener(){
+        return new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(v.getId() == R.id.calendar_date_textview){
+                    showDatePicker();
+                }else if(v.getId() == R.id.calendar_time_text){
+                    showTimePicker();
+                }
+            }
+        };
+    }
     private View.OnClickListener getCalendarOnClickListener() {
         return new View.OnClickListener() {
             @Override
@@ -191,6 +195,26 @@ public class ChooseDateView extends RelativeLayout {
         hourOfDay = 0;
         minute = 0;
         timeView.setText(getResources().getString(R.string.choose_time));
+    }
+
+    public void setCanChoseData(boolean canChose){
+        this.canChoseData = canChose;
+        refreshViewByChosable();
+    }
+
+    /**
+     * 为了照顾ios，增加了一种不能修改日期的功能
+     */
+    private void refreshViewByChosable() {
+        if(this.canChoseData){
+            preBtn.setVisibility(View.VISIBLE);
+            nextBtn.setVisibility(View.VISIBLE);
+            dateText.setOnClickListener(getButtonOnClickLlistener());
+        }else{
+            preBtn.setVisibility(View.INVISIBLE);
+            nextBtn.setVisibility(View.INVISIBLE);
+            dateText.setOnClickListener(null);
+        }
     }
 
     public int getViewType() {

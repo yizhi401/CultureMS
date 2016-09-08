@@ -84,7 +84,6 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
         tableFragment = TableFragment.newInstance(device);
         tableFragment.setChooseDateView(chooseDateView);
 
-
         verticalViewPager = (VerticalViewPager) findViewById(R.id.verticalviewpager);
         initVerticalViewPager();
 
@@ -114,8 +113,10 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
             public void onPageSelected(int position) {
                 if(position == 0){
                     chooseDateView.isTimeViewShow(false);
+                    chooseDateView.setCanChoseData(true);
                 }else{
                     chooseDateView.isTimeViewShow(true);
+                    chooseDateView.setCanChoseData(false);
                 }
             }
 

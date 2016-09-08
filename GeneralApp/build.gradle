@@ -11,11 +11,14 @@ android {
 //        -- use for baishaxi
 //        applicationId "com.gov.baishaxi"
 //        --use for general tea control 2016-03-26
-        applicationId "com.sean.tea.general"
+        //这是外发版本的appid
+//        applicationId "com.sean.tea.general"
+        //这是内测版本的appid
+        applicationId "com.sean.tea.general.beta"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 73
-        versionName "4.5.2"
+        versionCode 75
+        versionName "4.6.1"
     }
     buildTypes {
         release {
