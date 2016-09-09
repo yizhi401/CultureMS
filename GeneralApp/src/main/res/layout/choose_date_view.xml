@@ -20,6 +20,7 @@
         android:id="@+id/calendar_left_arrow"
         android:layout_width="50dp"
         android:layout_height="44dp"
+        android:visibility="gone"
         android:layout_toLeftOf="@id/calendar_date_textview"
         android:background="@drawable/btn_white_selector"
         android:gravity="center"
@@ -27,24 +28,26 @@
         android:textColor="@color/main_green" />
 
     <Button
-        android:id="@+id/calendar_right_arrow"
-        android:layout_width="50dp"
-        android:layout_height="44dp"
-        android:layout_toRightOf="@id/calendar_date_textview"
-        android:background="@drawable/btn_white_selector"
-        android:gravity="center"
-        android:text="@string/right_pointer"
-        android:textColor="@color/main_green" />
-
-    <Button
         android:id="@+id/calendar_time_text"
         android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/calendar_date_textview"
         android:background="@drawable/btn_white_selector"
         android:layout_height="44dp"
-        android:visibility="gone"
-        android:layout_alignParentRight="true"
+        android:visibility="visible"
         android:text="@string/choose_time"
         android:textColor="@color/main_green"
         android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/calendar_right_arrow"
+        android:layout_width="50dp"
+        android:layout_height="44dp"
+        android:layout_toRightOf="@id/calendar_time_text"
+        android:background="@drawable/btn_white_selector"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="@string/right_pointer"
+        android:textColor="@color/main_green" />
+
 
 </RelativeLayout>

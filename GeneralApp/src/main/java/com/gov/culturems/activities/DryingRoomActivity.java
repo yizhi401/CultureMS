@@ -192,7 +192,6 @@ public class DryingRoomActivity extends Activity {
         HttpUtil.jsonRequestGet(this, URLRequest.SCENE_GOODS_LIST_GET, params, new VolleyRequestListener() {
             @Override
             public void onSuccess(String response) {
-//                UIUtil.dismissTipDialog(DryingRoomActivity.this);
                 swipeLayout.setRefreshing(false);
                 ListResponse<DryingRoomResp> listResponse = GsonUtils.fromJson(response, new TypeToken<ListResponse<DryingRoomResp>>() {
                 });
@@ -208,7 +207,6 @@ public class DryingRoomActivity extends Activity {
 
             @Override
             public void onNetError(VolleyError error) {
-//                UIUtil.dismissTipDialog(DryingRoomActivity.this);
                 swipeLayout.setRefreshing(false);
             }
         });

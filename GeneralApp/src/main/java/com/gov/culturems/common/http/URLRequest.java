@@ -106,4 +106,19 @@ public class URLRequest {
      */
     public static final String DEVICE_RULES_GET = "api/RulesGet";
 
+    /**
+     * 物品列表获取
+     */
+    public static final String GOODS_LIST_GET = "mgr/GoodsListGet";
+
+    /**
+     * 开始烘焙
+     */
+    public static final String SCENE_GOODS_START = "mgr/SceneGoodsAdd";
+
+    /**
+     * 结束烘焙
+     */
+    public static final String SCENE_GOODS_END = "mgr/SceneGoodsEnd";
+
 }

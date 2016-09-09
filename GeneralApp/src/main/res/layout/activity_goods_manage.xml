@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/outer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray_bg"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.gov.culturems.activities.GoodsManageActivity">
+
+    <LinearLayout
+        android:id="@+id/goods_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_upper">
+
+        <TextView
+            android:id="@+id/goods_title"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:background="@color/trans"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="物品"
+            android:textColor="@color/text_gray"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/goods"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/goods_title"
+            android:background="@color/trans"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="@string/choose_goods"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/remark_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom">
+
+        <TextView
+            android:id="@+id/remark_title"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:background="@color/trans"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="备注"
+            android:textColor="@color/text_gray"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/remark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/goods_title"
+            android:background="@color/trans"
+            android:gravity="center_vertical"
+            android:hint="请输入备注"
+            android:padding="10dp"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/start_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_yellow_bg"
+            android:text="开始"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/stop_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/start_btn"
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_yellow_bg"
+            android:enabled="false"
+            android:text="结束"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.io.Serializable;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,11 +89,11 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
     }
 
     public String getSGI() {
-        return SGI;
+        return SGId;
     }
 
-    public void setSGI(String SGI) {
-        this.SGI = SGI;
+    public void setSGId(String SGId) {
+        this.SGId = SGId;
     }
 
     public String getGoodsId() {
@@ -173,7 +172,7 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
     }
 
     private String getQuerableStr() {
-        return name + id + getGoodsName();
+        return name + id + getGoodsName() + getState();
     }
 
     @Override

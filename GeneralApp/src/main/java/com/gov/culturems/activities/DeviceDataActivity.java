@@ -1,6 +1,8 @@
 package com.gov.culturems.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,18 +10,20 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.gov.culturems.R;
 import com.gov.culturems.VersionController;
-import com.gov.culturems.common.UserManager;
 import com.gov.culturems.entities.BaseDevice;
 import com.gov.culturems.entities.DCDevice;
 import com.gov.culturems.entities.DryingRoom;
-import com.gov.culturems.entities.User;
 import com.gov.culturems.fragments.ChartFragment;
 import com.gov.culturems.fragments.TableFragment;
 import com.gov.culturems.views.ChooseDateView;
@@ -111,10 +115,10 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 0){
+                if (position == 0) {
                     chooseDateView.isTimeViewShow(false);
                     chooseDateView.setCanChoseData(true);
-                }else{
+                } else {
                     chooseDateView.isTimeViewShow(true);
                     chooseDateView.setCanChoseData(false);
                 }
@@ -200,9 +204,9 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
     private boolean showFanControl() {
 //        if (UserManager.getInstance().getUserType() == User.USER_TYPE_MANAGER
 //                || UserManager.getInstance().getUserType() == User.USER_TYPE_SUPER_MANAGER) {
-            if (device instanceof DCDevice) {
-                return true;
-            }
+        if (device instanceof DCDevice) {
+            return true;
+        }
 //        }
         return false;
     }
@@ -214,6 +218,10 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
             menuItem.setIcon(R.drawable.setting_icon);
             menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
+        MenuItem itemMore = menu.add(0, R.id.menu_more, 0, "更多");
+        itemMore.setIcon(R.drawable.menu_more);
+        itemMore.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -224,6 +232,46 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
             overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
             return true;
         } else if (item.getItemId() == MENU_INFO) {
+           return true;
+        } else if (item.getItemId() == R.id.menu_more) {
+            showMoreMenu();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showMoreMenu() {
+                View popupMenuView = LayoutInflater.from(this).inflate(R.layout.device_data_popup_menu, null);
+        final PopupWindow menuPopup =
+                new PopupWindow(popupMenuView, FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, true);
+        menuPopup.setTouchable(true);
+        menuPopup.setOutsideTouchable(true);
+        menuPopup.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
+        menuPopup.showAsDropDown(findViewById(R.id.menu_more));
+        menuPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+            }
+        });
+        Button ruleManageBtn = (Button) popupMenuView.findViewById(R.id.rule_manage);
+        ruleManageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpToRuleManageActivity();
+                menuPopup.dismiss();
+            }
+        });
+        Button goodsManageBtn= (Button) popupMenuView.findViewById(R.id.goods_manage);
+        goodsManageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpToGoodsManageActivity();
+                menuPopup.dismiss();
+            }
+        });
+   }
+
+    private void jumpToRuleManageActivity() {
             Intent intent = new Intent(DeviceDataActivity.this, FanControlActivity.class);
             DCDevice dcDevice = null;
             for (BaseDevice temp : dryingRoom.getDeviceDatas()) {
@@ -241,14 +289,15 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
             } else {
                 Toast.makeText(this, "未找到测控设备", Toast.LENGTH_SHORT).show();
             }
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    }
+
+    private void jumpToGoodsManageActivity(){
+        Intent i = new Intent(this,GoodsManageActivity.class);
+        startActivity(i);
     }
 
     @Override
     public void onClick(View v) {
     }
-
 
 }

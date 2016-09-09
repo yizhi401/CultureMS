@@ -8,18 +8,18 @@ import java.util.List;
 
 public class BaseScene extends BaseObj {
 
-    protected String SGI;
+    protected String SGId;
     protected String Memo;
     protected String State;
     protected List<BaseDevice> DeviceDatas;
 
 
-    public String getSGI() {
-        return SGI;
+    public String getSGId() {
+        return SGId;
     }
 
-    public void setSGI(String SGI) {
-        this.SGI = SGI;
+    public void setSGId(String SGId) {
+        this.SGId = SGId;
     }
 
     public String getMemo() {
@@ -49,7 +49,7 @@ public class BaseScene extends BaseObj {
     @Override
     public String toString() {
         return super.toString() + "BaseScene{" +
-                "SGI='" + SGI + '\'' +
+                "SGId='" + SGId + '\'' +
                 ", Memo='" + Memo + '\'' +
                 ", State='" + State + '\'' +
                 '}';

@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class DryingRoomResp implements Comparable<DryingRoomResp> {
 
-    private String SGI;
+    private String SGId;
     private String GoodsId;
     private String GoodsName;
     private String SceneId;
@@ -114,7 +114,7 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
 
     public DryingRoom convertToDryingRoom() {
         DryingRoom room = new DryingRoom();
-        room.setSGI(SGI);
+        room.setSGId(SGId);
         room.setGoodsId(GoodsId);
         room.setGoodsName(GoodsName);
         room.setId(SceneId);
