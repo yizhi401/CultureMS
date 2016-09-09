@@ -82,6 +82,7 @@ public class ChooseDateView extends RelativeLayout {
         currentDate = dateTime.format("YYYY-MM-DD");
         dateText.setText(currentDate);
 //        refreshDateTextView();
+        restoreTimeView();
     }
 
     private void showTimePicker() {
@@ -194,7 +195,13 @@ public class ChooseDateView extends RelativeLayout {
         hasTimeChosen = false;
         hourOfDay = 0;
         minute = 0;
-        timeView.setText(getResources().getString(R.string.choose_time));
+        timeView.setText(getCurrentTimeString());
+    }
+
+    private String getCurrentTimeString() {
+        DateTime currentDate = DateTime.now(TimeZone.getTimeZone("Asia/Shanghai"));
+        String dateStr = currentDate.format("hh:mm");
+        return dateStr;
     }
 
     public void setCanChoseData(boolean canChose){
@@ -207,8 +214,8 @@ public class ChooseDateView extends RelativeLayout {
      */
     private void refreshViewByChosable() {
         if(this.canChoseData){
-            preBtn.setVisibility(View.VISIBLE);
-            nextBtn.setVisibility(View.VISIBLE);
+            preBtn.setVisibility(View.INVISIBLE);
+            nextBtn.setVisibility(View.INVISIBLE);
             dateText.setOnClickListener(getButtonOnClickLlistener());
         }else{
             preBtn.setVisibility(View.INVISIBLE);

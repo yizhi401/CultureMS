@@ -213,11 +213,11 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (showFanControl()) {
-            MenuItem menuItem = menu.add(0, MENU_INFO, 0, "设备信息");
-            menuItem.setIcon(R.drawable.setting_icon);
-            menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-        }
+//        if (showFanControl()) {
+//            MenuItem menuItem = menu.add(0, MENU_INFO, 0, "设备信息");
+//            menuItem.setIcon(R.drawable.setting_icon);
+//            menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+//        }
         MenuItem itemMore = menu.add(0, R.id.menu_more, 0, "更多");
         itemMore.setIcon(R.drawable.menu_more);
         itemMore.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -241,7 +241,7 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
     }
 
     private void showMoreMenu() {
-                View popupMenuView = LayoutInflater.from(this).inflate(R.layout.device_data_popup_menu, null);
+        View popupMenuView = LayoutInflater.from(this).inflate(R.layout.device_data_popup_menu, null);
         final PopupWindow menuPopup =
                 new PopupWindow(popupMenuView, FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, true);
         menuPopup.setTouchable(true);
@@ -261,6 +261,11 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
                 menuPopup.dismiss();
             }
         });
+        if(showFanControl()){
+            ruleManageBtn.setVisibility(View.VISIBLE);
+        }else{
+            ruleManageBtn.setVisibility(View.GONE);
+        }
         Button goodsManageBtn= (Button) popupMenuView.findViewById(R.id.goods_manage);
         goodsManageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
