@@ -33,6 +33,7 @@
             android:layout_toRightOf="@id/goods_title"
             android:background="@color/trans"
             android:gravity="center_vertical"
+            android:drawableRight="@drawable/down_arrow"
             android:padding="10dp"
             android:text="@string/choose_goods"
             android:textSize="15sp" />

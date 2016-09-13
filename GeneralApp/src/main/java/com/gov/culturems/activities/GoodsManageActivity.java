@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +29,6 @@ import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.entities.Goods;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.utils.UIUtil;
-import com.gov.culturems.views.wheelview.CommonWheelView;
-import com.gov.culturems.views.wheelview.SingleSelect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ import java.util.TimeZone;
 
 import hirondelle.date4j.DateTime;
 
-public class GoodsManageActivity extends Activity implements View.OnClickListener{
+public class GoodsManageActivity extends Activity implements View.OnClickListener {
 
     private TextView goodsText;
     private EditText remarkEdit;
@@ -48,7 +47,6 @@ public class GoodsManageActivity extends Activity implements View.OnClickListene
 
     private DryingRoom dryingRoom;
     private Goods chosenGoods;
-    private SingleSelect goodsSelect;
 
     private LinearLayout outerLayout;
 
@@ -62,7 +60,7 @@ public class GoodsManageActivity extends Activity implements View.OnClickListene
         dryingRoom = DryingRoomHelper.getInstance().getDryingRoom();
         getActionBar().setTitle(dryingRoom.getName());
         initViews();
-   }
+    }
 
     private void getGoodsList() {
         RequestParams params = new RequestParams();
@@ -71,7 +69,7 @@ public class GoodsManageActivity extends Activity implements View.OnClickListene
             public void onSuccess(String response) {
                 ListResponse<Goods> result = GsonUtils.fromJson(response, new TypeToken<ListResponse<Goods>>() {
                 });
-                if(result.getRc() == 200 && result.getListData() != null){
+                if (result.getRc() == 200 && result.getListData() != null) {
                     goodsList.addAll(result.getListData());
                 }
 
@@ -85,12 +83,12 @@ public class GoodsManageActivity extends Activity implements View.OnClickListene
         });
     }
 
-    private void stopBaking(){
+    private void stopBaking() {
         RequestParams params = new RequestParams();
-        params.put("SGId",dryingRoom.getSGId());
-        params.put("Memo","");
-        params.putWithoutFilter("EndTime",getCurrentTimestamp());
-        UIUtil.showTipDialog(this, CommonConstant.DIALOG_TYPE_WAITING,"正常请求...");
+        params.put("SGId", dryingRoom.getSGId());
+        params.put("Memo", "");
+        params.putWithoutFilter("EndTime", getCurrentTimestampGet());
+        UIUtil.showTipDialog(this, CommonConstant.DIALOG_TYPE_WAITING, "正常请求...");
         HttpUtil.jsonRequestGet(this, URLRequest.SCENE_GOODS_END, params, new VolleyRequestListener() {
             @Override
             public void onSuccess(String response) {
@@ -124,20 +122,20 @@ public class GoodsManageActivity extends Activity implements View.OnClickListene
         overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
     }
 
-    private void startBaking(){
-        if(chosenGoods == null){
-            Toast.makeText(this,"请选择茶品类型",Toast.LENGTH_SHORT).show();
+    private void startBaking() {
+        if (chosenGoods == null) {
+            Toast.makeText(this, "请选择茶品类型", Toast.LENGTH_SHORT).show();
             return;
         }
-        UIUtil.showTipDialog(this, CommonConstant.DIALOG_TYPE_WAITING,"正常请求...");
+        UIUtil.showTipDialog(this, CommonConstant.DIALOG_TYPE_WAITING, "正常请求...");
         RequestParams params = new RequestParams();
-        params.put("SGId","");
-        params.put("GoodsId",chosenGoods.GoodsId);
-        params.put("SceneId",dryingRoom.getId());
-        params.put("Memo",remarkEdit.getText().toString());
-        params.putWithoutFilter("BeginTime",getCurrentTimestamp());
-        params.putWithoutFilter("EndTime","");
-        HttpUtil.jsonRequestGet(this, URLRequest.SCENE_GOODS_START, params, new VolleyRequestListener() {
+        params.put("SGId", "");
+        params.put("GoodsId", chosenGoods.GoodsId);
+        params.put("SceneId", dryingRoom.getId());
+        params.put("Memo", remarkEdit.getText().toString());
+        params.putWithoutFilter("BeginTime", getCurrentTimestampPost());
+        params.putWithoutFilter("EndTime", "");
+        HttpUtil.jsonRequest(this, URLRequest.SCENE_GOODS_START, params, new VolleyRequestListener() {
             @Override
             public void onSuccess(String response) {
                 CommonResponse commonResponse = GsonUtils.fromJson(response, CommonResponse.class);
@@ -159,37 +157,44 @@ public class GoodsManageActivity extends Activity implements View.OnClickListene
         });
     }
 
-    private String getCurrentTimestamp() {
+    private String getCurrentTimestampGet() {
         DateTime currentDate = DateTime.now(TimeZone.getTimeZone("Asia/Shanghai"));
         String dateStr = currentDate.format("YYYY-MM-DD hh:mm:ss");
         return dateStr.replace(" ", "%20");
     }
 
+    private String getCurrentTimestampPost() {
+        DateTime currentDate = DateTime.now(TimeZone.getTimeZone("Asia/Shanghai"));
+        String dateStr = currentDate.format("YYYY-MM-DD hh:mm:ss");
+        return dateStr;
+    }
+
+
     private void initViews() {
-        goodsText = (TextView)findViewById(R.id.goods);
-        remarkEdit = (EditText)findViewById(R.id.remark);
+        goodsText = (TextView) findViewById(R.id.goods);
+        remarkEdit = (EditText) findViewById(R.id.remark);
         remarkEdit.setText(dryingRoom.getMemo());
-        startBtn = (Button)findViewById(R.id.start_btn);
+        startBtn = (Button) findViewById(R.id.start_btn);
         startBtn.setOnClickListener(this);
-        endBtn = (Button)findViewById(R.id.stop_btn);
+        endBtn = (Button) findViewById(R.id.stop_btn);
         endBtn.setOnClickListener(this);
-        outerLayout = (LinearLayout)findViewById(R.id.outer_layout);
+        outerLayout = (LinearLayout) findViewById(R.id.outer_layout);
         outerLayout.setOnClickListener(this);
 
         refreshViewByBaking();
     }
 
-    private void refreshViewByBaking(){
-        if(isBaking()){
+    private void refreshViewByBaking() {
+        if (isBaking()) {
             startBtn.setEnabled(false);
             endBtn.setEnabled(true);
             remarkEdit.setEnabled(false);
-            if(!TextUtils.isEmpty(dryingRoom.getMemo())){
+            if (!TextUtils.isEmpty(dryingRoom.getMemo())) {
                 remarkEdit.setText(dryingRoom.getMemo());
             }
             goodsText.setOnClickListener(null);
             goodsText.setText(dryingRoom.getGoodsName());
-        }else{
+        } else {
             startBtn.setEnabled(true);
             endBtn.setEnabled(false);
             remarkEdit.setEnabled(true);
@@ -203,9 +208,9 @@ public class GoodsManageActivity extends Activity implements View.OnClickListene
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(goodsList.size() == 0){
+                if (goodsList.size() == 0) {
                     getGoodsList();
-                }else{
+                } else {
                     showChoseGoodsDialog();
                 }
             }
@@ -213,35 +218,36 @@ public class GoodsManageActivity extends Activity implements View.OnClickListene
     }
 
     private void showChoseGoodsDialog() {
-        goodsSelect = new SingleSelect(this,getGoodsArr());
-        goodsSelect.setCilckListener(new CommonWheelView.CommonWheelClickListener() {
+        PopupMenu popupMenu = new PopupMenu(this, goodsText);
+        for (Goods temp : goodsList) {
+            popupMenu.getMenu().add(temp.GoodsName);
+        }
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
-            public void onOkBtnClicked() {
-                for(Goods temp: goodsList){
-                    if(goodsText.getText().toString().equals(temp.GoodsName)){
+            public boolean onMenuItemClick(MenuItem item) {
+                for (Goods temp : goodsList) {
+                    if (item.getTitle().equals(temp.GoodsName)) {
                         chosenGoods = temp;
+                        goodsText.setText(item.getTitle());
                         break;
                     }
                 }
-           }
-
-            @Override
-            public void onCancelBtnClicked() {
+                return false;
             }
         });
-        goodsSelect.show(goodsText);
-    }
+        popupMenu.show();
+   }
 
     private String[] getGoodsArr() {
         String[] arr = new String[goodsList.size()];
-        for(int i = 0; i< goodsList.size(); i++){
+        for (int i = 0; i < goodsList.size(); i++) {
             arr[i] = goodsList.get(i).GoodsName;
         }
         return arr;
     }
 
 
-    private boolean isBaking(){
+    private boolean isBaking() {
         return DryingRoom.STATE_ONGOING.equals(dryingRoom.getState());
     }
 
@@ -256,7 +262,7 @@ public class GoodsManageActivity extends Activity implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.start_btn:
                 startBaking();
                 break;
