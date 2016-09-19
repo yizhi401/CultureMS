@@ -69,7 +69,7 @@ public class ChooseDateView extends RelativeLayout {
 
     private void init() {
         dateTime = DateTime.now(TimeZone.getTimeZone("Asia/Shanghai"));
-        today = DateTime.today(TimeZone.getTimeZone("Asia/Shanghai"));
+        today = DateTime.now(TimeZone.getTimeZone("Asia/Shanghai"));
         LayoutInflater.from(context).inflate(R.layout.choose_date_view, this);
         preBtn = (Button) findViewById(R.id.calendar_left_arrow);
         nextBtn = (Button) findViewById(R.id.calendar_right_arrow);
@@ -120,7 +120,14 @@ public class ChooseDateView extends RelativeLayout {
         new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                dateTime = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0, 0, 0);
+                DateTime temp = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0, 0, 0);
+                if(temp.gt(today)){
+                    Toast.makeText(context,"不能选择未来的日期，请重新选择",Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(temp.getDayOfYear().equals(dateTime.getDayOfYear()) && temp.getYear().equals(dateTime.getYear())){
+                    return;
+                }
+                dateTime = temp;
                 currentDate = dateTime.format("YYYY-MM-DD");
                 dateText.setText(currentDate);
                 if (listener != null) {
