@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +34,8 @@ import com.gov.culturems.utils.AndroidUtil;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.utils.UIUtil;
 import com.gov.culturems.views.NumberView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,6 +165,14 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         String ThresholdUp;
         String ThresholdDown;
         String SceneId;
+        void ensureFloat(){
+            if(TextUtils.isEmpty(ThresholdDown)){
+                ThresholdDown = "0";
+            }
+            if(TextUtils.isEmpty(ThresholdUp)){
+                ThresholdUp = "0";
+            }
+        }
     }
 
     class AlarmReq {
@@ -219,6 +230,14 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         String type;
         String upper;
         String lower;
+        void ensureFloat(){
+            if(TextUtils.isEmpty(upper)){
+                upper = "0";
+            }
+            if(TextUtils.isEmpty(lower)){
+                lower = "0";
+            }
+        }
     }
 
     /**
@@ -296,6 +315,7 @@ public class FanControlActivity extends Activity implements View.OnClickListener
                         if (commonResponse.getRc() == 200 && deviceRulesResponse != null) {
                             if (commonResponse.getData().rules != null)
                                 for (Rule temp : commonResponse.getData().rules) {
+                                    temp.ensureFloat();
                                     if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.type)) {
                                         temperatureThresholDown.setNumberText(Float.parseFloat(temp.lower));
                                         temperatureThresholUp.setNumberText(Float.parseFloat(temp.upper));
@@ -307,6 +327,7 @@ public class FanControlActivity extends Activity implements View.OnClickListener
                                 }
                             if (commonResponse.getData().alarms != null)
                                 for (AlarmRsp temp : commonResponse.getData().alarms) {
+                                    temp.ensureFloat();
                                     if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.SensorType)) {
                                         warningTemperatureThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
                                         warningTemperatureThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
