@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffe5e5e5"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/drying_room_bg" />
+
+        <TextView
+            android:id="@+id/room_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="烘房1"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/good_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/room_name"
+            android:layout_alignTop="@id/room_name"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/room_name"
+            android:gravity="center_vertical"
+            android:text="(货品类型：黑砖)"
+            android:textColor="@color/text_gray_deep"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:id="@+id/first_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/good_type"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/sensor1_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="温度:"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/sensor1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/sensor1_hint"
+                    android:text="37°"
+                    android:textColor="@color/main_green"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/sensor2_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="湿度:"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/sensor2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/sensor2_hint"
+                    android:text="37°"
+                    android:textColor="@color/main_green"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/start_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/first_row"
+            android:layout_marginTop="5dp"
+            android:text="开始时间：10-20"
+            android:textColor="@color/text_gray_deep"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/end_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/start_time"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/start_time"
+            android:text="结束时间：10-20"
+            android:textColor="@color/text_gray_deep"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+</RelativeLayout>

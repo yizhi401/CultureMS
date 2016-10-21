@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.gov.culturems.views.EasyScrollableView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/easyscrollview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/line_chart_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/pie_chart_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pie_chart1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:layout_weight="1" />
+
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pie_chart2"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pie_chart_text_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/pie_chart_layout"
+            android:layout_alignTop="@id/pie_chart_layout"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="温度"
+                android:textColor="@color/text_gray"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="湿度"
+                android:textColor="@color/text_gray"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/realtime_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pie_chart_layout"
+            android:gravity="center"
+            android:text="实时数据"
+            android:textColor="@color/text_gray"
+            android:textSize="12sp" />
+
+        <RelativeLayout
+            android:id="@+id/temperature_chart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/realtime_hint"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:id="@+id/temperature_text_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="( 温度℃ )"
+                android:textColor="@color/text_gray_deep" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/line_chart_1"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/temperature_text_hint"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:id="@+id/value_text1"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignTop="@id/line_chart_1"
+                android:layout_centerHorizontal="true"
+                android:background="@color/transparent"
+                android:padding="10dp"
+                android:text="value:40"
+                android:textColor="@color/black"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/humidity_chart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/temperature_chart"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:id="@+id/humidity_text_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="( 湿度%RH)"
+                android:textColor="@color/text_gray_deep" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/line_chart_2"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/humidity_text_hint"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:id="@+id/value_text2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignTop="@id/line_chart_2"
+                android:layout_centerHorizontal="true"
+                android:background="@color/transparent"
+                android:padding="10dp"
+                android:text="value:40"
+                android:textColor="@color/black"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/scroll_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/humidity_chart"
+            android:background="@color/gray_bg"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="上拉查看表格详情数据"
+            android:textColor="@color/text_gray" />
+    </RelativeLayout>
+
+</com.gov.culturems.views.EasyScrollableView>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/device_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1号温湿检测点"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/sensor1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/device_name"
+        android:layout_marginTop="10dp"
+        android:text="温度:28度"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/sensor2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/sensor1"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/sensor1"
+        android:text="湿度:28度"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/sensor3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/sensor2"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/sensor2"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="未知:28度"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/pointer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:src="@drawable/pointer" />
+
+</RelativeLayout>

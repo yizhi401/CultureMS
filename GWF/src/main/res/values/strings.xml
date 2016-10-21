@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">恭王府</string>
+    <!--<string name="app_name">白沙溪烘房</string>-->
+    <!--<string name="app_name">智能烘房</string>-->
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- 通用 -->
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="prompt">提示</string>
+    <string name="left_pointer"><![CDATA[<<]]></string>
+    <string name="right_pointer"><![CDATA[>>]]></string>
+
+    <string name="begin_time">开始时间: %1$s</string>
+    <string name="end_time">结束: %1$s</string>
+    <string name="good_type">货品: (%1$s)</string>
+
+    <string name="humidity_unit">%RH</string>
+    <string name="temperature_unit">℃</string>
+    <string name="choose_time">00:00</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="choose_goods">请选择</string>
+
+
+</resources>
