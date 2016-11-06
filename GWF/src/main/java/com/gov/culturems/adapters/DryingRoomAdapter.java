@@ -13,8 +13,8 @@ import com.gov.culturems.R;
 import com.gov.culturems.activities.DeviceDataActivity;
 import com.gov.culturems.activities.DryingRoomActivity;
 import com.gov.culturems.activities.DryingRoomHelper;
+import com.gov.culturems.activities.SceneActivity;
 import com.gov.culturems.common.base.MyBaseAdapter;
-import com.gov.culturems.entities.BaseDevice;
 import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.utils.LogUtil;
 
@@ -70,12 +70,12 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         holder.sensor1.setText(dryingRoom.getTempatureTxt());
         holder.sensor2.setVisibility(View.VISIBLE);
         holder.sensor2.setText(dryingRoom.getHumidityTxt());
-        if(!dryingRoom.hasOnlineDevice()){
+        if (!dryingRoom.hasOnlineDevice()) {
             holder.sensor1.setText("未知");
             holder.sensor1.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
             holder.sensor2.setText("未知");
             holder.sensor2.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
-        }else{
+        } else {
             holder.sensor1.setTextColor(context.getResources().getColor(R.color.main_green));
             holder.sensor2.setTextColor(context.getResources().getColor(R.color.main_green));
         }
@@ -83,10 +83,11 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent1 = new Intent(context, DeviceInfoActivity.class);
-//                intent1.putExtra("deviceId", data.get(position).getDeviceDatas().get(0).getId());
-//                context.startActivity(intent1);
-                tryStartDeviceActivity(data.get(position));
+                Intent intent1 = new Intent(context, SceneActivity.class);
+                intent1.putExtra("scene", data.get(position));
+                ((Activity) context).startActivityForResult(intent1, SceneActivity.REQUEST_CODE);
+                ((Activity) context).overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+//                tryStartDeviceActivity(data.get(position));
             }
         });
         return convertView;

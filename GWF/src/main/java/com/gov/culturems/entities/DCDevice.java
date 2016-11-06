@@ -1,6 +1,7 @@
 package com.gov.culturems.entities;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -9,11 +10,13 @@ import java.util.Map;
  * Created by peter on 4/6/16.
  */
 public class DCDevice extends BaseDevice {
+
     public static final String TEMPERATURE_HIGHER = "温度高于";
     public static final String TEMPERATURE_LOWER = "温度低于";
     public static final String HUMIDITY_HIGHER = "湿度高于";
     public static final String HUMIDITY_LOWER = "湿度低于";
     public static Map<String, String> conditionMap;
+
 
     static {
         conditionMap = new HashMap<>();
@@ -27,8 +30,89 @@ public class DCDevice extends BaseDevice {
         conditionMap.put("3", DCDevice.HUMIDITY_LOWER);
     }
 
+    public static class DeviceRule {
+        public String DeviceId;
+        public String SensorType;
+        public String SensorTypeName;
+        public String ThresholdUp;
+        public String ThresholdDown;
+
+    }
+
 
     private String ActionFeedback;
+    private List<DeviceRule> Rules;
+    private List<AlertInfo> Alerts;
+    private String SensorValue;
+    private String SensorCount;
+    private String DeviceConClose;
+    private String ThresholdClose;
+    private String DeviceConOpen;
+    private String ThresholdOpen;
+
+    public String getDeviceConClose() {
+        return DeviceConClose;
+    }
+
+    public void setDeviceConClose(String deviceConClose) {
+        DeviceConClose = deviceConClose;
+    }
+
+    public String getThresholdClose() {
+        return ThresholdClose;
+    }
+
+    public void setThresholdClose(String thresholdClose) {
+        ThresholdClose = thresholdClose;
+    }
+
+    public String getDeviceConOpen() {
+        return DeviceConOpen;
+    }
+
+    public void setDeviceConOpen(String deviceConOpen) {
+        DeviceConOpen = deviceConOpen;
+    }
+
+    public String getThresholdOpen() {
+        return ThresholdOpen;
+    }
+
+    public void setThresholdOpen(String thresholdOpen) {
+        ThresholdOpen = thresholdOpen;
+    }
+
+    public List<DeviceRule> getRules() {
+        return Rules;
+    }
+
+    public void setRules(List<DeviceRule> rules) {
+        Rules = rules;
+    }
+
+    public List<AlertInfo> getAlerts() {
+        return Alerts;
+    }
+
+    public void setAlerts(List<AlertInfo> alerts) {
+        Alerts = alerts;
+    }
+
+    public String getSensorValue() {
+        return SensorValue;
+    }
+
+    public void setSensorValue(String sensorValue) {
+        SensorValue = sensorValue;
+    }
+
+    public String getSensorCount() {
+        return SensorCount;
+    }
+
+    public void setSensorCount(String sensorCount) {
+        SensorCount = sensorCount;
+    }
 
     public String getActionFeedback() {
         return ActionFeedback;

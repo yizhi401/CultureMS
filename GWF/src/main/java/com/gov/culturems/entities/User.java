@@ -23,7 +23,7 @@ public class User implements Serializable {
     private String userID;
     private String email;
     private String mobileNo;
-    private TeaFactory teaFactory;//用户所属于的工厂
+    private BaseScene baseScene;//用户所属于的工厂
 
 
     public void saveUser(SharedPreferences userSP) {
@@ -37,8 +37,8 @@ public class User implements Serializable {
         editor.putString("userId", userID);
         editor.putString("email", email);
         editor.putString("mobile", mobileNo);
-        editor.putString("factoryId", teaFactory.getId());
-        editor.putString("factoryName", teaFactory.getName());
+        editor.putString("factoryId", baseScene.getId());
+        editor.putString("factoryName", baseScene.getName());
         editor.apply();
     }
 
@@ -51,22 +51,23 @@ public class User implements Serializable {
             user.setPassword(userSP.getString("password", ""));
             user.setMobileNo(userSP.getString("mobile", ""));
             user.setStatus(userSP.getInt("status", USER_STATUS_NORMAL));
-            TeaFactory teaFactory = new TeaFactory();
-            teaFactory.setId(userSP.getString("factoryId", ""));
-            teaFactory.setName(userSP.getString("factoryName", ""));
-            user.setTeaFactory(teaFactory);
+            BaseScene baseScene= new BaseScene();
+            baseScene.setId(userSP.getString("factoryId", ""));
+            baseScene.setName(userSP.getString("factoryName", ""));
+            user.setBaseScene(baseScene);
             return user;
         } else {
             return null;
         }
     }
 
-    public TeaFactory getTeaFactory() {
-        return teaFactory;
+
+    public BaseScene getBaseScene() {
+        return baseScene;
     }
 
-    public void setTeaFactory(TeaFactory teaFactory) {
-        this.teaFactory = teaFactory;
+    public void setBaseScene(BaseScene baseScene) {
+        this.baseScene = baseScene;
     }
 
     public void clearSP(SharedPreferences userSP) {

@@ -27,6 +27,7 @@ import com.gov.culturems.common.http.RequestParams;
 import com.gov.culturems.common.http.URLRequest;
 import com.gov.culturems.common.http.VolleyRequestListener;
 import com.gov.culturems.common.http.response.LoginResp;
+import com.gov.culturems.entities.BaseScene;
 import com.gov.culturems.entities.TeaFactory;
 import com.gov.culturems.utils.EncodeUtil;
 import com.gov.culturems.utils.GsonUtils;
@@ -50,25 +51,29 @@ public class LoginActivity extends Activity {
     private Button loginBtn;
     private RelativeLayout outerLayout;
 
-    private TeaFactory teaFactory;
+    private BaseScene baseScene;
     private TextView returnText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+        baseScene = new BaseScene();
+        baseScene.setId("279");
+        baseScene.setName("恭王府");
+
         setUpView();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        teaFactory = (TeaFactory) getIntent().getSerializableExtra("factory");
-        if (teaFactory == null) {
-            Intent intent = new Intent(LoginActivity.this, FactoryChooseActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
-        }
+//        teaFactory = (TeaFactory) getIntent().getSerializableExtra("factory");
+//        if (teaFactory == null) {
+//            Intent intent = new Intent(LoginActivity.this, FactoryChooseActivity.class);
+//            startActivity(intent);
+//            overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+//        }
     }
 
     private void setUpView() {
@@ -98,7 +103,7 @@ public class LoginActivity extends Activity {
         returnText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, FactoryChooseActivity.class);
+                Intent intent = new Intent(LoginActivity.this,FactoryChooseActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
             }
@@ -134,7 +139,7 @@ public class LoginActivity extends Activity {
         RequestParams params = new RequestParams();
         params.put("LoginName", usernameEdit.getText().toString());
         params.put("LoginPass", EncodeUtil.getCustomMD5ofStr(passwordEdit.getText().toString(), usernameEdit.getText().toString()));
-        params.put("SceneId", teaFactory.getId());
+        params.put("SceneId", baseScene.getId());
         HttpUtil.jsonRequest(this, URLRequest.LOGIN, params, new VolleyRequestListener() {
 
             @Override
@@ -143,7 +148,7 @@ public class LoginActivity extends Activity {
                 CommonResponse<LoginResp> result = GsonUtils.fromJson(response, new TypeToken<CommonResponse<LoginResp>>() {
                 });
                 if (result.getRc() == 200) {
-                    UserManager.getInstance().login(result.getData(), teaFactory);
+                    UserManager.getInstance().login(result.getData(),baseScene);
                     Intent intent = new Intent(LoginActivity.this, DryingRoomActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);

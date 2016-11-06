@@ -95,7 +95,7 @@ public class VolleyRequest extends com.android.volley.Request<String> {
     private void logout(Context context,String errorMsg) {
         UserManager.getInstance().logout();
         Toast.makeText(context,errorMsg,Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(context,FactoryChooseActivity.class);
+        Intent intent = new Intent(context, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
     }

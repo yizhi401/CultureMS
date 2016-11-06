@@ -133,16 +133,6 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/return_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@id/login_btn"
-        android:layout_below="@id/login_btn"
-        android:padding="10dp"
-        android:text="返回重选"
-        android:textColor="@color/blue" />
-
-    <TextView
         android:id="@+id/or_divider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -161,5 +151,16 @@
         android:layout_marginRight="40dp"
         android:text="注册"
         android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/return_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="返回重选"
+        android:visibility="gone"
+        android:textColor="@color/blue"
+        android:layout_below="@+id/login_btn"
+        android:layout_alignEnd="@+id/login_btn" />
 
 </RelativeLayout>

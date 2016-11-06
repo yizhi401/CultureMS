@@ -27,12 +27,14 @@ public class BaseDevice extends BaseObj {
     private BaseScene parentScene;
     private DeviceProperty properties;
 
-    private class DeviceProperty {
+    public static class DeviceProperty {
         private String DevSn;
         private String MacAddr;
         private String BaterryValue;
         private String DeviceRemark;
         private String GateId;
+
+        public DeviceProperty(){}
 
         public String getDevSn() {
             return DevSn;

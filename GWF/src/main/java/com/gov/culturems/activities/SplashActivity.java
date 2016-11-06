@@ -36,9 +36,9 @@ public class SplashActivity extends Activity {
                     overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
 
                 } else {
-                    Intent intent = new Intent(SplashActivity.this, FactoryChooseActivity.class);
+//                    Intent intent = new Intent(SplashActivity.this, FactoryChooseActivity.class);
 //                    Intent intent = new Intent(SplashActivity.this, ChooseActivity.class);
-//                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
                 }

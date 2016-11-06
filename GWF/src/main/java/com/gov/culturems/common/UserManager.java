@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.gov.culturems.common.http.response.LoginResp;
+import com.gov.culturems.entities.BaseScene;
 import com.gov.culturems.entities.TeaFactory;
 import com.gov.culturems.entities.User;
 import com.gov.culturems.utils.SharePreferUtil;
@@ -75,12 +76,12 @@ public class UserManager {
      *
      * @return
      */
-    public String getFactoryId() {
-        return user.getTeaFactory().getId();
+    public String getBaseSceneId() {
+        return user.getBaseScene().getId();
     }
 
-    public String getFactoryName() {
-        return user.getTeaFactory().getName();
+    public String getBaseSceneName() {
+        return user.getBaseScene().getName();
     }
 
     public String getMobileNo() {
@@ -91,12 +92,12 @@ public class UserManager {
         return user.getUserID();
     }
 
-    public void login(LoginResp loginInfo, TeaFactory teaFactory) {
+    public void login(LoginResp loginInfo,BaseScene baseScene) {
         if (isLogin) {
             logout();
         }
         user = loginInfo.convertToUser();
-        user.setTeaFactory(teaFactory);
+        user.setBaseScene(baseScene);
         user.saveUser(userSP);
         isLogin = true;
     }

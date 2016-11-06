@@ -28,14 +28,9 @@ import com.gov.culturems.common.http.URLRequest;
 import com.gov.culturems.common.http.VolleyRequestListener;
 import com.gov.culturems.entities.BaseSensor;
 import com.gov.culturems.entities.DCDevice;
-import com.gov.culturems.entities.DeviceInfo;
-import com.gov.culturems.entities.DeviceRule;
-import com.gov.culturems.utils.AndroidUtil;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.utils.UIUtil;
 import com.gov.culturems.views.NumberView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

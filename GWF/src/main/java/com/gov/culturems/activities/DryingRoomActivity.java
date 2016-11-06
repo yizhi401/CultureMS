@@ -59,6 +59,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * 父场景列表
  * Created by peter on 2015/11/7.
  */
 public class DryingRoomActivity extends Activity {
@@ -104,7 +105,7 @@ public class DryingRoomActivity extends Activity {
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
             getActionBar().setHomeButtonEnabled(true);
-            getActionBar().setTitle(UserManager.getInstance().getFactoryName());
+            getActionBar().setTitle(UserManager.getInstance().getBaseSceneName());
         }
 
         checkUpdate();
@@ -377,7 +378,7 @@ public class DryingRoomActivity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 UserManager.getInstance().logout();
                 dialog.dismiss();
-                startActivity(new Intent(DryingRoomActivity.this, FactoryChooseActivity.class));
+                startActivity(new Intent(DryingRoomActivity.this, LoginActivity.class));
                 finish();
             }
         });

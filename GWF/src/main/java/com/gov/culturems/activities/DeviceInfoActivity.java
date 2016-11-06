@@ -2,11 +2,8 @@ package com.gov.culturems.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 
 import com.android.volley.VolleyError;
@@ -17,22 +14,10 @@ import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.RequestParams;
 import com.gov.culturems.common.http.URLRequest;
 import com.gov.culturems.common.http.VolleyRequestListener;
-import com.gov.culturems.entities.DeviceInfo;
+import com.gov.culturems.common.http.response.DeviceResp;
+import com.gov.culturems.entities.DCDevice;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.views.DeviceItemView;
-
-import org.java_websocket.WebSocketImpl;
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft;
-import org.java_websocket.drafts.Draft_10;
-import org.java_websocket.drafts.Draft_17;
-import org.java_websocket.drafts.Draft_75;
-import org.java_websocket.drafts.Draft_76;
-import org.java_websocket.handshake.ServerHandshake;
-
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 显示了该设备的相关信息
@@ -49,7 +34,7 @@ public class DeviceInfoActivity extends Activity {
     private DeviceItemView voltageItem;
     private DeviceItemView alertItem;
 
-    private DeviceInfo deviceInfo;
+    private DCDevice deviceInfo;
     private String deviceId;
 
     @Override
@@ -93,21 +78,21 @@ public class DeviceInfoActivity extends Activity {
     }
 
     private void refreshView() {
-        nameItem.setDescription(deviceInfo.getDeviceName());
+        nameItem.setDescription(deviceInfo.getName());
 
         //TODO
 //        idItem.setDescription(deviceInfo.getDeviceId());
-        idItem.setDescription(deviceInfo.getMacAddr());
+        idItem.setDescription(deviceInfo.getProperties().getMacAddr());
 
-        snItem.setDescription(deviceInfo.getDevSn());
+        snItem.setDescription(deviceInfo.getProperties().getDevSn());
 
         //TODO
 //        macItem.setDescription(deviceInfo.getMacAddr());
-        macItem.setDescription(deviceInfo.getDeviceId());
+        macItem.setDescription(deviceInfo.getId());
 
         timeItem.setDescription(deviceInfo.getInsertTime());
 
-        voltageItem.setDescription(deviceInfo.getBaterryValue());
+        voltageItem.setDescription(deviceInfo.getProperties().getBaterryValue());
 
         alertItem.setDescription(deviceInfo.getAlertStatus());
 
@@ -122,10 +107,10 @@ public class DeviceInfoActivity extends Activity {
         HttpUtil.jsonRequestGet(this, URLRequest.DEVICE_GET, params, new VolleyRequestListener() {
             @Override
             public void onSuccess(String response) {
-                CommonResponse<DeviceInfo> result = GsonUtils.fromJson(response, new TypeToken<CommonResponse<DeviceInfo>>() {
+                CommonResponse<DeviceResp> result = GsonUtils.fromJson(response, new TypeToken<CommonResponse<DeviceResp>>() {
                 });
                 if (result.getRc() == 200) {
-                    deviceInfo = result.getData();
+                    deviceInfo = result.getData().convertToDevice();
                     refreshView();
 //                    startWebsocketTest();
                 }
