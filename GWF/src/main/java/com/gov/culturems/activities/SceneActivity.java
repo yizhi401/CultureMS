@@ -25,6 +25,7 @@ import com.gov.culturems.common.http.URLRequest;
 import com.gov.culturems.common.http.VolleyRequestListener;
 import com.gov.culturems.common.http.response.DeviceResp;
 import com.gov.culturems.entities.BaseDevice;
+import com.gov.culturems.entities.BaseSensor;
 import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.utils.UIUtil;
@@ -104,7 +105,6 @@ public class SceneActivity extends Activity {
             }
         });
         sceneData = new ArrayList<>();
-        generateMockData();
         dataAdapter = new DataListAdapter(sceneData, this);
         dataList.setAdapter(dataAdapter);
 
@@ -116,19 +116,6 @@ public class SceneActivity extends Activity {
                 startActivity(intent);
             }
         });
-    }
-
-    private void generateMockData() {
-        BaseDevice d = new BaseDevice();
-        sceneData.add(d);
-        d = new BaseDevice();
-        sceneData.add(d);
-        d = new BaseDevice();
-        sceneData.add(d);
-        d = new BaseDevice();
-        sceneData.add(d);
-        d = new BaseDevice();
-        sceneData.add(d);
     }
 
 
@@ -192,6 +179,7 @@ public class SceneActivity extends Activity {
         public View getView(int position, View convertView, ViewGroup parent) {
             DataHolder holder;
             if (convertView == null) {
+
                 convertView = LayoutInflater.from(SceneActivity.this).inflate(R.layout.scene_data_list_item, null);
                 holder = new DataHolder();
                 holder.deviceName = (TextView) convertView.findViewById(R.id.device_name);
@@ -199,8 +187,11 @@ public class SceneActivity extends Activity {
                 holder.sensor2 = (TextView) convertView.findViewById(R.id.sensor2);
                 holder.sensor3 = (TextView) convertView.findViewById(R.id.sensor3);
                 convertView.setTag(holder);
+
             } else {
+
                 holder = (DataHolder) convertView.getTag();
+
             }
 
             BaseDevice temp = data.get(position);
@@ -210,32 +201,49 @@ public class SceneActivity extends Activity {
                 convertView.setBackgroundColor(getResources().getColor(R.color.gray_bg));
                 holder.sensor2.setVisibility(View.GONE);
                 holder.sensor3.setVisibility(View.GONE);
+
                 return convertView;
+
             }
+
             convertView.setBackgroundColor(getResources().getColor(R.color.white));
-            /**
-             List<Sensor> sensors = temp.getSensorTypes();
-             holder.sensor2.setVisibility(View.GONE);
-             holder.sensor3.setVisibility(View.GONE);
-             if (sensors == null || sensors.size() == 0) {
-             //无传感器
-             holder.sensor1.setText("暂无数据");
-             } else if (sensors.size() == 1) {
-             holder.sensor1.setText(getSensorText(sensors.get(0)));
-             } else if (sensors.size() >= 2) {
-             //超过两个传感器的，都是包含了温湿度，让温度显示在第一个，湿度在第二个
-             holder.sensor2.setVisibility(View.VISIBLE);
-             //                holder.sensor1.setText(getSensorText(getSpecificSenser(sensors, Sensor.SENSOR_TEMPERATURE)));
-             //                holder.sensor2.setText(getSensorText(getSpecificSenser(sensors, Sensor.SENSOR_HUMIDITY)));
-             if (sensors.size() >= 3) {
-             holder.sensor3.setVisibility(View.VISIBLE);
-             holder.sensor3.setText(getSensorText(getSensorLeft(sensors)));
-             }
-             }
-             **/
+            List<BaseSensor> sensors = temp.getSensorTypes();
+            if(sensors == null || sensors.size() ==0){
+                //设备无传感器
+                holder.sensor1.setText("状态：离线");
+                convertView.setBackgroundColor(getResources().getColor(R.color.gray_bg));
+                holder.sensor2.setVisibility(View.GONE);
+                holder.sensor3.setVisibility(View.GONE);
+
+                return convertView;
+
+            }else if(sensors.size() == 1){
+                //发着
+
+            }else if(sensors.size() == 2){
+                //fdsa
+
+            }
+
+            holder.sensor2.setVisibility(View.GONE);
+            holder.sensor3.setVisibility(View.GONE);
+            if (sensors == null || sensors.size() == 0) {
+                //无传感器
+                holder.sensor1.setText("暂无数据");
+            } else if (sensors.size() == 1) {
+//                holder.sensor1.setText(getSensorText(sensors.get(0)));
+            } else if (sensors.size() >= 2) {
+                //超过两个传感器的，都是包含了温湿度，让温度显示在第一个，湿度在第二个
+                holder.sensor2.setVisibility(View.VISIBLE);
+                //holder.sensor1.setText(getSensorText(getSpecificSenser(sensors, Sensor.SENSOR_TEMPERATURE)));
+                //holder.sensor2.setText(getSensorText(getSpecificSenser(sensors, Sensor.SENSOR_HUMIDITY)));
+                if (sensors.size() >= 3) {
+                    holder.sensor3.setVisibility(View.VISIBLE);
+//                    holder.sensor3.setText(getSensorText(getSensorLeft(sensors)));
+                }
+            }
 
             return convertView;
-
         }
 
         /**
