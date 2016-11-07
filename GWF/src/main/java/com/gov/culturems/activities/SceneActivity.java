@@ -179,7 +179,6 @@ public class SceneActivity extends Activity {
         public View getView(int position, View convertView, ViewGroup parent) {
             DataHolder holder;
             if (convertView == null) {
-
                 convertView = LayoutInflater.from(SceneActivity.this).inflate(R.layout.scene_data_list_item, null);
                 holder = new DataHolder();
                 holder.deviceName = (TextView) convertView.findViewById(R.id.device_name);
@@ -189,40 +188,29 @@ public class SceneActivity extends Activity {
                 convertView.setTag(holder);
 
             } else {
-
                 holder = (DataHolder) convertView.getTag();
 
             }
 
             BaseDevice temp = data.get(position);
+
+            List<BaseSensor> sensors = temp.getSensorTypes();
             holder.deviceName.setText(temp.getName());
-            if ("offline".equals(temp.getDeviceStatus())) {
+            if ("offline".equals(temp.getDeviceStatus()) || sensors == null || sensors.size() == 0) {
                 holder.sensor1.setText("状态：离线");
                 convertView.setBackgroundColor(getResources().getColor(R.color.gray_bg));
                 holder.sensor2.setVisibility(View.GONE);
                 holder.sensor3.setVisibility(View.GONE);
-
                 return convertView;
-
             }
 
             convertView.setBackgroundColor(getResources().getColor(R.color.white));
-            List<BaseSensor> sensors = temp.getSensorTypes();
-            if(sensors == null || sensors.size() ==0){
-                //设备无传感器
-                holder.sensor1.setText("状态：离线");
-                convertView.setBackgroundColor(getResources().getColor(R.color.gray_bg));
-                holder.sensor2.setVisibility(View.GONE);
-                holder.sensor3.setVisibility(View.GONE);
 
-                return convertView;
-
-            }else if(sensors.size() == 1){
-                //发着
-
-            }else if(sensors.size() == 2){
-                //fdsa
-
+            if (sensors.size() == 1) {
+                //浸水检测器
+                holder.sensor1.setText(getSensorText(sensors.get(0)));
+            } else if (sensors.size() == 2) {
+                //温湿度检测器
             }
 
             holder.sensor2.setVisibility(View.GONE);
@@ -231,36 +219,35 @@ public class SceneActivity extends Activity {
                 //无传感器
                 holder.sensor1.setText("暂无数据");
             } else if (sensors.size() == 1) {
-//                holder.sensor1.setText(getSensorText(sensors.get(0)));
+                holder.sensor1.setText(getSensorText(sensors.get(0)));
             } else if (sensors.size() >= 2) {
                 //超过两个传感器的，都是包含了温湿度，让温度显示在第一个，湿度在第二个
                 holder.sensor2.setVisibility(View.VISIBLE);
-                //holder.sensor1.setText(getSensorText(getSpecificSenser(sensors, Sensor.SENSOR_TEMPERATURE)));
-                //holder.sensor2.setText(getSensorText(getSpecificSenser(sensors, Sensor.SENSOR_HUMIDITY)));
+                holder.sensor1.setText(getSensorText(getSpecificSenser(sensors, BaseSensor.SENSOR_TEMPERATURE)));
+                holder.sensor2.setText(getSensorText(getSpecificSenser(sensors, BaseSensor.SENSOR_HUMIDITY)));
                 if (sensors.size() >= 3) {
                     holder.sensor3.setVisibility(View.VISIBLE);
-//                    holder.sensor3.setText(getSensorText(getSensorLeft(sensors)));
                 }
             }
 
             return convertView;
         }
 
-        /**
-         private String getSensorText(Sensor sensor) {
-         if (sensor == null)
-         return "";
-         String sensorName = sensor.getSensorTypeName().replace("传感器", "");
-         String appendix = sensor.getSensorUnit();
-         if (sensor.getSensorType().equals(Sensor.SENSOR_TEMPERATURE)) {
-         appendix = "℃";
-         }
-         if (sensorName.contains("浸水")) {
-         sensorName = "状态";
-         }
-         return sensorName + ":" + sensor.getSensorValue() + " " + appendix;
-         }
-         **/
+        private String getSensorText(BaseSensor sensor) {
+            if (sensor == null)
+                return "";
+            String sensorName = sensor.getSensorTypeName().replace("传感器", "");
+            String appendix = sensor.getSensorUnit();
+            if (sensor.getSensorType().equals(BaseSensor.SENSOR_TEMPERATURE)) {
+                appendix = "℃";
+            } else if (sensor.getSensorType().equals(BaseSensor.SENSOR_TEMPERATURE)) {
+
+            }
+            if (sensorName.contains("浸水")) {
+                sensorName = "状态";
+            }
+            return sensorName + ":" + sensor.getSensorValue() + " " + appendix;
+        }
 
     }
 
@@ -270,18 +257,16 @@ public class SceneActivity extends Activity {
      * @param sensors
      * @return
      */
-    /**
-     private Sensor getSensorLeft(List<Sensor> sensors) {
-     if (sensors == null)
-     return null;
-     for (Sensor temp : sensors) {
-     if (!temp.getSensorType().equals(Sensor.SENSOR_TEMPERATURE) && !temp.getSensorType().equals(Sensor.SENSOR_HUMIDITY)) {
-     return temp;
-     }
-     }
-     return null;
-     }
-     **/
+    private BaseSensor getSensorLeft(List<BaseSensor> sensors) {
+        if (sensors == null)
+            return null;
+        for (BaseSensor temp : sensors) {
+            if (!temp.getSensorType().equals(BaseSensor.SENSOR_TEMPERATURE) && !temp.getSensorType().equals(BaseSensor.SENSOR_HUMIDITY)) {
+                return temp;
+            }
+        }
+        return null;
+    }
 
     /**
      * get humidity sensor or temperature sensor
@@ -290,15 +275,13 @@ public class SceneActivity extends Activity {
      * @param sensorType
      * @return
      */
-    /**
-     private Sensor getSpecificSenser(List<Sensor> sensors, String sensorType) {
-     if (sensors == null)
-     return null;
-     for (Sensor temp : sensors)
-     if (temp.getSensorType().equals(sensorType))
-     return temp;
-     return null;
-     }
-     **/
+    private BaseSensor getSpecificSenser(List<BaseSensor> sensors, String sensorType) {
+        if (sensors == null)
+            return null;
+        for (BaseSensor temp : sensors)
+            if (temp.getSensorType().equals(sensorType))
+                return temp;
+        return null;
+    }
 
 }
