@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.gov.culturems.entities.BaseDevice;
 import com.gov.culturems.entities.BaseSensor;
 import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.utils.GsonUtils;
+import com.gov.culturems.utils.LogUtil;
 import com.gov.culturems.utils.UIUtil;
 import com.gov.culturems.views.LoadMoreListView;
 
@@ -71,13 +73,33 @@ public class SceneActivity extends Activity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuItem itemEdit = menu.add(0, R.id.menu_edit, 0, "设置");
+        itemEdit.setIcon(R.drawable.edit_icon_blue);
+        itemEdit.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
+        } else if (item.getItemId() == R.id.menu_edit) {
+            jumpToRuleManageActivity();
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void jumpToRuleManageActivity() {
+        Intent intent = new Intent(SceneActivity.this, FanControlActivity.class);
+        intent.putExtra("scene",scene);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+
+    }
+
 
     private void initViews() {
 
@@ -105,19 +127,41 @@ public class SceneActivity extends Activity {
             }
         });
         sceneData = new ArrayList<>();
+        scene.setDeviceDatas(sceneData);
         dataAdapter = new DataListAdapter(sceneData, this);
         dataList.setAdapter(dataAdapter);
 
         dataList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(SceneActivity.this, DeviceDataActivity.class);
-                intent.putExtra("device_data", sceneData.get(position));
-                startActivity(intent);
+//                Intent intent = new Intent(SceneActivity.this, DeviceDataActivity.class);
+//                intent.putExtra("device_data", sceneData.get(position));
+//                startActivity(intent);
+                tryStartDeviceActivity(sceneData.get(position));
             }
         });
     }
 
+    private void tryStartDeviceActivity(BaseDevice device) {
+        if ("offline".equals(device.getDeviceStatus())) {
+            Toast.makeText(this, "设备离线!", Toast.LENGTH_SHORT).show();
+        }
+
+        DryingRoomHelper helper = DryingRoomHelper.getInstance();
+        helper.initDryingRoomInfo(scene, device, new DryingRoomHelper.DryingRoomInitListener() {
+            @Override
+            public void onInitSucceed() {
+                Intent intent = new Intent(SceneActivity.this, DeviceDataActivity.class);
+                SceneActivity.this.startActivityForResult(intent, DryingRoomActivity.REQUEST_CODE);
+                SceneActivity.this.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+            }
+
+            @Override
+            public void onInitFailed() {
+                LogUtil.e("init drying room failed");
+            }
+        });
+    }
 
     private void getDevicesData() {
         if (!dataSwipeLayout.isRefreshing()) {
@@ -238,11 +282,6 @@ public class SceneActivity extends Activity {
                 return "";
             String sensorName = sensor.getSensorTypeName().replace("传感器", "");
             String appendix = sensor.getSensorUnit();
-            if (sensor.getSensorType().equals(BaseSensor.SENSOR_TEMPERATURE)) {
-                appendix = "℃";
-            } else if (sensor.getSensorType().equals(BaseSensor.SENSOR_TEMPERATURE)) {
-
-            }
             if (sensorName.contains("浸水")) {
                 sensorName = "状态";
             }

@@ -31,6 +31,7 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
     private List<DeviceCKData> DeviceCKDatas;
     private String TemperatureValueTxt;
     private String HumidityValueTxt;
+    private String MoistureValueTxt;
     private String DeviceDispTxt;
 
 
@@ -143,6 +144,7 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
         }
         room.setTemperatureValueHTML(TemperatureValueTxt);
         room.setHumidityValueTxt(HumidityValueTxt);
+        room.setMoistureValueTxt(MoistureValueTxt);
         room.setDeviceDispTxt(DeviceDispTxt);
         return room;
     }

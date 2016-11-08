@@ -98,6 +98,24 @@ public class DryingRoomHelper {
         }
     }
 
+    public void initDryingRoomInfo(DryingRoom thisRoom, BaseDevice baseDevice, DryingRoomInitListener listener) {
+        this.dryingRoom = thisRoom;
+        Context context = MyApplication.getInstance().getApplicationContext();
+        if (dryingRoom == null) {
+            Toast.makeText(context, "房间为空!", Toast.LENGTH_SHORT).show();
+            listener.onInitFailed();
+            return;
+        } else {
+            device = baseDevice;
+            refreshPieDatas(listener);
+        }
+        if (device == null) {
+            Toast.makeText(context, "找不到检测设备!", Toast.LENGTH_SHORT).show();
+            listener.onInitFailed();
+        }
+    }
+
+
     public class SceneDataListResponse {
         public int rc;
         public String rm;

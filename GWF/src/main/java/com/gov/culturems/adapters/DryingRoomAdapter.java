@@ -35,6 +35,7 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         TextView roomName;
         TextView sensor1;
         TextView sensor2;
+        TextView sensor3;
         TextView teaType;
         TextView startTime;
         TextView endTime;
@@ -51,6 +52,7 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
             holder.roomName = (TextView) convertView.findViewById(R.id.room_name);
             holder.sensor1 = (TextView) convertView.findViewById(R.id.sensor1);
             holder.sensor2 = (TextView) convertView.findViewById(R.id.sensor2);
+            holder.sensor3 = (TextView) convertView.findViewById(R.id.sensor3);
             holder.teaType = (TextView) convertView.findViewById(R.id.good_type);
             holder.startTime = (TextView) convertView.findViewById(R.id.start_time);
             holder.endTime = (TextView) convertView.findViewById(R.id.end_time);
@@ -70,15 +72,25 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         holder.sensor1.setText(dryingRoom.getTempatureTxt());
         holder.sensor2.setVisibility(View.VISIBLE);
         holder.sensor2.setText(dryingRoom.getHumidityTxt());
-        if (!dryingRoom.hasOnlineDevice()) {
-            holder.sensor1.setText("未知");
+        holder.sensor3.setVisibility(View.VISIBLE);
+        holder.sensor3.setText(dryingRoom.getMoistureTxt());
+
+        if ("未知".equals(holder.sensor1.getText().toString())) {
             holder.sensor1.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
-            holder.sensor2.setText("未知");
-            holder.sensor2.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
         } else {
             holder.sensor1.setTextColor(context.getResources().getColor(R.color.main_green));
+        }
+        if ("未知".equals(holder.sensor2.getText().toString())) {
+            holder.sensor2.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
+        } else {
             holder.sensor2.setTextColor(context.getResources().getColor(R.color.main_green));
         }
+        if ("未知".equals(holder.sensor3.getText().toString())) {
+            holder.sensor3.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
+        } else {
+            holder.sensor3.setTextColor(context.getResources().getColor(R.color.main_green));
+        }
+
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

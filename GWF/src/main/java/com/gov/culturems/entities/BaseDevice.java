@@ -1,5 +1,6 @@
 package com.gov.culturems.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -27,7 +28,7 @@ public class BaseDevice extends BaseObj {
     private BaseScene parentScene;
     private DeviceProperty properties;
 
-    public static class DeviceProperty {
+    public static class DeviceProperty implements Serializable{
         private String DevSn;
         private String MacAddr;
         private String BaterryValue;

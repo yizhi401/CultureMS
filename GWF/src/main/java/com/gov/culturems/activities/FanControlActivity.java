@@ -26,8 +26,9 @@ import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.RequestParams;
 import com.gov.culturems.common.http.URLRequest;
 import com.gov.culturems.common.http.VolleyRequestListener;
+import com.gov.culturems.entities.BaseDevice;
 import com.gov.culturems.entities.BaseSensor;
-import com.gov.culturems.entities.DCDevice;
+import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.utils.UIUtil;
 import com.gov.culturems.views.NumberView;
@@ -43,21 +44,18 @@ public class FanControlActivity extends Activity implements View.OnClickListener
 
     private static final String TAG = FanControlActivity.class.getName();
 
-    private NumberView temperatureThresholUp;
-    private NumberView temperatureThresholDown;
-    private NumberView humidityThresholUp;
-    private NumberView humidityThresholDown;
-
     private NumberView warningTemperatureThresholUp;
     private NumberView warningTemperatureThresholDown;
     private NumberView warningHumidityThresholUp;
     private NumberView warningHumidityThresholDown;
 
+    private DryingRoom scene;
+
     private Button finishedBtn;
 
     //新版的device接口，为了获取全部的device相关数据
 //    private DeviceInfo fullDeviceInfo;
-    private DeviceRulesResponse deviceRulesResponse;
+    private List<DeviceRulesResponse> deviceRulesResponseList = new ArrayList<>();
 
     private Handler waitingDialogHandler;
     private Runnable handlerCallback = new Runnable() {
@@ -99,17 +97,12 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fan_setting_activity);
 
-        DCDevice deviceInfo = (DCDevice) getIntent().getSerializableExtra("dc_device");
+        scene = (DryingRoom) getIntent().getSerializableExtra("scene");
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
             getActionBar().setHomeButtonEnabled(true);
-            getActionBar().setTitle(deviceInfo.getName());
+            getActionBar().setTitle(scene.getName());
         }
-
-        humidityThresholDown = (NumberView) findViewById(R.id.humidity_thresholddown);
-        humidityThresholUp = (NumberView) findViewById(R.id.humidty_thresholdup);
-        temperatureThresholDown = (NumberView) findViewById(R.id.temperature_thresholddown);
-        temperatureThresholUp = (NumberView) findViewById(R.id.temperature_thresholdup);
 
         warningHumidityThresholDown = (NumberView) findViewById(R.id.warning_humidity_thresholddown);
         warningHumidityThresholUp = (NumberView) findViewById(R.id.warning_humidty_thresholdup);
@@ -130,7 +123,14 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         filter.addAction(WebsocketService.WEBSOCKET_SERVICE_RESPONSE);
         registerReceiver(websocketResponseReceiver, filter);
 
-        getDeviceRules(deviceInfo.getId());
+        if (scene.getDeviceDatas() == null || scene.getDeviceDatas().size() == 0) {
+            Toast.makeText(this, "没有找到设备！", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            for (BaseDevice device : scene.getDeviceDatas()) {
+                getDeviceRules(device.getId());
+            }
+        }
     }
 
     @Override
@@ -160,11 +160,12 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         String ThresholdUp;
         String ThresholdDown;
         String SceneId;
-        void ensureFloat(){
-            if(TextUtils.isEmpty(ThresholdDown)){
+
+        void ensureFloat() {
+            if (TextUtils.isEmpty(ThresholdDown)) {
                 ThresholdDown = "0";
             }
-            if(TextUtils.isEmpty(ThresholdUp)){
+            if (TextUtils.isEmpty(ThresholdUp)) {
                 ThresholdUp = "0";
             }
         }
@@ -225,11 +226,12 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         String type;
         String upper;
         String lower;
-        void ensureFloat(){
-            if(TextUtils.isEmpty(upper)){
+
+        void ensureFloat() {
+            if (TextUtils.isEmpty(upper)) {
                 upper = "0";
             }
-            if(TextUtils.isEmpty(lower)){
+            if (TextUtils.isEmpty(lower)) {
                 lower = "0";
             }
         }
@@ -239,60 +241,59 @@ public class FanControlActivity extends Activity implements View.OnClickListener
      * 新的向服务器更新请求的方式
      */
     private void uploadDeviceDataUsingWebsocket() {
-        WebsocketRequest newMessage = new WebsocketRequest();
-        newMessage.gi = deviceRulesResponse.gi;
-        newMessage.di = deviceRulesResponse.di;
-        newMessage.mt = deviceRulesResponse.mt;
+        for (DeviceRulesResponse tempDevice : deviceRulesResponseList) {
+
+            WebsocketRequest newMessage = new WebsocketRequest();
+            newMessage.gi = tempDevice.gi;
+            newMessage.di = tempDevice.di;
+            newMessage.mt = tempDevice.mt;
 //        newMessage.ai = AndroidUtil.getMyUUID(this);
-        newMessage.ai = UserManager.getInstance().getUserId();
-        Rule temp = new Rule();
-        temp.lower = temperatureThresholDown.getCurrentNumStr();
-        temp.upper = temperatureThresholUp.getCurrentNumStr();
-        temp.type = BaseSensor.SENSOR_TEMPERATURE;
-        Rule humi = new Rule();
-        humi.lower = humidityThresholDown.getCurrentNumStr();
-        humi.upper = humidityThresholUp.getCurrentNumStr();
-        humi.type = BaseSensor.SENSOR_HUMIDITY;
-        newMessage.rules = new ArrayList<>();
-        newMessage.rules.add(temp);
-        newMessage.rules.add(humi);
+            newMessage.ai = UserManager.getInstance().getUserId();
+            Rule temp = new Rule();
+            temp.type = BaseSensor.SENSOR_TEMPERATURE;
+            temp.lower = "0.0";
+            temp.upper = "100.0";
+            Rule humi = new Rule();
+            humi.type = BaseSensor.SENSOR_HUMIDITY;
+            humi.lower = "0.0";
+            humi.upper = "100.0";
+            newMessage.rules = new ArrayList<>();
+            newMessage.rules.add(temp);
+            newMessage.rules.add(humi);
 
-        newMessage.alarms = new ArrayList<>();
-        AlarmReq alarmReq = new AlarmReq();
-        alarmReq.SensorType = BaseSensor.SENSOR_TEMPERATURE;
-        alarmReq.ThresholdUp = warningTemperatureThresholUp.getCurrentNumStr();
-        alarmReq.ThresholdDown = warningTemperatureThresholDown.getCurrentNumStr();
-        newMessage.alarms.add(alarmReq);
-        alarmReq = new AlarmReq();
-        alarmReq.SensorType = BaseSensor.SENSOR_HUMIDITY;
-        alarmReq.ThresholdUp = warningHumidityThresholUp.getCurrentNumStr();
-        alarmReq.ThresholdDown = warningHumidityThresholDown.getCurrentNumStr();
-        newMessage.alarms.add(alarmReq);
+            newMessage.alarms = new ArrayList<>();
+            AlarmReq alarmReq = new AlarmReq();
+            alarmReq.SensorType = BaseSensor.SENSOR_TEMPERATURE;
+            alarmReq.ThresholdUp = warningTemperatureThresholUp.getCurrentNumStr();
+            alarmReq.ThresholdDown = warningTemperatureThresholDown.getCurrentNumStr();
+            newMessage.alarms.add(alarmReq);
+            alarmReq = new AlarmReq();
+            alarmReq.SensorType = BaseSensor.SENSOR_HUMIDITY;
+            alarmReq.ThresholdUp = warningHumidityThresholUp.getCurrentNumStr();
+            alarmReq.ThresholdDown = warningHumidityThresholDown.getCurrentNumStr();
+            newMessage.alarms.add(alarmReq);
 
-        String sentMessage = GsonUtils.toJson(newMessage);
-        Log.e("mInfo", "send message: " + sentMessage);
-        Intent intent = new Intent();
-        intent.setAction(WebsocketService.WEBSOCKET_SERVICE_REQUEST);
-        intent.putExtra(WebsocketService.WEBSOCKET_MESSAGE, sentMessage);
-        sendBroadcast(intent);
-        UIUtil.showTipDialog(FanControlActivity.this, CommonConstant.DIALOG_TYPE_WAITING, "正在修改规则...");
-        if (waitingDialogHandler == null) {
-            waitingDialogHandler = new Handler();
+            String sentMessage = GsonUtils.toJson(newMessage);
+            Log.e("mInfo", "send message: " + sentMessage);
+            Intent intent = new Intent();
+            intent.setAction(WebsocketService.WEBSOCKET_SERVICE_REQUEST);
+            intent.putExtra(WebsocketService.WEBSOCKET_MESSAGE, sentMessage);
+            sendBroadcast(intent);
+            UIUtil.showTipDialog(FanControlActivity.this, CommonConstant.DIALOG_TYPE_WAITING, "正在修改规则...");
+            if (waitingDialogHandler == null) {
+                waitingDialogHandler = new Handler();
+            }
+            waitingDialogHandler.postDelayed(handlerCallback, 10000);
         }
-        waitingDialogHandler.postDelayed(handlerCallback, 10000);
     }
 
     private List<UploadParam> getUploadData() {
         List<UploadParam> list = new ArrayList<>();
         UploadParam temperature = new UploadParam();
         temperature.SensorType = BaseSensor.SENSOR_TEMPERATURE;
-        temperature.ThresholdUp = temperatureThresholUp.getCurrentNumStr();
-        temperature.ThresholdDown = temperatureThresholDown.getCurrentNumStr();
 
         UploadParam humidity = new UploadParam();
         humidity.SensorType = BaseSensor.SENSOR_HUMIDITY;
-        humidity.ThresholdUp = humidityThresholUp.getCurrentNumStr();
-        humidity.ThresholdDown = humidityThresholDown.getCurrentNumStr();
         list.add(temperature);
         list.add(humidity);
         return list;
@@ -306,18 +307,15 @@ public class FanControlActivity extends Activity implements View.OnClickListener
                     public void onSuccess(String response) {
                         CommonResponse<DeviceRulesResponse> commonResponse = GsonUtils.fromJson(response, new TypeToken<CommonResponse<DeviceRulesResponse>>() {
                         });
-                        deviceRulesResponse = commonResponse.getData();
-                        if (commonResponse.getRc() == 200 && deviceRulesResponse != null) {
+                        deviceRulesResponseList.add(commonResponse.getData());
+
+                        if (commonResponse.getRc() == 200 && commonResponse.getData() != null) {
                             if (commonResponse.getData().rules != null)
                                 for (Rule temp : commonResponse.getData().rules) {
                                     temp.ensureFloat();
                                     if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.type)) {
-                                        temperatureThresholDown.setNumberText(Float.parseFloat(temp.lower));
-                                        temperatureThresholUp.setNumberText(Float.parseFloat(temp.upper));
                                     }
                                     if (BaseSensor.SENSOR_HUMIDITY.equals(temp.type)) {
-                                        humidityThresholDown.setNumberText(Float.parseFloat(temp.lower));
-                                        humidityThresholUp.setNumberText(Float.parseFloat(temp.upper));
                                     }
                                 }
                             if (commonResponse.getData().alarms != null)
@@ -413,18 +411,6 @@ public class FanControlActivity extends Activity implements View.OnClickListener
     }
 
     public boolean checkDataValidity() {
-        if (!permissible(temperatureThresholUp.getCurrentNum()) ||
-                !permissible(temperatureThresholDown.getCurrentNum()) ||
-                !permissible(humidityThresholUp.getCurrentNum()) ||
-                !permissible(humidityThresholDown.getCurrentNum())) {
-            Toast.makeText(this, "请输入0-100之间的值", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (temperatureThresholDown.getCurrentNum() > temperatureThresholUp.getCurrentNum()
-                || humidityThresholDown.getCurrentNum() > humidityThresholUp.getCurrentNum()) {
-            Toast.makeText(this, "最低值必须小于最高值！", Toast.LENGTH_SHORT).show();
-            return false;
-        }
         if (!permissible(warningTemperatureThresholUp.getCurrentNum()) ||
                 !permissible(warningTemperatureThresholDown.getCurrentNum()) ||
                 !permissible(warningHumidityThresholUp.getCurrentNum()) ||

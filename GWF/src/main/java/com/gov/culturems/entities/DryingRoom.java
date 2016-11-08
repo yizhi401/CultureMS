@@ -34,15 +34,20 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
     private List<BaseSensor> SensorDatas;
     private String TemperatureValueTxt;
     private String HumidityValueTxt;
+    private String MoistureValueTxt;
     private String DeviceDispTxt;
 
 
     public String getTempatureTxt() {
-        return TemperatureValueTxt;
+        return TemperatureValueTxt == null? "未知" : TemperatureValueTxt;
     }
 
     public String getHumidityTxt() {
-        return HumidityValueTxt;
+        return HumidityValueTxt == null? "未知" : HumidityValueTxt;
+    }
+
+    public String getMoistureTxt(){
+        return MoistureValueTxt == null? "未知" : MoistureValueTxt;
     }
 
     public String getTemperatureValueHTML() {
@@ -59,6 +64,10 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
 
     public void setHumidityValueTxt(String humidityValueTxt) {
         HumidityValueTxt = humidityValueTxt;
+    }
+
+    public void setMoistureValueTxt(String moistureValueTxt) {
+        MoistureValueTxt = moistureValueTxt;
     }
 
     public String getDeviceDispTxt() {

@@ -32,7 +32,7 @@ import com.gov.culturems.views.VerticalViewPager;
 import hirondelle.date4j.DateTime;
 
 /**
- * 单一设备的所有sensor信息
+ * 单一设备的所有sensor信息，主要是图和表格信息
  * Created by peter on 6/11/15.
  */
 public class DeviceDataActivity extends FragmentActivity implements View.OnClickListener {
@@ -218,9 +218,9 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
 //            menuItem.setIcon(R.drawable.setting_icon);
 //            menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 //        }
-        MenuItem itemMore = menu.add(0, R.id.menu_more, 0, "更多");
-        itemMore.setIcon(R.drawable.menu_more);
-        itemMore.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+//        MenuItem itemMore = menu.add(0, R.id.menu_more, 0, "更多");
+//        itemMore.setIcon(R.drawable.menu_more);
+//        itemMore.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         return super.onCreateOptionsMenu(menu);
     }

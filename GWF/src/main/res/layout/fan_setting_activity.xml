@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/gray_bg">
 
@@ -13,128 +13,6 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:gravity="center_vertical|left"
-            android:padding="5dp"
-            android:text="控制设置" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@color/white"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/gray_bg"
-                android:paddingBottom="5dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="5dp"
-                android:text="温度"
-                android:textSize="15sp" />
-
-            <LinearLayout
-                android:id="@+id/temperature_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-
-                <com.gov.culturems.views.NumberView
-                    android:id="@+id/temperature_thresholddown"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:Unit="@string/temperature_unit"
-                    android:layout_weight="3" />
-
-                <TextView
-                    android:id="@+id/temperature_to"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="至" />
-
-                <com.gov.culturems.views.NumberView
-                    android:id="@+id/temperature_thresholdup"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:Unit="@string/temperature_unit"
-                    android:layout_weight="3" />
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@color/white"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/gray_bg"
-                android:paddingBottom="5dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="5dp"
-                android:text="湿度"
-                android:textSize="15sp" />
-
-            <LinearLayout
-                android:id="@+id/humidity_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-
-                <com.gov.culturems.views.NumberView
-                    android:id="@+id/humidity_thresholddown"
-                    android:layout_width="0dp"
-                    app:Unit="@string/humidity_unit"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3" />
-
-                <TextView
-                    android:id="@+id/humidity_to"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="至" />
-
-                <com.gov.culturems.views.NumberView
-                    android:id="@+id/humidty_thresholdup"
-                    android:layout_width="0dp"
-                    app:Unit="@string/humidity_unit"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:background="@color/trans" />
 
         <TextView
             android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.gov.culturems.entities;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class DCDevice extends BaseDevice {
         conditionMap.put("3", DCDevice.HUMIDITY_LOWER);
     }
 
-    public static class DeviceRule {
+    public static class DeviceRule implements Serializable{
         public String DeviceId;
         public String SensorType;
         public String SensorTypeName;
