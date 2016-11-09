@@ -155,6 +155,7 @@ public class BaseDevice extends BaseObj {
         this.properties = properties;
     }
 
+
     @Override
     public String toString() {
         return super.toString() + "BaseDevice{" +

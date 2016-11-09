@@ -12,15 +12,6 @@
         android:textSize="15sp" />
 
     <TextView
-        android:id="@+id/sensor1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/device_name"
-        android:layout_marginTop="10dp"
-        android:text="温度:28度"
-        android:textSize="12sp" />
-
-    <TextView
         android:id="@+id/sensor2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,6 +19,7 @@
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/sensor1"
         android:text="湿度:28度"
+        android:textColor="@color/text_gray_deep"
         android:textSize="12sp" />
 
     <TextView
@@ -40,6 +32,7 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:text="未知:28度"
+        android:textColor="@color/text_gray_deep"
         android:textSize="12sp" />
 
     <ImageView
@@ -50,5 +43,37 @@
         android:layout_centerVertical="true"
         android:layout_margin="10dp"
         android:src="@drawable/pointer" />
+
+    <TextView
+        android:id="@+id/alert_info_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sensor1"
+        android:layout_marginTop="5dp"
+        android:text="报警: "
+        android:textColor="@color/text_gray_deep"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/alert_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sensor1"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/alert_info_hint"
+        android:text="无"
+        android:textColor="@color/text_gray_deep"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/sensor1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/device_name"
+        android:layout_marginTop="5dp"
+        android:text="温度:28度"
+        android:textColor="@color/text_gray_deep"
+        android:textSize="12sp" />
 
 </RelativeLayout>

@@ -9,12 +9,19 @@ public class AlertInfo implements Serializable{
 
     private String AlertId;
     private String Title;
-    private String AlertTypeName;
     private String DeviceName;
     private String InsertTime;
     private String SensorValue;
-    private String Threshold;
     private String LinkMan;
+    private String SceneId;
+    private String SceneName;
+    private String DeviceId;
+    private String SensorTypeName;
+    private String AlertSettingId;
+    private String SensorType;
+    private String AlertType;
+    private String AlertTypeName;
+    private String Threshold;
 
 
     public String getAlertId() {
@@ -79,5 +86,61 @@ public class AlertInfo implements Serializable{
 
     public void setLinkMan(String linkMan) {
         LinkMan = linkMan;
+    }
+
+    public String getSceneId() {
+        return SceneId;
+    }
+
+    public void setSceneId(String sceneId) {
+        SceneId = sceneId;
+    }
+
+    public String getSceneName() {
+        return SceneName;
+    }
+
+    public void setSceneName(String sceneName) {
+        SceneName = sceneName;
+    }
+
+    public String getDeviceId() {
+        return DeviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        DeviceId = deviceId;
+    }
+
+    public String getSensorTypeName() {
+        return SensorTypeName;
+    }
+
+    public void setSensorTypeName(String sensorTypeName) {
+        SensorTypeName = sensorTypeName;
+    }
+
+    public String getAlertSettingId() {
+        return AlertSettingId;
+    }
+
+    public void setAlertSettingId(String alertSettingId) {
+        AlertSettingId = alertSettingId;
+    }
+
+    public String getSensorType() {
+        return SensorType;
+    }
+
+    public void setSensorType(String sensorType) {
+        SensorType = sensorType;
+    }
+
+    public String getAlertType() {
+        return AlertType;
+    }
+
+    public void setAlertType(String alertType) {
+        AlertType = alertType;
     }
 }

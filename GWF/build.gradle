@@ -8,20 +8,11 @@ android {
 
 //        applicationId "com.gov.culturems"
         applicationId "com.gov.culturems.beta"
-//         -- use for general
-//        applicationId "com.sean.blue"
-//        -- use for baishaxi
-//        applicationId "com.gov.baishaxi"
-//        --use for general tea control 2016-03-26
 
-        //这是外发版本的appid
-//        applicationId "com.sean.tea.general"
-        //这是内测版本的appid
-//        applicationId "com.sean.tea.general.beta"
         minSdkVersion 17
         targetSdkVersion 21
-        versionCode 80
-        versionName "4.6.6"
+        versionCode 81
+        versionName "4.7.0"
     }
     buildTypes {
         release {

@@ -77,6 +77,7 @@ public class DeviceResp {
         device.setDeviceConOpen(DeviceConOpen);
         device.setThresholdClose(ThresholdClose);
         device.setThresholdOpen(ThresholdOpen);
+        device.setAlerts(Alerts);
 
         return device;
     }

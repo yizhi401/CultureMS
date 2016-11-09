@@ -25,8 +25,10 @@ import com.gov.culturems.common.http.RequestParams;
 import com.gov.culturems.common.http.URLRequest;
 import com.gov.culturems.common.http.VolleyRequestListener;
 import com.gov.culturems.common.http.response.DeviceResp;
+import com.gov.culturems.entities.AlertInfo;
 import com.gov.culturems.entities.BaseDevice;
 import com.gov.culturems.entities.BaseSensor;
+import com.gov.culturems.entities.DCDevice;
 import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.utils.LogUtil;
@@ -94,7 +96,7 @@ public class SceneActivity extends Activity {
 
     private void jumpToRuleManageActivity() {
         Intent intent = new Intent(SceneActivity.this, FanControlActivity.class);
-        intent.putExtra("scene",scene);
+        intent.putExtra("scene", scene);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
 
@@ -217,6 +219,7 @@ public class SceneActivity extends Activity {
             TextView sensor1;
             TextView sensor2;
             TextView sensor3;
+            TextView alertInfo;
         }
 
         @Override
@@ -229,6 +232,7 @@ public class SceneActivity extends Activity {
                 holder.sensor1 = (TextView) convertView.findViewById(R.id.sensor1);
                 holder.sensor2 = (TextView) convertView.findViewById(R.id.sensor2);
                 holder.sensor3 = (TextView) convertView.findViewById(R.id.sensor3);
+                holder.alertInfo = (TextView) convertView.findViewById(R.id.alert_info);
                 convertView.setTag(holder);
 
             } else {
@@ -236,7 +240,7 @@ public class SceneActivity extends Activity {
 
             }
 
-            BaseDevice temp = data.get(position);
+            DCDevice temp = (DCDevice) data.get(position);
 
             List<BaseSensor> sensors = temp.getSensorTypes();
             holder.deviceName.setText(temp.getName());
@@ -263,6 +267,7 @@ public class SceneActivity extends Activity {
                 //无传感器
                 holder.sensor1.setText("暂无数据");
             } else if (sensors.size() == 1) {
+                //仅有浸水传感器
                 holder.sensor1.setText(getSensorText(sensors.get(0)));
             } else if (sensors.size() >= 2) {
                 //超过两个传感器的，都是包含了温湿度，让温度显示在第一个，湿度在第二个
@@ -273,8 +278,27 @@ public class SceneActivity extends Activity {
                     holder.sensor3.setVisibility(View.VISIBLE);
                 }
             }
+            if (temp.getAlerts() == null || temp.getAlerts().size() == 0) {
+                holder.alertInfo.setTextColor(getResources().getColor(R.color.text_gray_deep));
+                holder.alertInfo.setText("无");
+            } else {
+                holder.alertInfo.setTextColor(getResources().getColor(R.color.main_red));
+                holder.alertInfo.setText(getAlertInfoText(temp));
+            }
 
             return convertView;
+        }
+
+        private String getAlertInfoText(DCDevice temp) {
+            if (temp.getAlerts() == null || temp.getAlerts().size() == 0) {
+                return "无";
+            } else {
+                StringBuilder sb = new StringBuilder();
+                for (AlertInfo tt : temp.getAlerts()) {
+                    sb.append(tt.getAlertTypeName());
+                }
+                return sb.toString();
+            }
         }
 
         private String getSensorText(BaseSensor sensor) {
