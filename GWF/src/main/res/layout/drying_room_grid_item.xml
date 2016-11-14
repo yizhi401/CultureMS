@@ -61,7 +61,7 @@
                     android:id="@+id/sensor1_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="温度:"
+                    android:text="平均温度:"
                     android:textSize="15sp" />
 
                 <TextView
@@ -84,7 +84,7 @@
                     android:id="@+id/sensor2_hint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="湿度:"
+                    android:text="平均湿度:"
                     android:textSize="15sp" />
 
                 <TextView

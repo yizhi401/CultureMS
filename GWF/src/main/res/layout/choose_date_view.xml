@@ -19,7 +19,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="2015年5月1日"
-            android:textColor="@color/main_green"
+            android:textColor="@color/main_red"
             android:textSize="15sp" />
 
         <Button
@@ -31,7 +31,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/choose_time"
-            android:textColor="@color/main_green"
+            android:textColor="@color/main_red"
             android:textSize="15sp"
             android:visibility="gone" />
 
@@ -45,7 +45,7 @@
         android:background="@drawable/btn_white_selector"
         android:gravity="center"
         android:text="@string/left_pointer"
-        android:textColor="@color/main_green"
+        android:textColor="@color/main_red"
         android:visibility="gone" />
 
 
@@ -57,7 +57,7 @@
         android:background="@drawable/btn_white_selector"
         android:gravity="center"
         android:text="@string/right_pointer"
-        android:textColor="@color/main_green"
+        android:textColor="@color/main_red"
         android:visibility="gone" />
 
 

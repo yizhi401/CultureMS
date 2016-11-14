@@ -83,8 +83,15 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
         chooseDateView = (ChooseDateView) findViewById(R.id.choose_date);
         chooseDateView.setViewType(ChooseDateView.TYPE_DAY);
 
-        chartFragment = ChartFragment.newInstance(dryingRoom);
-        chartFragment.setDeviceDataActivity(this);
+        if (device.getSensorTypes().size() == 1) {
+            //只有浸水传感器
+            chartFragment = null;
+
+        } else {
+            chartFragment = ChartFragment.newInstance(dryingRoom);
+            chartFragment.setDeviceDataActivity(this);
+            chartFragment.setCurrentDate(chooseDateView.getDateTime());
+        }
         tableFragment = TableFragment.newInstance(device);
         tableFragment.setChooseDateView(chooseDateView);
 
@@ -94,12 +101,12 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
         chooseDateView.setDateChangeListener(new ChooseDateView.OnDateChangeListener() {
             @Override
             public void onDateChange(DateTime dateTime, String monthStr) {
-                chartFragment.onDataChanged(dateTime);
+                if (chartFragment != null)
+                    chartFragment.onDataChanged(dateTime);
                 tableFragment.onDataChanged(dateTime);
             }
-        });
+       });
 
-        chartFragment.setCurrentDate(chooseDateView.getDateTime());
         tableFragment.setCurrentDate(chooseDateView.getDateTime());
     }
 
@@ -232,7 +239,7 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
             overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
             return true;
         } else if (item.getItemId() == MENU_INFO) {
-           return true;
+            return true;
         } else if (item.getItemId() == R.id.menu_more) {
             showMoreMenu();
             return true;
@@ -261,12 +268,12 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
                 menuPopup.dismiss();
             }
         });
-        if(showFanControl()){
+        if (showFanControl()) {
             ruleManageBtn.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             ruleManageBtn.setVisibility(View.GONE);
         }
-        Button goodsManageBtn= (Button) popupMenuView.findViewById(R.id.goods_manage);
+        Button goodsManageBtn = (Button) popupMenuView.findViewById(R.id.goods_manage);
         goodsManageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -274,30 +281,30 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
                 menuPopup.dismiss();
             }
         });
-   }
-
-    private void jumpToRuleManageActivity() {
-            Intent intent = new Intent(DeviceDataActivity.this, FanControlActivity.class);
-            DCDevice dcDevice = null;
-            for (BaseDevice temp : dryingRoom.getDeviceDatas()) {
-                if (temp.getUseType().equals(BaseDevice.USE_TYPE_CK) &&
-                        temp instanceof DCDevice &&
-                        temp.getSensorTypes() != null) {
-                    dcDevice = (DCDevice) temp;
-                    break;
-                }
-            }
-            if (dcDevice != null) {
-                intent.putExtra("dc_device", dcDevice);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
-            } else {
-                Toast.makeText(this, "未找到测控设备", Toast.LENGTH_SHORT).show();
-            }
     }
 
-    private void jumpToGoodsManageActivity(){
-        Intent i = new Intent(this,GoodsManageActivity.class);
+    private void jumpToRuleManageActivity() {
+        Intent intent = new Intent(DeviceDataActivity.this, FanControlActivity.class);
+        DCDevice dcDevice = null;
+        for (BaseDevice temp : dryingRoom.getDeviceDatas()) {
+            if (temp.getUseType().equals(BaseDevice.USE_TYPE_CK) &&
+                    temp instanceof DCDevice &&
+                    temp.getSensorTypes() != null) {
+                dcDevice = (DCDevice) temp;
+                break;
+            }
+        }
+        if (dcDevice != null) {
+            intent.putExtra("dc_device", dcDevice);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+        } else {
+            Toast.makeText(this, "未找到测控设备", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void jumpToGoodsManageActivity() {
+        Intent i = new Intent(this, GoodsManageActivity.class);
         startActivity(i);
     }
 

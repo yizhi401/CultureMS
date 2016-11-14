@@ -77,7 +77,7 @@ public class SceneActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuItem itemEdit = menu.add(0, R.id.menu_edit, 0, "设置");
-        itemEdit.setIcon(R.drawable.edit_icon_blue);
+        itemEdit.setIcon(R.drawable.setting_icon);
         itemEdit.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
         return super.onCreateOptionsMenu(menu);
@@ -147,6 +147,7 @@ public class SceneActivity extends Activity {
     private void tryStartDeviceActivity(BaseDevice device) {
         if ("offline".equals(device.getDeviceStatus())) {
             Toast.makeText(this, "设备离线!", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         DryingRoomHelper helper = DryingRoomHelper.getInstance();

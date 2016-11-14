@@ -282,9 +282,9 @@ public class DryingRoomActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem itemSearch = menu.add(0, R.id.menu_search, 0, "查询");
-        itemSearch.setIcon(R.drawable.search_icon);
-        itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+//        MenuItem itemSearch = menu.add(0, R.id.menu_search, 0, "查询");
+//        itemSearch.setIcon(R.drawable.search_icon);
+//        itemSearch.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         MenuItem itemMore = menu.add(0, R.id.menu_more, 0, "更多");
         itemMore.setIcon(R.drawable.menu_more);
         itemMore.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -312,7 +312,7 @@ public class DryingRoomActivity extends Activity {
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         hideSoftInputKeyboard();
         if (item.getItemId() == R.id.menu_search) {
-            showSearchPopview();
+//            showSearchPopview();
         } else if (item.getItemId() == R.id.menu_more) {
             showMoreMenu();
         } else if (item.getItemId() == android.R.id.home) {

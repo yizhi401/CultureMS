@@ -6,13 +6,13 @@ android {
 
     defaultConfig {
 
-//        applicationId "com.gov.culturems"
-        applicationId "com.gov.culturems.beta"
+//        applicationId "com.gov.gwf"
+        applicationId "com.gov.gwf.beta"
 
         minSdkVersion 17
         targetSdkVersion 21
-        versionCode 81
-        versionName "4.7.0"
+        versionCode 82
+        versionName "4.7.1"
     }
     buildTypes {
         release {
