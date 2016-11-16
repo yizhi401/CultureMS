@@ -17,7 +17,7 @@
         android:layout_height="120dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:src="@drawable/ic_launcher_green"/>
+        android:src="@mipmap/ic_launcher_red"/>
 
     <LinearLayout
         android:id="@+id/title_layout"
@@ -32,7 +32,7 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="智能烘房"
+            android:text="恭王府"
             android:textSize="20sp"/>
 
         <TextView

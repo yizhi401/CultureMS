@@ -90,6 +90,10 @@ public class URLRequest {
     public static final String DEVICE_CK = "mgr/devicectrlrule";
 
     /**
+     *  报警规则上报
+     */
+    public static final String ALERT_SETTING_ADD_BATCH =  "Mgr/AlertSettingAddBatch";
+    /**
      * 场景简单数据获取，主要是温度湿度
      */
     public static final String SCENE_DATAS_GET = "mgr/scenedatasget";

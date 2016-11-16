@@ -127,9 +127,7 @@ public class FanControlActivity extends Activity implements View.OnClickListener
             Toast.makeText(this, "没有找到设备！", Toast.LENGTH_SHORT).show();
             finish();
         } else {
-            for (BaseDevice device : scene.getDeviceDatas()) {
-                getDeviceRules(device.getId());
-            }
+            getDeviceRules(scene.getDeviceDatas().get(0).getId());
         }
     }
 
@@ -291,9 +289,15 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         List<UploadParam> list = new ArrayList<>();
         UploadParam temperature = new UploadParam();
         temperature.SensorType = BaseSensor.SENSOR_TEMPERATURE;
+        temperature.SensorTypeName = "温度";
+        temperature.ThresholdUp = warningTemperatureThresholUp.getCurrentNumStr();
+        temperature.ThresholdDown = warningTemperatureThresholDown.getCurrentNumStr();
 
         UploadParam humidity = new UploadParam();
         humidity.SensorType = BaseSensor.SENSOR_HUMIDITY;
+        humidity.SensorTypeName = "湿度";
+        humidity.ThresholdUp = warningHumidityThresholUp.getCurrentNumStr();
+        humidity.ThresholdDown = warningHumidityThresholDown.getCurrentNumStr();
         list.add(temperature);
         list.add(humidity);
         return list;
@@ -383,16 +387,20 @@ public class FanControlActivity extends Activity implements View.OnClickListener
 
     private class UploadParam {
         String SensorType;
+        String SensorTypeName;
         String ThresholdUp;
         String ThresholdDown;
     }
 
 
-    private void uploadDeviceControl(String deviceId) {
+    private void uploadDeviceControl() {
         RequestParams params = new RequestParams();
-        params.put("DeviceId", deviceId);
-        params.put("Rules", getUploadData());
-        HttpUtil.jsonRequest(this, URLRequest.DEVICE_CK, params, new VolleyRequestListener() {
+        params.put("SceneId", scene.getId());
+        params.put("AlertSettings", "");
+        params.put("Alarms", getUploadData());
+        params.put("LinkMans", "");
+        params.put("AlertControl", "0");
+        HttpUtil.jsonRequest(this, URLRequest.ALERT_SETTING_ADD_BATCH, params, new VolleyRequestListener() {
             @Override
             public void onSuccess(String response) {
                 CommonResponse commonResponse = GsonUtils.fromJson(response, CommonResponse.class);
@@ -435,8 +443,8 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.finish_button:
                 if (checkDataValidity()) {
-//                    uploadDeviceControl();
-                    uploadDeviceDataUsingWebsocket();
+                    uploadDeviceControl();
+//                    uploadDeviceDataUsingWebsocket();
                 }
                 break;
             default:

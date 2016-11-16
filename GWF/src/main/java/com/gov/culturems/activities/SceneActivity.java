@@ -106,6 +106,7 @@ public class SceneActivity extends Activity {
     private void initViews() {
 
         dataSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.data_swipe_refresh);
+        dataSwipeLayout.setEnabled(false);
         dataSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
