@@ -216,7 +216,10 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
                 //先取出Data0
                 if (DryingRoomHelper.SceneData.STATUS_ONLINE.equals(listResponse.Data.get(i).Status)) {
                     data0 = listResponse.Data.get(i);
-                    break;
+                    if (!data0.SensorType.contains(BaseSensor.SENSOR_MOISTURE)) {
+                        //浸水节点不要
+                        break;
+                    }
                 }
                 i++;
             }
@@ -237,7 +240,10 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
                 if (DryingRoomHelper.SceneData.STATUS_ONLINE.equals(listResponse.Data.get(i).Status)) {
                     if (!listResponse.Data.get(i).SensorType.equals(data0.SensorType)) {
                         data1 = listResponse.Data.get(i);
-                        break;
+                        if (!data1.SensorType.contains(BaseSensor.SENSOR_MOISTURE)) {
+                            //浸水节点不要
+                            break;
+                        }
                     }
                 }
                 i++;

@@ -44,6 +44,11 @@ public class URLRequest {
      * 温湿度数据列表获取
      */
     public static final String DATAS_HT_GET = "mgr/DatasHtGet";
+    /**
+     * 获取湿度列表
+     */
+    public static final String DATAS_GET_IN_SENSOR_TYPE = "mgr/DatasGetInSensorType";
+
 
     /**
      * 报警信心获取

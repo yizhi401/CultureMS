@@ -10,6 +10,7 @@ public class BaseSensor extends BaseObj {
 
     public static final String SENSOR_TEMPERATURE = "Temperature";
     public static final String SENSOR_HUMIDITY = "Humidity";
+    public static final String SENSOR_MOISTURE = "Moisture";
     public static final String SENSOR_CONTROL = "Control";
 
     private String SensorType;
