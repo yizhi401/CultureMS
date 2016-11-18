@@ -14,8 +14,10 @@ public class DeviceDataForChart {
     public String InsertTime;
     public String SensorValueH;
     public String SensorValueT;
+    public String SensorValueM;
     public String AlertStatusT;
     public String AlertStatusH;
+    public String AlertStatusM;
     public String SensorId;
     public String DeviceId;
 }

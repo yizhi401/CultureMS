@@ -50,7 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/sensor1"
         android:layout_marginTop="5dp"
-        android:text="报警: "
+        android:text="报警："
         android:textColor="@color/text_gray_deep"
         android:textSize="12sp" />
 

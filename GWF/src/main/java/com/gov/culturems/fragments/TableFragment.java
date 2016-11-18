@@ -70,6 +70,7 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
     private ChooseDateView chooseDateView;
 
     private int pageIndex = 1;
+    public boolean isMoisture = false;
 
     public static TableFragment newInstance(BaseDevice deviceInfo) {
         TableFragment tableFragment = new TableFragment();
@@ -93,6 +94,10 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
         textView3 = (TextView) rootView.findViewById(R.id.text3);
         textView5 = (TextView) rootView.findViewById(R.id.text5);
         textView4 = (TextView) rootView.findViewById(R.id.text4);
+        if (isMoisture) {
+            textView3.setVisibility(View.GONE);
+            textView2.setText("状态");
+        }
 
         dataList = (CustomListView) rootView.findViewById(R.id.data_list);
         dataList.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
@@ -233,14 +238,24 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
             int firstSpace = temp.InsertTime.indexOf(" ");
             holder.text4.setText(temp.InsertTime.substring(firstSpace + 1, temp.InsertTime.length()));
 
-            holder.text3.setVisibility(View.GONE);
-            String alertInfo = "";
-            holder.text3.setVisibility(View.VISIBLE);
-            holder.text3.setText("");
-            //set column1
-            holder.text2.setText(temp.SensorValueT + getResources().getString(R.string.temperature_unit));
-            holder.text2.setTextColor(getActivity().getResources().getColor(R.color.black));
-            holder.text3.setText(temp.SensorValueH + getResources().getString(R.string.humidity_unit));
+            if (isMoisture) {
+                holder.text3.setVisibility(View.GONE);
+                if (temp.AlertStatusM.equals("0")) {
+                    holder.text2.setText("未漏水");
+                    holder.text2.setTextColor(getActivity().getResources().getColor(R.color.black));
+                } else {
+                    holder.text2.setText("漏水");
+                    holder.text2.setTextColor(getActivity().getResources().getColor(R.color.red));
+                }
+            } else {
+                holder.text3.setVisibility(View.VISIBLE);
+                holder.text3.setText("");
+                //set column1
+                holder.text2.setText(temp.SensorValueT + getResources().getString(R.string.temperature_unit));
+                holder.text2.setTextColor(getActivity().getResources().getColor(R.color.black));
+                holder.text3.setText(temp.SensorValueH + getResources().getString(R.string.humidity_unit));
+            }
+
 //            holder.text5.setTextColor(getActivity().getResources().getColor(R.color.black));
 //            if (DeviceDataForChart.ALERT_STATUS_NORMAL.equals(temp.AlertStatusH)) {
 //                if (DeviceDataForChart.ALERT_STATUS_NORMAL.equals(temp.AlertStatusT)) {

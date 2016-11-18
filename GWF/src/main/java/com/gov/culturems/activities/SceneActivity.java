@@ -310,8 +310,13 @@ public class SceneActivity extends Activity {
             String appendix = sensor.getSensorUnit();
             if (sensorName.contains("浸水")) {
                 sensorName = "状态";
+                if(sensor.getSensorValue().contains("0")){
+                    return sensorName + "：" + "未漏水";
+                }else{
+                    return sensorName + "：" + "漏水";
+                }
             }
-            return sensorName + ":" + sensor.getSensorValue() + " " + appendix;
+            return sensorName + "：" + sensor.getSensorValue() + " " + appendix;
         }
 
     }

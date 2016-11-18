@@ -26,7 +26,6 @@ import com.gov.culturems.entities.DCDevice;
 import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.fragments.ChartFragment;
 import com.gov.culturems.fragments.TableFragment;
-import com.gov.culturems.fragments.TableMoistureFragment;
 import com.gov.culturems.views.ChooseDateView;
 import com.gov.culturems.views.VerticalViewPager;
 
@@ -49,7 +48,6 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
 
     private ChartFragment chartFragment;
     private TableFragment tableFragment;
-    private TableMoistureFragment moistureFragment;
 
     private VerticalViewPager verticalViewPager;
 
@@ -88,16 +86,16 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
         if (device.getSensorTypes().size() == 1) {
             //只有浸水传感器
             chartFragment = null;
-            moistureFragment = TableMoistureFragment.newInstance(device);
-            moistureFragment.setChooseDateView(chooseDateView);
-
+            tableFragment = TableFragment.newInstance(device);
+            tableFragment.setChooseDateView(chooseDateView);
+            tableFragment.isMoisture = true;
         } else {
             chartFragment = ChartFragment.newInstance(dryingRoom);
             chartFragment.setDeviceDataActivity(this);
             chartFragment.setCurrentDate(chooseDateView.getDateTime());
             tableFragment = TableFragment.newInstance(device);
             tableFragment.setChooseDateView(chooseDateView);
-
+            tableFragment.isMoisture = false;
         }
         verticalViewPager = (VerticalViewPager) findViewById(R.id.verticalviewpager);
         initVerticalViewPager();
@@ -109,15 +107,15 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
                     chartFragment.onDataChanged(dateTime);
                 if (tableFragment != null)
                     tableFragment.onDataChanged(dateTime);
-                if (moistureFragment != null)
-                    moistureFragment.onDataChanged(dateTime);
+//                if (moistureFragment != null)
+//                    moistureFragment.onDataChanged(dateTime);
             }
         });
 
         if (tableFragment != null)
             tableFragment.setCurrentDate(chooseDateView.getDateTime());
-        if (moistureFragment != null)
-            moistureFragment.setCurrentDate(chooseDateView.getDateTime());
+//        if (moistureFragment != null)
+//            moistureFragment.setCurrentDate(chooseDateView.getDateTime());
 
     }
 
@@ -194,7 +192,8 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
         @Override
         public Fragment getItem(int position) {
             if (chartFragment == null) {
-                return moistureFragment;
+//                return moistureFragment;
+                return tableFragment;
             }
             switch (position) {
                 case 0:
