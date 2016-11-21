@@ -107,6 +107,17 @@
             android:textSize="15sp" />
 
         <TextView
+            android:id="@+id/days_passed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/start_time"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@id/start_time"
+            android:text="第16天"
+            android:textColor="@color/text_gray_deep"
+            android:textSize="15sp" />
+
+        <TextView
             android:id="@+id/end_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,6 +125,7 @@
             android:layout_marginLeft="20dp"
             android:layout_toRightOf="@id/start_time"
             android:text="结束时间：10-20"
+            android:visibility="gone"
             android:textColor="@color/text_gray_deep"
             android:textSize="15sp" />
 

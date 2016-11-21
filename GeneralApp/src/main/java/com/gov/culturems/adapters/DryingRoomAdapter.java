@@ -17,6 +17,7 @@ import com.gov.culturems.common.base.MyBaseAdapter;
 import com.gov.culturems.entities.BaseDevice;
 import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.utils.LogUtil;
+import com.gov.culturems.utils.TimeUtil;
 
 import java.util.List;
 
@@ -38,6 +39,7 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         TextView teaType;
         TextView startTime;
         TextView endTime;
+        TextView daysPassed;
 
     }
 
@@ -54,6 +56,7 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
             holder.teaType = (TextView) convertView.findViewById(R.id.good_type);
             holder.startTime = (TextView) convertView.findViewById(R.id.start_time);
             holder.endTime = (TextView) convertView.findViewById(R.id.end_time);
+            holder.daysPassed = (TextView) convertView.findViewById(R.id.days_passed);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -65,6 +68,7 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         holder.startTime.setText(String.format(context.getResources().getString(R.string.begin_time), dryingRoom.getBeginTimeNonNull()));
         holder.endTime.setText(String.format(context.getResources().getString(R.string.end_time), dryingRoom.getEndTimeWithoutNullString()));
         holder.endTime.setVisibility(View.GONE);
+        holder.daysPassed.setText(TimeUtil.getTimeLast(dryingRoom.getBeginTime()));
 
         holder.sensor1.setVisibility(View.VISIBLE);
         holder.sensor1.setText(dryingRoom.getTempatureTxt());
@@ -91,6 +95,7 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         });
         return convertView;
     }
+
 
 //    private boolean hasOnlineDevice(DryingRoom chosenRoom){
 //        boolean hasOnlineDevice = false;
