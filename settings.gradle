@@ -1,6 +1,6 @@
 //include ':actionbartest'
 //include ':app','baishaxi'
 //include 'baishaxi'
-include 'GeneralApp'
-//include 'GWF'
+//include 'GeneralApp'
+include 'GWF'
 //include 'app'
