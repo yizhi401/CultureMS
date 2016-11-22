@@ -39,6 +39,7 @@ import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.RequestParams;
 import com.gov.culturems.common.http.URLRequest;
 import com.gov.culturems.common.http.VolleyRequestListener;
+import com.gov.culturems.entities.BaseDevice;
 import com.gov.culturems.entities.BaseSensor;
 import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.entities.ShouldDraw;
@@ -83,6 +84,8 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
     private DateTime currentDate;
 
     private EasyScrollableView scrollableView;
+
+    private BaseDevice deviceInfo;
 
     private List<DryingRoomHelper.TableValues> tableValueList;
 
@@ -131,10 +134,11 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
     }
 
 
-    public static ChartFragment newInstance(DryingRoom dryingRoom) {
+    public static ChartFragment newInstance(DryingRoom dryingRoom,BaseDevice device) {
         ChartFragment chartFragment = new ChartFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("dryingRoom", dryingRoom);
+        bundle.putSerializable("deviceInfo",device);
         chartFragment.setArguments(bundle);
         return chartFragment;
     }
@@ -152,6 +156,8 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         dryingRoom = (DryingRoom) getArguments().getSerializable("dryingRoom");
+        deviceInfo = (BaseDevice) getArguments().getSerializable("deviceInfo");
+
         View rootView = inflater.inflate(R.layout.chart_fragment, container, false);
 
         scrollableView = (EasyScrollableView) rootView.findViewById(R.id.easyscrollview);
@@ -192,6 +198,7 @@ public class ChartFragment extends Fragment implements DeviceDataActivity.Device
     public void refreshPieDatas() {
         RequestParams requestParams = new RequestParams();
         requestParams.put("SceneId", dryingRoom.getId());
+        requestParams.put("DeviceId",deviceInfo.getId());
         requestParams.putWithoutFilter("t", getCurrentTimestamp());
         HttpUtil.jsonRequestGet(getActivity(), URLRequest.SCENE_DATAS_GET, requestParams, new VolleyRequestListener() {
             @Override

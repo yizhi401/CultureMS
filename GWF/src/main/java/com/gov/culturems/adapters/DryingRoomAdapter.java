@@ -87,6 +87,8 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         }
         if ("未知".equals(holder.sensor3.getText().toString())) {
             holder.sensor3.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
+        } else if ("漏水".equals(holder.sensor3.getText().toString())) {
+            holder.sensor3.setTextColor(context.getResources().getColor(R.color.red));
         } else {
             holder.sensor3.setTextColor(context.getResources().getColor(R.color.main_green));
         }

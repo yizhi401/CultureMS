@@ -90,7 +90,7 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
             tableFragment.setChooseDateView(chooseDateView);
             tableFragment.isMoisture = true;
         } else {
-            chartFragment = ChartFragment.newInstance(dryingRoom);
+            chartFragment = ChartFragment.newInstance(dryingRoom,device);
             chartFragment.setDeviceDataActivity(this);
             chartFragment.setCurrentDate(chooseDateView.getDateTime());
             tableFragment = TableFragment.newInstance(device);

@@ -39,15 +39,15 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
 
 
     public String getTempatureTxt() {
-        return TemperatureValueTxt == null? "未知" : TemperatureValueTxt;
+        return TemperatureValueTxt == null ? "未知" : TemperatureValueTxt;
     }
 
     public String getHumidityTxt() {
-        return HumidityValueTxt == null? "未知" : HumidityValueTxt;
+        return HumidityValueTxt == null ? "未知" : HumidityValueTxt;
     }
 
-    public String getMoistureTxt(){
-        return MoistureValueTxt == null? "未知" : MoistureValueTxt;
+    public String getMoistureTxt() {
+        return MoistureValueTxt == null ? "未知" : MoistureValueTxt;
     }
 
     public String getTemperatureValueHTML() {
@@ -202,6 +202,14 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
         boolean hasOnlineDevice = false;
         for (BaseDevice temp : getDeviceDatas()) {
             if (!BaseDevice.DEVICE_STATUS_OFFLINE.equals(temp.getDeviceStatus())) {
+                hasOnlineDevice = true;
+            }
+        }
+        if (!hasOnlineDevice) {
+            if (!"未知".equals(TemperatureValueTxt) ||
+                    !"未知".equals(HumidityValueTxt) ||
+                    !"未知".equals(MoistureValueTxt) ||
+                    !"无设备".equals(DeviceDispTxt)) {
                 hasOnlineDevice = true;
             }
         }
