@@ -29,8 +29,12 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 if (UserManager.getInstance().isLogin()) {
-//                    Intent intent = new Intent(SplashActivity.this, FactoryChooseActivity.class);
-                    Intent intent = new Intent(SplashActivity.this, DryingRoomActivity.class);
+                    Intent intent;
+                    if (VersionController.CURRENT_VERSION == VersionController.GONGWANGFU) {
+                        intent = new Intent(SplashActivity.this, DryingRoomActivity.class);
+                    } else {
+                        intent = new Intent(SplashActivity.this, FactoryChooseActivity.class);
+                    }
 //                    Intent intent = new Intent(SplashActivity.this, ChooseActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
