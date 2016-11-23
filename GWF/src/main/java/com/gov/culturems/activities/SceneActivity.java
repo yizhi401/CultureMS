@@ -36,6 +36,7 @@ import com.gov.culturems.utils.UIUtil;
 import com.gov.culturems.views.LoadMoreListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -189,6 +190,7 @@ public class SceneActivity extends Activity {
                         hasMoreData = false;
                     }
                     sceneData.addAll(DeviceResp.convertToDeviceList(listResponse.getListData()));
+                    Collections.sort(sceneData);
                     dataAdapter.notifyDataSetChanged();
                 }
 
@@ -246,7 +248,7 @@ public class SceneActivity extends Activity {
 
             List<BaseSensor> sensors = temp.getSensorTypes();
             holder.deviceName.setText(temp.getName());
-            if ("offline".equals(temp.getDeviceStatus()) || sensors == null || sensors.size() == 0) {
+            if (temp.isOffline() || sensors == null || sensors.size() == 0) {
                 holder.sensor1.setText("状态：离线");
                 convertView.setBackgroundColor(getResources().getColor(R.color.gray_bg));
                 holder.sensor2.setVisibility(View.GONE);

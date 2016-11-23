@@ -6,17 +6,17 @@ android {
 
     defaultConfig {
 
-//        applicationId "com.gov.gwf"
+        applicationId "com.gov.gwf"
 //        applicationId "com.gov.gwf.beta"
 
-        applicationId "com.sean.tea.monitor"
+//        applicationId "com.sean.tea.monitor"
 //        applicationId "com.gov.gwf.monitor.beta"
 
 
         minSdkVersion 17
         targetSdkVersion 21
-        versionCode 85
-        versionName "2.1.0"
+        versionCode 86
+        versionName "2.1.1"
     }
     buildTypes {
         release {

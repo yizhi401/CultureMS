@@ -1,13 +1,14 @@
 package com.gov.culturems.entities;
 
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * 设备的基类
  * Created by peter on 4/6/16.
  */
-public class BaseDevice extends BaseObj {
+public class BaseDevice extends BaseObj implements Comparable<BaseDevice>{
 
 
     public static final String USE_TYPE_DETECTION = "0";//该检测器是监视检测器
@@ -27,6 +28,7 @@ public class BaseDevice extends BaseObj {
     private String UseType;
     private BaseScene parentScene;
     private DeviceProperty properties;
+
 
     public static class DeviceProperty implements Serializable{
         private String DevSn;
@@ -174,6 +176,27 @@ public class BaseDevice extends BaseObj {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public boolean isOffline(){
+        return "offline".equals(getDeviceStatus());
+    }
+
+    @Override
+    public int compareTo(BaseDevice another) {
+        if (isOffline()) {
+            if (another.isOffline()) {
+                return getName().compareTo(another.getName());
+            } else {
+                return 1;
+            }
+        } else {
+            if (another.isOffline()) {
+                return -1;
+            } else {
+                return getName().compareTo(another.getName());
+            }
         }
     }
 }
