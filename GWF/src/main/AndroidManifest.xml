@@ -61,7 +61,7 @@
 
         <provider
             android:name=".provider.MySuggestionProvider"
-            android:authorities="com.sean.tea.general.MySuggestionProvider" />
+            android:authorities="com.gov.gwf.MySuggestionProvider" />
 
         <service
             android:name=".WebsocketService"

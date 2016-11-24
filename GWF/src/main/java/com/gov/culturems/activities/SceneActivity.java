@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,6 +58,7 @@ public class SceneActivity extends Activity {
     private List<BaseDevice> sceneData;
     private int dataPageIndex = 1;
     private boolean hasMoreData = false;
+    private boolean shouldShowDialog = true;
 
     private DataListAdapter dataAdapter;
     private DryingRoom scene;
@@ -112,6 +115,7 @@ public class SceneActivity extends Activity {
             @Override
             public void onRefresh() {
                 dataPageIndex = 1;
+                shouldShowDialog = true;
                 sceneData.clear();
                 getDevicesData();
                 hasMoreData = false;
@@ -122,10 +126,14 @@ public class SceneActivity extends Activity {
         dataList.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
+                Log.d("mInfo", "Loading More");
                 if (hasMoreData) {
                     getDevicesData();
                 } else {
-                    Toast.makeText(SceneActivity.this, "没有更多了", Toast.LENGTH_SHORT).show();
+                    if (shouldShowDialog) {
+                        Toast.makeText(SceneActivity.this, "没有更多了", Toast.LENGTH_SHORT).show();
+                        shouldShowDialog = false;
+                    }
                     dataList.onLoadMoreComplete();
                 }
             }
@@ -272,18 +280,19 @@ public class SceneActivity extends Activity {
                 holder.sensor1.setText("暂无数据");
             } else if (sensors.size() == 1) {
                 //仅有浸水传感器
-                holder.sensor1.setText(getSensorText(sensors.get(0)));
+//                holder.sensor1.setText();
+                holder.sensor1.setText(Html.fromHtml(getSensorText(sensors.get(0))));
             } else if (sensors.size() >= 2) {
                 //超过两个传感器的，都是包含了温湿度，让温度显示在第一个，湿度在第二个
                 holder.sensor2.setVisibility(View.VISIBLE);
-                holder.sensor1.setText(getSensorText(getSpecificSenser(sensors, BaseSensor.SENSOR_TEMPERATURE)));
-                holder.sensor2.setText(getSensorText(getSpecificSenser(sensors, BaseSensor.SENSOR_HUMIDITY)));
+                holder.sensor1.setText(Html.fromHtml(getSensorText(getSpecificSenser(sensors, BaseSensor.SENSOR_TEMPERATURE))));
+                holder.sensor2.setText(Html.fromHtml(getSensorText(getSpecificSenser(sensors, BaseSensor.SENSOR_HUMIDITY))));
                 if (sensors.size() >= 3) {
                     holder.sensor3.setVisibility(View.VISIBLE);
                 }
             }
             if (temp.getAlerts() == null || temp.getAlerts().size() == 0) {
-                holder.alertInfo.setTextColor(getResources().getColor(R.color.text_gray_deep));
+                holder.alertInfo.setTextColor(getResources().getColor(R.color.text_green));
                 holder.alertInfo.setText("无");
             } else {
                 holder.alertInfo.setTextColor(getResources().getColor(R.color.main_red));
@@ -312,13 +321,30 @@ public class SceneActivity extends Activity {
             String appendix = sensor.getSensorUnit();
             if (sensorName.contains("浸水")) {
                 sensorName = "状态";
-                if(sensor.getSensorValue().contains("1")){
-                    return sensorName + "：" + "漏水";
-                }else{
-                    return sensorName + "：" + "未漏水";
+                if (sensor.getSensorValue().contains("1")) {
+                    return getFormatedHtml(sensorName, "漏水", true);
+                } else {
+                    return getFormatedHtml(sensorName, "未漏水", false);
                 }
             }
-            return sensorName + "：" + sensor.getSensorValue() + " " + appendix;
+            return getFormatedHtml(sensorName, sensor.getSensorValue() + appendix, false);
+        }
+
+        private String getFormatedHtml(String name, String value, boolean isRed) {
+            String HTMLPREFIX = "<font color=\"";
+            String HTMLSUFIX = "</font>";
+            String HTML_COLOR_RED = "red\">";
+            String HTML_COLOR_BLACK = "black\">";
+            String HTML_COLOR_GREEN = "#51bd48\">";
+
+            if (isRed) {
+                return HTMLPREFIX + HTML_COLOR_BLACK + name + ": " + HTMLSUFIX
+                        + HTMLPREFIX + HTML_COLOR_RED + value + HTMLSUFIX;
+            } else {
+
+                return HTMLPREFIX + HTML_COLOR_BLACK + name + ": " + HTMLSUFIX
+                        + HTMLPREFIX + HTML_COLOR_GREEN + value + HTMLSUFIX;
+            }
         }
 
     }

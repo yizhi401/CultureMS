@@ -51,7 +51,7 @@
         android:layout_below="@id/sensor1"
         android:layout_marginTop="5dp"
         android:text="报警："
-        android:textColor="@color/text_gray_deep"
+        android:textColor="@color/black"
         android:textSize="12sp" />
 
     <TextView
@@ -62,7 +62,7 @@
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/alert_info_hint"
         android:text="无"
-        android:textColor="@color/text_gray_deep"
+        android:textColor="@color/black"
         android:textSize="12sp" />
 
     <TextView
