@@ -333,7 +333,7 @@ public class SceneActivity extends Activity {
         private String getFormatedHtml(String name, String value, boolean isRed) {
             String HTMLPREFIX = "<font color=\"";
             String HTMLSUFIX = "</font>";
-            String HTML_COLOR_RED = "red\">";
+            String HTML_COLOR_RED = "#970303\">";
             String HTML_COLOR_BLACK = "black\">";
             String HTML_COLOR_GREEN = "#51bd48\">";
 
