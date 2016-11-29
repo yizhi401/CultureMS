@@ -97,11 +97,6 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
             holder.sensor3.setTextColor(context.getResources().getColor(R.color.main_green));
         }
 
-        if (dryingRoom.hasAlert()) {
-
-        }
-
-
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

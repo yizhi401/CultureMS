@@ -30,9 +30,12 @@ public class VersionController {
      * 1. app name (string.xml)
      * 2. colors (color.xml)
      * 3. ic launcher name(AndroidManifest.xml)
-     * 4. title_bar background (style.xml)
+     * 4. provider name (AndroidManifest.xml)
+     * 5. Application Id (build.gradle)
+     * 6. title_bar background (style.xml)
      */
-    public static int CURRENT_VERSION = GONGWANGFU;
+//    public static int CURRENT_VERSION = GONGWANGFU;
+    public static int CURRENT_VERSION = TEACORP;
 
     //--------------------------------------------------------------------------------------
     public static final String ICON_SCENE = "icon_scene";

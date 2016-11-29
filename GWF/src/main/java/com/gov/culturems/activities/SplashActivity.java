@@ -30,19 +30,20 @@ public class SplashActivity extends Activity {
             public void run() {
                 if (UserManager.getInstance().isLogin()) {
                     Intent intent;
-                    if (VersionController.CURRENT_VERSION == VersionController.GONGWANGFU) {
-                        intent = new Intent(SplashActivity.this, DryingRoomActivity.class);
-                    } else {
-                        intent = new Intent(SplashActivity.this, FactoryChooseActivity.class);
-                    }
+                    intent = new Intent(SplashActivity.this, DryingRoomActivity.class);
 //                    Intent intent = new Intent(SplashActivity.this, ChooseActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
 
                 } else {
+                    Intent intent;
 //                    Intent intent = new Intent(SplashActivity.this, FactoryChooseActivity.class);
 //                    Intent intent = new Intent(SplashActivity.this, ChooseActivity.class);
-                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    if (VersionController.CURRENT_VERSION == VersionController.GONGWANGFU) {
+                        intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    } else {
+                        intent = new Intent(SplashActivity.this, FactoryChooseActivity.class);
+                    }
                     startActivity(intent);
                     overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
                 }

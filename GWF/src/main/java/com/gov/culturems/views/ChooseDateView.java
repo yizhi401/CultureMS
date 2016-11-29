@@ -9,11 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.gov.culturems.R;
+import com.gov.culturems.VersionController;
 
 import java.text.DecimalFormat;
 import java.util.TimeZone;
@@ -75,7 +75,7 @@ public class ChooseDateView extends RelativeLayout {
         nextBtn = (Button) findViewById(R.id.calendar_right_arrow);
         dateText = (Button) findViewById(R.id.calendar_date_textview);
         dateText.setOnClickListener(getButtonOnClickLlistener());
-        timeView = (Button)findViewById(R.id.calendar_time_text);
+        timeView = (Button) findViewById(R.id.calendar_time_text);
         timeView.setOnClickListener(getButtonOnClickLlistener());
         preBtn.setOnClickListener(getCalendarOnClickListener());
         nextBtn.setOnClickListener(getCalendarOnClickListener());
@@ -83,6 +83,11 @@ public class ChooseDateView extends RelativeLayout {
         dateText.setText(currentDate);
 //        refreshDateTextView();
         restoreTimeView();
+
+        dateText.setTextColor(context.getResources().getColor(VersionController.getMainColor()));
+        timeView.setTextColor(context.getResources().getColor(VersionController.getMainColor()));
+        preBtn.setTextColor(context.getResources().getColor(VersionController.getMainColor()));
+        nextBtn.setTextColor(context.getResources().getColor(VersionController.getMainColor()));
     }
 
     private void showTimePicker() {
@@ -93,25 +98,25 @@ public class ChooseDateView extends RelativeLayout {
                 ChooseDateView.this.minute = minute;
                 timeView.setText(format00(hourOfDay) + ":" + format00(minute));
                 hasTimeChosen = true;
-                 if (listener != null) {
+                if (listener != null) {
                     listener.onDateChange(dateTime, currentDate);
                 }
             }
-        },hourOfDay,minute,true).show();
-   }
+        }, hourOfDay, minute, true).show();
+    }
 
-    private String format00(int num){
+    private String format00(int num) {
         DecimalFormat mFormat = new DecimalFormat("00");
         return mFormat.format(num);
     }
 
-    public String getSelectedBeginTime(){
+    public String getSelectedBeginTime() {
         return "00:00:00";
-   }
+    }
 
-    public String getSelectedEndTime(){
-         if(hasTimeChosen)
-            return format00(hourOfDay) + ":"+format00(minute)+":59";
+    public String getSelectedEndTime() {
+        if (hasTimeChosen)
+            return format00(hourOfDay) + ":" + format00(minute) + ":59";
         else
             return "23:59:59";
     }
@@ -121,10 +126,10 @@ public class ChooseDateView extends RelativeLayout {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 DateTime temp = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0, 0, 0);
-                if(temp.gt(today)){
-                    Toast.makeText(context,"不能选择未来的日期，请重新选择",Toast.LENGTH_SHORT).show();
+                if (temp.gt(today)) {
+                    Toast.makeText(context, "不能选择未来的日期，请重新选择", Toast.LENGTH_SHORT).show();
                     return;
-                }else if(temp.getDayOfYear().equals(dateTime.getDayOfYear()) && temp.getYear().equals(dateTime.getYear())){
+                } else if (temp.getDayOfYear().equals(dateTime.getDayOfYear()) && temp.getYear().equals(dateTime.getYear())) {
                     return;
                 }
                 dateTime = temp;
@@ -135,7 +140,7 @@ public class ChooseDateView extends RelativeLayout {
                 }
             }
         }, dateTime.getYear(), dateTime.getMonth() - 1, dateTime.getDay()).show();
-   }
+    }
 
     /**
      * Refresh month title text view when user swipe
@@ -153,19 +158,19 @@ public class ChooseDateView extends RelativeLayout {
 //        dateText.setText(monthTitle.toUpperCase(Locale.getDefault()));
 
 //    }
-
-    private View.OnClickListener getButtonOnClickLlistener(){
-        return new View.OnClickListener(){
+    private View.OnClickListener getButtonOnClickLlistener() {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.getId() == R.id.calendar_date_textview){
+                if (v.getId() == R.id.calendar_date_textview) {
                     showDatePicker();
-                }else if(v.getId() == R.id.calendar_time_text){
+                } else if (v.getId() == R.id.calendar_time_text) {
                     showTimePicker();
                 }
             }
         };
     }
+
     private View.OnClickListener getCalendarOnClickListener() {
         return new View.OnClickListener() {
             @Override
@@ -198,7 +203,7 @@ public class ChooseDateView extends RelativeLayout {
         };
     }
 
-    private void restoreTimeView(){
+    private void restoreTimeView() {
         hasTimeChosen = false;
         hourOfDay = 0;
         minute = 0;
@@ -211,7 +216,7 @@ public class ChooseDateView extends RelativeLayout {
         return dateStr;
     }
 
-    public void setCanChoseData(boolean canChose){
+    public void setCanChoseData(boolean canChose) {
         this.canChoseData = canChose;
         refreshViewByChosable();
     }
@@ -220,11 +225,11 @@ public class ChooseDateView extends RelativeLayout {
      * 为了照顾ios，增加了一种不能修改日期的功能
      */
     private void refreshViewByChosable() {
-        if(this.canChoseData){
+        if (this.canChoseData) {
             preBtn.setVisibility(View.INVISIBLE);
             nextBtn.setVisibility(View.INVISIBLE);
             dateText.setOnClickListener(getButtonOnClickLlistener());
-        }else{
+        } else {
             preBtn.setVisibility(View.INVISIBLE);
             nextBtn.setVisibility(View.INVISIBLE);
             dateText.setOnClickListener(null);
@@ -243,10 +248,10 @@ public class ChooseDateView extends RelativeLayout {
         return dateTime;
     }
 
-    public void isTimeViewShow(boolean isShow){
-        if(isShow){
+    public void isTimeViewShow(boolean isShow) {
+        if (isShow) {
             timeView.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             timeView.setVisibility(View.GONE);
         }
     }

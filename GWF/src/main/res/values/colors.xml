@@ -20,16 +20,16 @@
     <color name="actionsheet_gray">#8F8F8F</color>
 
      <!--used in red theme -->
-    <color name="theme_color">@color/main_red</color>
-    <color name="theme_color_light">@color/main_red_light</color>
-    <color name="theme_button_normal">@color/button_yellow_normal</color>
-    <color name="theme_button_pressed">@color/button_yellow_pressed</color>
+    <!--<color name="theme_color">@color/main_red</color>-->
+    <!--<color name="theme_color_light">@color/main_red_light</color>-->
+    <!--<color name="theme_button_normal">@color/button_yellow_normal</color>-->
+    <!--<color name="theme_button_pressed">@color/button_yellow_pressed</color>-->
 
     <!-- used in green theme -->
-    <!--<color name="theme_color">@color/main_green</color>-->
-    <!--<color name="theme_color_light">@color/main_green_light</color>-->
-    <!--<color name="theme_button_normal">@color/button_yellow_light_normal</color>-->
-    <!--<color name="theme_button_pressed">@color/button_yellow_light_pressed</color>-->
+    <color name="theme_color">@color/main_green</color>
+    <color name="theme_color_light">@color/main_green_light</color>
+    <color name="theme_button_normal">@color/button_yellow_light_normal</color>
+    <color name="theme_button_pressed">@color/button_yellow_light_pressed</color>
 
     <!--used in blue theme -->
     <!--<color name="theme_color">@color/main_blue</color>-->
