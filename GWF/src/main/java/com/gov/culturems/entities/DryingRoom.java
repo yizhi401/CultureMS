@@ -36,10 +36,31 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
     private String HumidityValueTxt;
     private String MoistureValueTxt;
     private String DeviceDispTxt;
-
+    private String IsAlert;
+    private String AlertStatus;
 
     public String getTempatureTxt() {
         return TemperatureValueTxt == null ? "未知" : TemperatureValueTxt;
+    }
+
+    public String getMoistureValueTxt() {
+        return MoistureValueTxt;
+    }
+
+    public String getIsAlert() {
+        return IsAlert;
+    }
+
+    public void setIsAlert(String isAlert) {
+        IsAlert = isAlert;
+    }
+
+    public String getAlertStatus() {
+        return AlertStatus;
+    }
+
+    public void setAlertStatus(String alertStatus) {
+        AlertStatus = alertStatus;
     }
 
     public String getHumidityTxt() {
@@ -127,6 +148,15 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
             return "暂无";
         }
         return GoodsName;
+    }
+
+    public boolean hasAlert() {
+        String alert = IsAlert;
+        if ("0".equals(alert) || TextUtils.isEmpty(IsAlert)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     public String getBeginTime() {

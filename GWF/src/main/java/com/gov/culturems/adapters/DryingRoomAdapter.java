@@ -77,11 +77,15 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
 
         if ("未知".equals(holder.sensor1.getText().toString())) {
             holder.sensor1.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
+        } else if (dryingRoom.hasAlert()) {
+            holder.sensor1.setTextColor(context.getResources().getColor(R.color.red));
         } else {
             holder.sensor1.setTextColor(context.getResources().getColor(R.color.main_green));
         }
         if ("未知".equals(holder.sensor2.getText().toString())) {
             holder.sensor2.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
+        } else if (dryingRoom.hasAlert()) {
+            holder.sensor2.setTextColor(context.getResources().getColor(R.color.red));
         } else {
             holder.sensor2.setTextColor(context.getResources().getColor(R.color.main_green));
         }
@@ -91,6 +95,10 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
             holder.sensor3.setTextColor(context.getResources().getColor(R.color.red));
         } else {
             holder.sensor3.setTextColor(context.getResources().getColor(R.color.main_green));
+        }
+
+        if (dryingRoom.hasAlert()) {
+
         }
 
 

@@ -308,8 +308,9 @@ public class SceneActivity extends Activity {
             } else {
                 StringBuilder sb = new StringBuilder();
                 for (AlertInfo tt : temp.getAlerts()) {
-                    sb.append(tt.getAlertTypeName());
+                    sb.append(tt.getAlertTypeName()).append(", ");
                 }
+                sb.replace(sb.length() - 2, sb.length(), "");
                 return sb.toString();
             }
         }

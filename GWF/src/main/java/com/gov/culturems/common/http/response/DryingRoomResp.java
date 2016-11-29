@@ -26,6 +26,8 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
     private String BeginTime;
     private String EndTime;
     private String State;
+    private String IsAlert;
+    private String AlertStatus;
     private List<DeviceData> DeviceDatas;
     private List<SensorData> SensorDatas;
     private List<DeviceCKData> DeviceCKDatas;
@@ -146,6 +148,8 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
         room.setHumidityValueTxt(HumidityValueTxt);
         room.setMoistureValueTxt(MoistureValueTxt);
         room.setDeviceDispTxt(DeviceDispTxt);
+        room.setIsAlert(IsAlert);
+        room.setAlertStatus(AlertStatus);
         return room;
     }
 
