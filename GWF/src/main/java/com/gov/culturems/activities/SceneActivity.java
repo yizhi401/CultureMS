@@ -3,6 +3,8 @@ package com.gov.culturems.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
@@ -13,12 +15,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.R;
+import com.gov.culturems.VersionController;
 import com.gov.culturems.common.CommonConstant;
 import com.gov.culturems.common.base.MyBaseAdapter;
 import com.gov.culturems.common.http.HttpUtil;
@@ -80,10 +86,15 @@ public class SceneActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem itemEdit = menu.add(0, R.id.menu_edit, 0, "设置");
-        itemEdit.setIcon(R.drawable.setting_icon);
-        itemEdit.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
+        if (VersionController.CURRENT_VERSION == VersionController.GONGWANGFU) {
+            MenuItem itemEdit = menu.add(0, R.id.menu_edit, 0, "设置");
+            itemEdit.setIcon(R.drawable.setting_icon);
+            itemEdit.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        } else {
+            MenuItem itemMore = menu.add(0, R.id.menu_more, 0, "更多");
+            itemMore.setIcon(R.drawable.menu_more);
+            itemMore.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -94,9 +105,53 @@ public class SceneActivity extends Activity {
             return true;
         } else if (item.getItemId() == R.id.menu_edit) {
             jumpToRuleManageActivity();
+        } else if (item.getItemId() == R.id.menu_more) {
+            showMoreMenu();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void showMoreMenu() {
+        View popupMenuView = LayoutInflater.from(this).inflate(R.layout.device_data_popup_menu, null);
+        final PopupWindow menuPopup =
+                new PopupWindow(popupMenuView, FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, true);
+        menuPopup.setTouchable(true);
+        menuPopup.setOutsideTouchable(true);
+        menuPopup.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
+        menuPopup.showAsDropDown(findViewById(R.id.menu_more));
+        menuPopup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+            }
+        });
+        Button ruleManageBtn = (Button) popupMenuView.findViewById(R.id.rule_manage);
+        ruleManageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpToRuleManageActivity();
+                menuPopup.dismiss();
+            }
+        });
+        ruleManageBtn.setVisibility(View.VISIBLE);
+        Button goodsManageBtn = (Button) popupMenuView.findViewById(R.id.goods_manage);
+        goodsManageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpToGoodsManageActivity();
+                menuPopup.dismiss();
+            }
+        });
+    }
+
+    private void jumpToGoodsManageActivity() {
+        Intent i = new Intent(this, GoodsManageActivity.class);
+        i.putExtra("scene", scene);
+        startActivity(i);
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+
+    }
+
 
     private void jumpToRuleManageActivity() {
         Intent intent = new Intent(SceneActivity.this, FanControlActivity.class);

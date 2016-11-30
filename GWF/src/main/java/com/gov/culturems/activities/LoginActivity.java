@@ -57,14 +57,13 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-//        if (VersionController.CURRENT_VERSION == VersionController.GONGWANGFU) {
+        if (VersionController.CURRENT_VERSION == VersionController.GONGWANGFU) {
             baseScene = new BaseScene();
             baseScene.setId("279");
             baseScene.setName("恭王府");
-//        } else {
-//            baseScene = (BaseScene)getIntent().getSerializableExtra("factory");
-//        }
-
+        } else {
+            baseScene = (BaseScene)getIntent().getSerializableExtra("factory");
+        }
 
         setUpView();
     }

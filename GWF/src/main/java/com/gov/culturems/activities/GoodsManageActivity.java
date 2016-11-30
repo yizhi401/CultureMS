@@ -58,6 +58,9 @@ public class GoodsManageActivity extends Activity implements View.OnClickListene
         getActionBar().setHomeButtonEnabled(true);
         getGoodsList();
         dryingRoom = DryingRoomHelper.getInstance().getDryingRoom();
+        if(dryingRoom == null){
+            dryingRoom = (DryingRoom)getIntent().getSerializableExtra("scene");
+        }
         getActionBar().setTitle(dryingRoom.getName());
         initViews();
     }
