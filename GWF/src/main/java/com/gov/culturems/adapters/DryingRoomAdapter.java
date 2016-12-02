@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gov.culturems.R;
+import com.gov.culturems.VersionController;
 import com.gov.culturems.activities.DeviceDataActivity;
 import com.gov.culturems.activities.DryingRoomActivity;
 import com.gov.culturems.activities.DryingRoomHelper;
@@ -17,6 +19,7 @@ import com.gov.culturems.activities.SceneActivity;
 import com.gov.culturems.common.base.MyBaseAdapter;
 import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.utils.LogUtil;
+import com.gov.culturems.utils.TimeUtil;
 
 import java.util.List;
 
@@ -39,6 +42,8 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         TextView teaType;
         TextView startTime;
         TextView endTime;
+        TextView daysPassed;
+        LinearLayout secondRow;
 
     }
 
@@ -56,6 +61,8 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
             holder.teaType = (TextView) convertView.findViewById(R.id.good_type);
             holder.startTime = (TextView) convertView.findViewById(R.id.start_time);
             holder.endTime = (TextView) convertView.findViewById(R.id.end_time);
+            holder.daysPassed = (TextView) convertView.findViewById(R.id.days_passed);
+            holder.secondRow = (LinearLayout) convertView.findViewById(R.id.second_row);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -68,34 +75,51 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         holder.endTime.setText(String.format(context.getResources().getString(R.string.end_time), dryingRoom.getEndTimeWithoutNullString()));
         holder.endTime.setVisibility(View.GONE);
 
+        if (VersionController.CURRENT_VERSION == VersionController.GONGWANGFU) {
+            holder.daysPassed.setVisibility(View.GONE);
+            holder.startTime.setVisibility(View.GONE);
+            holder.secondRow.setVisibility(View.VISIBLE);
+
+            holder.sensor3.setText(dryingRoom.getMoistureTxt());
+
+
+        } else {
+            holder.daysPassed.setVisibility(View.VISIBLE);
+            holder.startTime.setVisibility(View.VISIBLE);
+            holder.secondRow.setVisibility(View.GONE);
+            holder.daysPassed.setText(TimeUtil.getTimeLast(dryingRoom.getBeginTime()));
+        }
+
+
         holder.sensor1.setVisibility(View.VISIBLE);
         holder.sensor1.setText(dryingRoom.getTempatureTxt());
         holder.sensor2.setVisibility(View.VISIBLE);
         holder.sensor2.setText(dryingRoom.getHumidityTxt());
-        holder.sensor3.setVisibility(View.VISIBLE);
-        holder.sensor3.setText(dryingRoom.getMoistureTxt());
 
-        if ("未知".equals(holder.sensor1.getText().toString())) {
-            holder.sensor1.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
-        } else if (dryingRoom.hasAlert()) {
+        if (dryingRoom.hasAlert() ||
+                "漏水".equals(holder.sensor3.getText().toString())) {
             holder.sensor1.setTextColor(context.getResources().getColor(R.color.red));
-        } else {
-            holder.sensor1.setTextColor(context.getResources().getColor(R.color.main_green));
-        }
-        if ("未知".equals(holder.sensor2.getText().toString())) {
-            holder.sensor2.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
-        } else if (dryingRoom.hasAlert()) {
             holder.sensor2.setTextColor(context.getResources().getColor(R.color.red));
-        } else {
-            holder.sensor2.setTextColor(context.getResources().getColor(R.color.main_green));
-        }
-        if ("未知".equals(holder.sensor3.getText().toString())) {
-            holder.sensor3.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
-        } else if ("漏水".equals(holder.sensor3.getText().toString())) {
             holder.sensor3.setTextColor(context.getResources().getColor(R.color.red));
         } else {
-            holder.sensor3.setTextColor(context.getResources().getColor(R.color.main_green));
+            if ("未知".equals(holder.sensor1.getText().toString())) {
+                holder.sensor1.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
+            } else {
+                holder.sensor1.setTextColor(context.getResources().getColor(R.color.main_green));
+            }
+            if ("未知".equals(holder.sensor2.getText().toString())) {
+                holder.sensor2.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
+            } else {
+                holder.sensor2.setTextColor(context.getResources().getColor(R.color.main_green));
+            }
+            if ("未知".equals(holder.sensor3.getText().toString())) {
+                holder.sensor3.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
+            } else {
+                holder.sensor3.setTextColor(context.getResources().getColor(R.color.main_green));
+            }
+
         }
+
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -71,6 +71,17 @@ public class GoodsManageActivity extends Activity implements View.OnClickListene
                 });
                 if (result.getRc() == 200 && result.getListData() != null) {
                     goodsList.addAll(result.getListData());
+                    //设置一个默认值
+                    if (!isBaking()) {
+                        if (TextUtils.isEmpty(goodsText.getText().toString()) ||
+                                goodsText.getText().toString().equals(getResources().getString(R.string.choose_goods))) {
+                            if (goodsList.size() > 0) {
+                                goodsText.setText(goodsList.get(0).GoodsName);
+                                chosenGoods = goodsList.get(0);
+                            }
+
+                        }
+                    }
                 }
 
             }
@@ -236,7 +247,7 @@ public class GoodsManageActivity extends Activity implements View.OnClickListene
             }
         });
         popupMenu.show();
-   }
+    }
 
     private String[] getGoodsArr() {
         String[] arr = new String[goodsList.size()];
