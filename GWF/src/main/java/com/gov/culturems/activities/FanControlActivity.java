@@ -26,7 +26,6 @@ import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.RequestParams;
 import com.gov.culturems.common.http.URLRequest;
 import com.gov.culturems.common.http.VolleyRequestListener;
-import com.gov.culturems.entities.BaseDevice;
 import com.gov.culturems.entities.BaseSensor;
 import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.utils.GsonUtils;

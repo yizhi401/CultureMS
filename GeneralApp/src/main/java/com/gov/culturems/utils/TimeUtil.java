@@ -1,6 +1,7 @@
 package com.gov.culturems.utils;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -15,6 +16,9 @@ import hirondelle.date4j.DateTime;
  */
 public class TimeUtil {
     public static String getTimeLast(String beginTime) {
+        if(TextUtils.isEmpty(beginTime)){
+            return "";
+        }
         DateTime today = DateTime.now(TimeZone.getTimeZone("Asia/Shanghai"));
         @SuppressLint("SimpleDateFormat") DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
