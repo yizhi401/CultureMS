@@ -11,14 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.gov.culturems.activities.AppInfoActivity">
 
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:src="@mipmap/ic_launcher_red"/>
-
     <LinearLayout
         android:id="@+id/title_layout"
         android:layout_width="wrap_content"
@@ -82,7 +74,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/android_qrcode"/>
+                android:src="@drawable/android_qrcode_red"/>
 
         </LinearLayout>
 
@@ -108,12 +100,21 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/ios_qrcode"
+                android:src="@drawable/ios_qrcode_red"
                 android:textSize="18sp"/>
 
         </LinearLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="40dp"
+        android:src="@mipmap/ic_launcher_red"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>

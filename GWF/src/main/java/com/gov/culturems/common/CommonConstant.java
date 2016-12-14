@@ -2,11 +2,15 @@ package com.gov.culturems.common;
 
 public class CommonConstant {
 
-//    public static final String APP_NAME = "teaCorp"
-    public static final String APP_NAME = "gwf";
 
     //恭王府外发版
-    public static final String APP_ID = "5833deccca87a8206b001b54";
+//    public static final String APP_NAME = "gwf";
+//    public static final String APP_ID = "5833deccca87a8206b001b54";
+
+    //茶厂监控外发版
+    public static final String APP_NAME = "teaCorp";
+    public static final String APP_ID = "5851598dca87a803da000b92";
+
 
     public static final String API_TOKEN ="c1aeb63b3adf506a2350bc27dea828da";
 

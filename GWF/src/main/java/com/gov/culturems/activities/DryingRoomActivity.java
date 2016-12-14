@@ -38,6 +38,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.MyApplication;
 import com.gov.culturems.R;
+import com.gov.culturems.VersionController;
 import com.gov.culturems.adapters.DryingRoomAdapter;
 import com.gov.culturems.common.CommonConstant;
 import com.gov.culturems.common.UserManager;
@@ -378,7 +379,11 @@ public class DryingRoomActivity extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 UserManager.getInstance().logout();
                 dialog.dismiss();
-                startActivity(new Intent(DryingRoomActivity.this, LoginActivity.class));
+                if(VersionController.CURRENT_VERSION == VersionController.GONGWANGFU){
+                    startActivity(new Intent(DryingRoomActivity.this, LoginActivity.class));
+                }else{
+                    startActivity(new Intent(DryingRoomActivity.this,FactoryChooseActivity.class));
+                }
                 finish();
             }
         });

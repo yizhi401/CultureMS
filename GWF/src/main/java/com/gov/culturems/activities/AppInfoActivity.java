@@ -5,9 +5,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gov.culturems.R;
+import com.gov.culturems.VersionController;
 
 public class AppInfoActivity extends Activity {
 
@@ -21,6 +23,9 @@ public class AppInfoActivity extends Activity {
 
         setContentView(R.layout.activity_app_info);
 
+        initViews();
+
+
         PackageInfo packageInfo = null;
         try {
             packageInfo = getPackageManager().getPackageInfo(getPackageName(),0);
@@ -31,6 +36,17 @@ public class AppInfoActivity extends Activity {
             TextView version = (TextView)findViewById(R.id.version);
             version.setText(packageInfo.versionName);
         }
+    }
+
+    private void initViews(){
+        ImageView imageIC = (ImageView)findViewById(R.id.icon);
+        ImageView imageAndroid = (ImageView)findViewById(R.id.android_qr_img);
+        ImageView imageIos = (ImageView)findViewById(R.id.ios_qr_img);
+        imageIC.setImageResource(VersionController.getDrawable(VersionController.LAUNCHER));
+        imageAndroid.setImageResource(VersionController.getDrawable(VersionController.ANDROID_QRCODE));
+        imageIos.setImageResource(VersionController.getDrawable(VersionController.IOS_QRCODE));
+        TextView title = (TextView)findViewById(R.id.title);
+        title.setText(getResources().getString(R.string.app_name));
     }
 
     @Override

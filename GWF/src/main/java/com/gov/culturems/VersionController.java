@@ -38,6 +38,7 @@ public class VersionController {
     public static int CURRENT_VERSION = TEACORP;
 
     //--------------------------------------------------------------------------------------
+    public static final String LAUNCHER = "launcher";
     public static final String ICON_SCENE = "icon_scene";
     public static final String LOGIN_BG = "login_bg";
     public static final String LOGIN_USERNAME = "login_username";
@@ -46,6 +47,8 @@ public class VersionController {
     public static final String SCENE_WARNING_IC = "scene_warning_ic";
     public static final String WELCOME_PAGE = "welcome_page";
     public static final String EDIT_ICON = "edit_icon";
+    public static final String IOS_QRCODE = "ios_qr_code";
+    public static final String ANDROID_QRCODE = "android_qr_code";
     //--------------------------------------------------------------------------------------
 
     public static Map<String, Integer> redResourceMap;
@@ -55,6 +58,7 @@ public class VersionController {
 
     static {
         redResourceMap = new HashMap<>();
+        redResourceMap.put(LAUNCHER, R.drawable.ic_launcher_red);
         redResourceMap.put(ICON_SCENE, R.drawable.icon_scene_red);
         redResourceMap.put(LOGIN_BG, R.drawable.login_bg_red);
         redResourceMap.put(LOGIN_USERNAME, R.drawable.login_username_red);
@@ -63,9 +67,12 @@ public class VersionController {
         redResourceMap.put(SCENE_DATA_IC, R.drawable.scene_data_ic_red);
         redResourceMap.put(SCENE_WARNING_IC, R.drawable.scene_warning_ic_red);
         redResourceMap.put(WELCOME_PAGE, R.drawable.welcome_page_red);
+        redResourceMap.put(ANDROID_QRCODE, R.drawable.android_qrcode_red);
+        redResourceMap.put(IOS_QRCODE, R.drawable.ios_qrcode_red);
 
 
         blueResourceMap = new HashMap<>();
+        blueResourceMap.put(LAUNCHER, R.drawable.ic_launcher_blue);
         blueResourceMap.put(ICON_SCENE, R.drawable.icon_scene_blue);
         blueResourceMap.put(LOGIN_BG, R.drawable.login_bg_blue);
         blueResourceMap.put(LOGIN_USERNAME, R.drawable.login_username_blue);
@@ -74,9 +81,12 @@ public class VersionController {
         blueResourceMap.put(SCENE_DATA_IC, R.drawable.scene_data_ic_blue);
         blueResourceMap.put(SCENE_WARNING_IC, R.drawable.scene_warning_ic_blue);
         blueResourceMap.put(WELCOME_PAGE, R.drawable.welcome_page_blue);
+        blueResourceMap.put(ANDROID_QRCODE, R.drawable.android_qrcode_blue);
+        blueResourceMap.put(IOS_QRCODE, R.drawable.ios_qrcode_blue);
 
 
         greenResourceMap = new HashMap<>();
+        greenResourceMap.put(LAUNCHER,R.drawable.ic_launcher_green);
         greenResourceMap.put(ICON_SCENE, R.drawable.icon_scene_green);
         greenResourceMap.put(LOGIN_BG, R.drawable.login_bg_green);
         greenResourceMap.put(LOGIN_USERNAME, R.drawable.login_username_green);
@@ -85,6 +95,9 @@ public class VersionController {
         greenResourceMap.put(SCENE_DATA_IC, R.drawable.scene_data_ic_green);
         greenResourceMap.put(SCENE_WARNING_IC, R.drawable.scene_warning_ic_green);
         greenResourceMap.put(WELCOME_PAGE, R.drawable.welcome_page_green);
+        greenResourceMap.put(ANDROID_QRCODE, R.drawable.android_qrcode_green);
+        greenResourceMap.put(IOS_QRCODE, R.drawable.ios_qrcode_green);
+
     }
 
     public static void setVersion(int version) {
