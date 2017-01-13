@@ -2,5 +2,5 @@
 //include ':app','baishaxi'
 //include 'baishaxi'
 include 'GeneralApp'
-include 'GWF'
+//include 'GWF'
 //include 'app'

@@ -19,24 +19,28 @@
     <color name="actionsheet_red">#FD4A2E</color>
     <color name="actionsheet_gray">#8F8F8F</color>
 
-    <!-- used in red theme -->
-    <!--<color name="theme_color">@color/main_red</color>-->
-    <!--<color name="theme_color_light">@color/main_red_light</color>-->
-    <!--<color name="theme_button_normal">@color/button_yellow_normal</color>-->
-    <!--<color name="theme_button_pressed">@color/button_yellow_pressed</color>-->
-
-    <!-- used in green theme -->
     <color name="theme_color">@color/main_green</color>
     <color name="theme_color_light">@color/main_green_light</color>
     <color name="theme_button_normal">@color/button_yellow_light_normal</color>
     <color name="theme_button_pressed">@color/button_yellow_light_pressed</color>
 
-    <!--used in blue theme -->
-    <!--<color name="theme_color">@color/main_blue</color>-->
-    <!--<color name="theme_color_light">@color/main_blue_light</color>-->
-    <!--<color name="theme_button_normal">@color/button_blue_normal</color>-->
-    <!--<color name="theme_button_pressed">@color/button_blue_pressed</color>-->
+    <!-- used in red theme -->
+    <color name="theme_color_red">@color/main_red</color>
+    <color name="theme_color_light_red">@color/main_red_light</color>
+    <color name="theme_button_normal_red">@color/button_yellow_normal</color>
+    <color name="theme_button_pressed_red">@color/button_yellow_pressed</color>
 
+    <!-- used in green theme -->
+    <color name="theme_color_green">@color/main_green</color>
+    <color name="theme_color_light_green">@color/main_green_light</color>
+    <color name="theme_button_normal_green">@color/button_yellow_light_normal</color>
+    <color name="theme_button_pressed_green">@color/button_yellow_light_pressed</color>
+
+    <!--used in blue theme -->
+    <color name="theme_color_blue">@color/main_blue</color>
+    <color name="theme_color_light_blue">@color/main_blue_light</color>
+    <color name="theme_button_normal_blue">@color/button_blue_normal</color>
+    <color name="theme_button_pressed_blue">@color/button_blue_pressed</color>
 
     <color name="main_red">#FF970303</color>
     <color name="main_red_light">#FFCEA7AC</color>

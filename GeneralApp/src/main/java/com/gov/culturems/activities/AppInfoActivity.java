@@ -23,12 +23,12 @@ public class AppInfoActivity extends Activity {
 
         PackageInfo packageInfo = null;
         try {
-            packageInfo = getPackageManager().getPackageInfo(getPackageName(),0);
+            packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        if(packageInfo != null){
-            TextView version = (TextView)findViewById(R.id.version);
+        if (packageInfo != null) {
+            TextView version = (TextView) findViewById(R.id.version);
             version.setText(packageInfo.versionName);
         }
     }

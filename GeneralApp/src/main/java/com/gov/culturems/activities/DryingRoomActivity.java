@@ -114,14 +114,14 @@ public class DryingRoomActivity extends Activity {
     }
 
     private void checkUpdate() {
-        String firUrl = "http://api.fir.im/apps/latest/" + CommonConstant.APP_ID+"?api_token="+CommonConstant.API_TOKEN;
+        String firUrl = "http://api.fir.im/apps/latest/" + CommonConstant.APP_ID + "?api_token=" + CommonConstant.API_TOKEN;
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET,firUrl,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, firUrl,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         Log.d(TAG, "response -> " + response);
-                        ChangeLog changeLog = GsonUtils.fromJson(response,ChangeLog.class);
+                        ChangeLog changeLog = GsonUtils.fromJson(response, ChangeLog.class);
                         checkUpdate(changeLog);
                     }
                 }, new Response.ErrorListener() {
@@ -136,8 +136,8 @@ public class DryingRoomActivity extends Activity {
 
     private void checkUpdate(ChangeLog changeLog) {
         try {
-            PackageInfo pi = this.getPackageManager().getPackageInfo(this.getPackageName(),0);
-            if(changeLog.version > pi.versionCode){
+            PackageInfo pi = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
+            if (changeLog.version > pi.versionCode) {
                 //有新版本
                 showDownloadDialog(changeLog);
 
@@ -171,7 +171,7 @@ public class DryingRoomActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("mInfo","destroy dryingRoomActivity!");
+        Log.i("mInfo", "destroy dryingRoomActivity!");
     }
 
     @Override
@@ -188,7 +188,7 @@ public class DryingRoomActivity extends Activity {
         }
 
         RequestParams params = new RequestParams();
-        params.put("ps","99999");
+        params.put("ps", "99999");
         HttpUtil.jsonRequestGet(this, URLRequest.SCENE_GOODS_LIST_GET, params, new VolleyRequestListener() {
             @Override
             public void onSuccess(String response) {
@@ -350,7 +350,7 @@ public class DryingRoomActivity extends Activity {
                 menuPopup.dismiss();
             }
         });
-        Button appInfoBtn = (Button)popupMenuView.findViewById(R.id.app_info);
+        Button appInfoBtn = (Button) popupMenuView.findViewById(R.id.app_info);
         appInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -361,7 +361,7 @@ public class DryingRoomActivity extends Activity {
     }
 
     private void jumpToAppInfo() {
-        Intent i = new Intent(this,AppInfoActivity.class);
+        Intent i = new Intent(this, AppInfoActivity.class);
         startActivity(i);
     }
 

@@ -165,11 +165,12 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         String ThresholdUp;
         String ThresholdDown;
         String SceneId;
-        void ensureFloat(){
-            if(TextUtils.isEmpty(ThresholdDown)){
+
+        void ensureFloat() {
+            if (TextUtils.isEmpty(ThresholdDown)) {
                 ThresholdDown = "0";
             }
-            if(TextUtils.isEmpty(ThresholdUp)){
+            if (TextUtils.isEmpty(ThresholdUp)) {
                 ThresholdUp = "0";
             }
         }
@@ -230,11 +231,12 @@ public class FanControlActivity extends Activity implements View.OnClickListener
         String type;
         String upper;
         String lower;
-        void ensureFloat(){
-            if(TextUtils.isEmpty(upper)){
+
+        void ensureFloat() {
+            if (TextUtils.isEmpty(upper)) {
                 upper = "0";
             }
-            if(TextUtils.isEmpty(lower)){
+            if (TextUtils.isEmpty(lower)) {
                 lower = "0";
             }
         }
