@@ -49,6 +49,11 @@ public class VersionController {
     public static final String EDIT_ICON = "edit_icon";
     public static final String BG_TABLE = "bg_table";
     public static final String LIST_BG = "list_bg";
+    public static final String BG_ALONE = "bg_alon";
+    public static final String BG_BOTTOM = "bg_bottom";
+    public static final String BG_MIDDLE = "bg_middle";
+    public static final String BG_UPPER = "bg_upper";
+    public static final String TAB_SELECTOR = "tab_selector";
 
     //--------------------------------------------------------------------------------------
 
@@ -60,6 +65,13 @@ public class VersionController {
     static {
 
         redResourceMap = new HashMap<>();
+        redResourceMap.put(TAB_SELECTOR,R.drawable.tab_selector_red);
+        redResourceMap.put(BG_UPPER,R.drawable.bg_upper_red);
+        redResourceMap.put(BG_TABLE,R.drawable.bg_table_red);
+        redResourceMap.put(BG_ALONE,R.drawable.bg_alone_red);
+        redResourceMap.put(BG_BOTTOM,R.drawable.bg_bottom_red);
+        redResourceMap.put(BG_MIDDLE,R.drawable.bg_middle_red);
+        redResourceMap.put(LIST_BG,R.drawable.list_bg_red);
         redResourceMap.put(THEME_COLOR, R.color.theme_color_red);
         redResourceMap.put(THEME_COLOR_LIGHT, R.color.theme_color_light_red);
         redResourceMap.put(THEME_BUTTON_NORMAL, R.color.theme_button_normal_red);
@@ -75,10 +87,17 @@ public class VersionController {
 
 
         blueResourceMap = new HashMap<>();
-        blueResourceMap.put(THEME_COLOR, R.color.theme_color_red);
-        blueResourceMap.put(THEME_COLOR_LIGHT, R.color.theme_color_light_red);
-        blueResourceMap.put(THEME_BUTTON_NORMAL, R.color.theme_button_normal_red);
-        blueResourceMap.put(THEME_BUTTON_PRESSED, R.color.theme_button_pressed_red);
+        blueResourceMap.put(TAB_SELECTOR,R.drawable.tab_selector_blue);
+        blueResourceMap.put(BG_UPPER,R.drawable.bg_upper_blue);
+        blueResourceMap.put(BG_TABLE,R.drawable.bg_table_blue);
+        blueResourceMap.put(BG_ALONE,R.drawable.bg_alone_blue);
+        blueResourceMap.put(BG_BOTTOM,R.drawable.bg_bottom_blue);
+        blueResourceMap.put(BG_MIDDLE,R.drawable.bg_middle_blue);
+        blueResourceMap.put(LIST_BG,R.drawable.list_bg_blue);
+        blueResourceMap.put(THEME_COLOR, R.color.theme_color_blue);
+        blueResourceMap.put(THEME_COLOR_LIGHT, R.color.theme_color_light_blue);
+        blueResourceMap.put(THEME_BUTTON_NORMAL, R.color.theme_button_normal_blue);
+        blueResourceMap.put(THEME_BUTTON_PRESSED, R.color.theme_button_pressed_blue);
         blueResourceMap.put(ICON_SCENE, R.drawable.icon_scene_blue);
         blueResourceMap.put(LOGIN_BG, R.drawable.login_bg_blue);
         blueResourceMap.put(LOGIN_USERNAME, R.drawable.login_username_blue);
@@ -90,10 +109,17 @@ public class VersionController {
 
 
         greenResourceMap = new HashMap<>();
-        greenResourceMap.put(THEME_COLOR, R.color.theme_color_red);
-        greenResourceMap.put(THEME_COLOR_LIGHT, R.color.theme_color_light_red);
-        greenResourceMap.put(THEME_BUTTON_NORMAL, R.color.theme_button_normal_red);
-        greenResourceMap.put(THEME_BUTTON_PRESSED, R.color.theme_button_pressed_red);
+        greenResourceMap.put(TAB_SELECTOR,R.drawable.tab_selector_green);
+        greenResourceMap.put(BG_UPPER,R.drawable.bg_upper_green);
+        greenResourceMap.put(BG_TABLE,R.drawable.bg_table_green);
+        greenResourceMap.put(BG_ALONE,R.drawable.bg_alone_green);
+        greenResourceMap.put(BG_BOTTOM,R.drawable.bg_bottom_green);
+        greenResourceMap.put(BG_MIDDLE,R.drawable.bg_middle_green);
+        greenResourceMap.put(LIST_BG,R.drawable.list_bg_green);
+        greenResourceMap.put(THEME_COLOR, R.color.theme_color_green);
+        greenResourceMap.put(THEME_COLOR_LIGHT, R.color.theme_color_light_green);
+        greenResourceMap.put(THEME_BUTTON_NORMAL, R.color.theme_button_normal_green);
+        greenResourceMap.put(THEME_BUTTON_PRESSED, R.color.theme_button_pressed_green);
         greenResourceMap.put(ICON_SCENE, R.drawable.icon_scene_green);
         greenResourceMap.put(LOGIN_BG, R.drawable.login_bg_green);
         greenResourceMap.put(LOGIN_USERNAME, R.drawable.login_username_green);

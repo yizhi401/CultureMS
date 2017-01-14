@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.R;
+import com.gov.culturems.VersionController;
 import com.gov.culturems.common.CommonConstant;
 import com.gov.culturems.common.base.BaseActivity;
 import com.gov.culturems.common.http.CommonResponse;
@@ -30,6 +31,8 @@ import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.entities.Goods;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.utils.UIUtil;
+
+import junit.runner.Version;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -192,6 +195,9 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
         endBtn.setOnClickListener(this);
         outerLayout = (LinearLayout) findViewById(R.id.outer_layout);
         outerLayout.setOnClickListener(this);
+        outerLayout.setBackgroundResource(VersionController.getDrawable(VersionController.BG_UPPER));
+        LinearLayout remarkLayout = (LinearLayout)findViewById(R.id.remark_layout);
+        remarkLayout.setBackgroundResource(VersionController.getDrawable(VersionController.BG_BOTTOM));
 
         refreshViewByBaking();
     }

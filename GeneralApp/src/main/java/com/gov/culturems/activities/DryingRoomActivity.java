@@ -38,6 +38,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.MyApplication;
 import com.gov.culturems.R;
+import com.gov.culturems.VersionController;
 import com.gov.culturems.adapters.DryingRoomAdapter;
 import com.gov.culturems.common.CommonConstant;
 import com.gov.culturems.common.UserManager;
@@ -391,8 +392,10 @@ public class DryingRoomActivity extends BaseActivity {
 
         timeBtn = (Button) popupView.findViewById(R.id.search_by_time);
         timeBtn.setSelected(true);
+        timeBtn.setBackgroundResource(VersionController.getDrawable(VersionController.TAB_SELECTOR));
         timeBtn.setOnClickListener(getSearchButtonOnclickListener());
         typeBtn = (Button) popupView.findViewById(R.id.search_by_type);
+        typeBtn.setBackgroundResource(VersionController.getDrawable(VersionController.TAB_SELECTOR));
         typeBtn.setSelected(false);
         typeBtn.setOnClickListener(getSearchButtonOnclickListener());
         currentTab = TAB_TYPE;

@@ -2,6 +2,7 @@ package com.gov.culturems.fragments;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.ListResponse;
 import com.gov.culturems.common.http.RequestParams;
 import com.gov.culturems.common.http.URLRequest;
+import com.gov.culturems.common.http.VolleyRequest;
 import com.gov.culturems.common.http.VolleyRequestListener;
 import com.gov.culturems.common.http.response.SensorResp;
 import com.gov.culturems.entities.BaseDevice;
@@ -92,10 +94,15 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
 
         View rootView = inflater.inflate(R.layout.table_fragment, container, false);
         textView1 = (TextView) rootView.findViewById(R.id.text1);
+        textView1.setBackgroundResource(VersionController.getDrawable(VersionController.BG_TABLE));
         textView2 = (TextView) rootView.findViewById(R.id.text2);
+        textView2.setBackgroundResource(VersionController.getDrawable(VersionController.BG_TABLE));
         textView3 = (TextView) rootView.findViewById(R.id.text3);
+        textView3.setBackgroundResource(VersionController.getDrawable(VersionController.BG_TABLE));
         textView5 = (TextView) rootView.findViewById(R.id.text5);
+        textView5.setBackgroundResource(VersionController.getDrawable(VersionController.BG_TABLE));
         textView4 = (TextView) rootView.findViewById(R.id.text4);
+        textView4.setBackgroundResource(VersionController.getDrawable(VersionController.BG_TABLE));
 
         dataList = (CustomListView) rootView.findViewById(R.id.data_list);
         dataList.setOnLoadMoreListener(new LoadMoreListView.OnLoadMoreListener() {
@@ -110,12 +117,13 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
                 }, 1000);
             }
         });
+        dataList.setBackgroundResource(VersionController.getDrawable(VersionController.LIST_BG));
 
         sensorData = new CopyOnWriteArrayList<>();
         adapter = new SensorAdapter(sensorData, getActivity());
         dataList.setAdapter(adapter);
         dataList.setDivider(new ColorDrawable(getResources().getColor(VersionController.getDrawable(VersionController.THEME_COLOR_LIGHT))));
-        LinearLayout dataListTitle = (LinearLayout)rootView.findViewById(R.id.data_list_title);
+        LinearLayout dataListTitle = (LinearLayout) rootView.findViewById(R.id.data_list_title);
         dataListTitle.setDividerDrawable(new ColorDrawable(getResources().getColor(VersionController.getDrawable(VersionController.THEME_COLOR_LIGHT))));
 
         getDeviceDatas();
@@ -227,10 +235,13 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
                 holder = new Holder();
                 holder.text1 = (TextView) convertView.findViewById(R.id.text1);
                 holder.text2 = (TextView) convertView.findViewById(R.id.text2);
+                holder.text2.setBackgroundResource(VersionController.getDrawable(VersionController.BG_TABLE));
                 holder.text3 = (TextView) convertView.findViewById(R.id.text3);
+                holder.text3.setBackgroundResource(VersionController.getDrawable(VersionController.BG_TABLE));
 //                holder.text5 = (TextView) convertView.findViewById(R.id.text5);
                 holder.text4 = (TextView) convertView.findViewById(R.id.text4);
-                holder.text4.setBackgroundResource(VersionController.getDrawable(VersionController.));
+                holder.text4.setBackgroundResource(VersionController.getDrawable(VersionController.BG_TABLE));
+                convertView.findViewById(R.id.table_layout).setBackgroundResource(VersionController.getDrawable(VersionController.BG_TABLE));
                 convertView.setTag(holder);
             } else {
                 holder = (Holder) convertView.getTag();

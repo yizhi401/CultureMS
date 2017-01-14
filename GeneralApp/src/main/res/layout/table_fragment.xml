@@ -11,8 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/list_bg">
+        android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/text1"
@@ -31,7 +30,6 @@
             android:layout_height="50dp"
             android:layout_margin="1px"
             android:layout_weight="1"
-            android:background="@drawable/bg_table"
             android:gravity="center"
             android:text="时间"
             android:textSize="15sp"
@@ -43,7 +41,6 @@
             android:layout_height="50dp"
             android:layout_margin="1px"
             android:layout_weight="1"
-            android:background="@drawable/bg_table"
             android:gravity="center"
             android:text="温度"
             android:textSize="15sp"
@@ -55,7 +52,6 @@
             android:layout_height="50dp"
             android:layout_margin="1px"
             android:layout_weight="1"
-            android:background="@drawable/bg_table"
             android:gravity="center"
             android:text="湿度"
             android:textSize="15sp"
@@ -68,7 +64,6 @@
             android:layout_margin="1px"
             android:layout_weight="1"
             android:visibility="gone"
-            android:background="@drawable/bg_table"
             android:gravity="center"
             android:text="报警"
             android:textSize="15sp"
@@ -82,6 +77,5 @@
         android:layout_below="@id/data_list_title"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/list_bg"
         android:dividerHeight="1px" />
 </RelativeLayout>
