@@ -19,11 +19,6 @@
     <color name="actionsheet_red">#FD4A2E</color>
     <color name="actionsheet_gray">#8F8F8F</color>
 
-    <color name="theme_color">@color/main_green</color>
-    <color name="theme_color_light">@color/main_green_light</color>
-    <color name="theme_button_normal">@color/button_yellow_light_normal</color>
-    <color name="theme_button_pressed">@color/button_yellow_light_pressed</color>
-
     <!-- used in red theme -->
     <color name="theme_color_red">@color/main_red</color>
     <color name="theme_color_light_red">@color/main_red_light</color>

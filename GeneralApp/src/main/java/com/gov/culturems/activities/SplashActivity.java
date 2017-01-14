@@ -9,11 +9,12 @@ import android.widget.LinearLayout;
 import com.gov.culturems.R;
 import com.gov.culturems.VersionController;
 import com.gov.culturems.common.UserManager;
+import com.gov.culturems.common.base.BaseActivity;
 
 /**
  * Created by peter on 6/23/15.
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
 
     private static final int delayTime = 2000;
 

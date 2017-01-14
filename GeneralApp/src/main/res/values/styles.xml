@@ -1,16 +1,23 @@
 <resources>
 
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <!--<item name="android:actionBarStyle">@style/MyActionBarGreen</item>-->
 
         <!--<item name="android:windowAnimationStyle">@style/activityAnimation</item>-->
     </style>
 
-    <style name="MyActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
-        <!--<item name="android:background">@color/theme_color</item>-->
-        <!--<item name="android:background">@drawable/title_bg_blue</item>-->
+    <style name="MyActionBarGreen" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/title_bg_green</item>
     </style>
+
+    <style name="MyActionBarRed" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/theme_color_red</item>
+    </style>
+
+    <style name="MyActionBarBlue" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/title_bg_blue</item>
+    </style>
+
 
     <!-- animation 样式 -->
     <style name="activityAnimation" parent="@android:style/Animation">

@@ -21,6 +21,7 @@ import com.gov.culturems.R;
 import com.gov.culturems.WebsocketService;
 import com.gov.culturems.common.CommonConstant;
 import com.gov.culturems.common.UserManager;
+import com.gov.culturems.common.base.BaseActivity;
 import com.gov.culturems.common.http.CommonResponse;
 import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.RequestParams;
@@ -44,7 +45,7 @@ import java.util.List;
  * 风扇类，控制规则和告警规则查看以及修改
  * Created by peter on 11/10/15.
  */
-public class FanControlActivity extends Activity implements View.OnClickListener {
+public class FanControlActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = FanControlActivity.class.getName();
 

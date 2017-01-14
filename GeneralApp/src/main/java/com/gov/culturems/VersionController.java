@@ -42,7 +42,12 @@ public class VersionController {
     public static final String SCENE_DATA_IC = "scene_data_ic";
     public static final String SCENE_WARNING_IC = "scene_warning_ic";
     public static final String WELCOME_PAGE = "welcome_page";
+    public static final String THEME_COLOR = "edit_icon";
+    public static final String THEME_COLOR_LIGHT = "edit_icon";
+    public static final String THEME_BUTTON_NORMAL = "edit_icon";
+    public static final String THEME_BUTTON_PRESSED = "edit_icon";
     public static final String EDIT_ICON = "edit_icon";
+
     //--------------------------------------------------------------------------------------
 
     public static Map<String, Integer> redResourceMap;
@@ -51,7 +56,12 @@ public class VersionController {
 
 
     static {
+
         redResourceMap = new HashMap<>();
+        redResourceMap.put(THEME_COLOR, R.color.theme_color_red);
+        redResourceMap.put(THEME_COLOR_LIGHT, R.color.theme_color_light_red);
+        redResourceMap.put(THEME_BUTTON_NORMAL, R.color.theme_button_normal_red);
+        redResourceMap.put(THEME_BUTTON_PRESSED, R.color.theme_button_pressed_red);
         redResourceMap.put(ICON_SCENE, R.drawable.icon_scene_red);
         redResourceMap.put(LOGIN_BG, R.drawable.login_bg_red);
         redResourceMap.put(LOGIN_USERNAME, R.drawable.login_username_red);
@@ -63,6 +73,10 @@ public class VersionController {
 
 
         blueResourceMap = new HashMap<>();
+        blueResourceMap.put(THEME_COLOR, R.color.theme_color_red);
+        blueResourceMap.put(THEME_COLOR_LIGHT, R.color.theme_color_light_red);
+        blueResourceMap.put(THEME_BUTTON_NORMAL, R.color.theme_button_normal_red);
+        blueResourceMap.put(THEME_BUTTON_PRESSED, R.color.theme_button_pressed_red);
         blueResourceMap.put(ICON_SCENE, R.drawable.icon_scene_blue);
         blueResourceMap.put(LOGIN_BG, R.drawable.login_bg_blue);
         blueResourceMap.put(LOGIN_USERNAME, R.drawable.login_username_blue);
@@ -74,6 +88,10 @@ public class VersionController {
 
 
         greenResourceMap = new HashMap<>();
+        greenResourceMap.put(THEME_COLOR, R.color.theme_color_red);
+        greenResourceMap.put(THEME_COLOR_LIGHT, R.color.theme_color_light_red);
+        greenResourceMap.put(THEME_BUTTON_NORMAL, R.color.theme_button_normal_red);
+        greenResourceMap.put(THEME_BUTTON_PRESSED, R.color.theme_button_pressed_red);
         greenResourceMap.put(ICON_SCENE, R.drawable.icon_scene_green);
         greenResourceMap.put(LOGIN_BG, R.drawable.login_bg_green);
         greenResourceMap.put(LOGIN_USERNAME, R.drawable.login_username_green);

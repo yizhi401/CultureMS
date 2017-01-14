@@ -41,6 +41,7 @@ import com.gov.culturems.R;
 import com.gov.culturems.adapters.DryingRoomAdapter;
 import com.gov.culturems.common.CommonConstant;
 import com.gov.culturems.common.UserManager;
+import com.gov.culturems.common.base.BaseActivity;
 import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.ListResponse;
 import com.gov.culturems.common.http.RequestParams;
@@ -61,7 +62,7 @@ import java.util.List;
 /**
  * Created by peter on 2015/11/7.
  */
-public class DryingRoomActivity extends Activity {
+public class DryingRoomActivity extends BaseActivity {
 
     private static final String TAG = DryingRoomActivity.class.getName();
 

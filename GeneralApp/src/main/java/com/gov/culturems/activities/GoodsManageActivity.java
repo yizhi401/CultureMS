@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.R;
 import com.gov.culturems.common.CommonConstant;
+import com.gov.culturems.common.base.BaseActivity;
 import com.gov.culturems.common.http.CommonResponse;
 import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.ListResponse;
@@ -36,7 +37,7 @@ import java.util.TimeZone;
 
 import hirondelle.date4j.DateTime;
 
-public class GoodsManageActivity extends Activity implements View.OnClickListener {
+public class GoodsManageActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView goodsText;
     private EditText remarkEdit;

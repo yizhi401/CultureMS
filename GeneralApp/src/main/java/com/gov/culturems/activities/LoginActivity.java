@@ -21,6 +21,7 @@ import com.gov.culturems.R;
 import com.gov.culturems.VersionController;
 import com.gov.culturems.common.CommonConstant;
 import com.gov.culturems.common.UserManager;
+import com.gov.culturems.common.base.BaseActivity;
 import com.gov.culturems.common.http.CommonResponse;
 import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.RequestParams;
@@ -37,7 +38,7 @@ import com.gov.culturems.utils.UIUtil;
  * //TODO 需要增加返回重新选择工厂按钮和显示已经选择的工厂名称
  * Created by peter on 6/9/15.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends BaseActivity {
 
     private boolean doubleBackToExitPressedOnce = false;
 

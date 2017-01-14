@@ -12,6 +12,7 @@ import android.widget.Button;
 import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.R;
+import com.gov.culturems.common.base.BaseActivity;
 import com.gov.culturems.common.http.CommonResponse;
 import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.RequestParams;
@@ -38,7 +39,7 @@ import java.util.List;
  * 显示了该设备的相关信息
  * Created by peter on 6/9/15.
  */
-public class DeviceInfoActivity extends Activity {
+public class DeviceInfoActivity extends BaseActivity {
 
     private DeviceItemView nameItem;
     private DeviceItemView idItem;
