@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="选择你所在的茶厂名称"
-        android:textColor="@color/theme_color"
         android:textSize="18sp" />
 
     <RelativeLayout

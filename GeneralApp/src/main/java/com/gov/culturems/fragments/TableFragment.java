@@ -1,6 +1,7 @@
 package com.gov.culturems.fragments;
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -10,12 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.R;
+import com.gov.culturems.VersionController;
 import com.gov.culturems.activities.DeviceDataActivity;
 import com.gov.culturems.common.CommonConstant;
 import com.gov.culturems.common.base.MyBaseAdapter;
@@ -111,6 +114,9 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
         sensorData = new CopyOnWriteArrayList<>();
         adapter = new SensorAdapter(sensorData, getActivity());
         dataList.setAdapter(adapter);
+        dataList.setDivider(new ColorDrawable(getResources().getColor(VersionController.getDrawable(VersionController.THEME_COLOR_LIGHT))));
+        LinearLayout dataListTitle = (LinearLayout)rootView.findViewById(R.id.data_list_title);
+        dataListTitle.setDividerDrawable(new ColorDrawable(getResources().getColor(VersionController.getDrawable(VersionController.THEME_COLOR_LIGHT))));
 
         getDeviceDatas();
 
@@ -224,6 +230,7 @@ public class TableFragment extends Fragment implements DeviceDataActivity.Device
                 holder.text3 = (TextView) convertView.findViewById(R.id.text3);
 //                holder.text5 = (TextView) convertView.findViewById(R.id.text5);
                 holder.text4 = (TextView) convertView.findViewById(R.id.text4);
+                holder.text4.setBackgroundResource(VersionController.getDrawable(VersionController.));
                 convertView.setTag(holder);
             } else {
                 holder = (Holder) convertView.getTag();

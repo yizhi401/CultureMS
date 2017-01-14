@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.R;
+import com.gov.culturems.VersionController;
 import com.gov.culturems.common.base.BaseActivity;
 import com.gov.culturems.common.base.MyBaseAdapter;
 import com.gov.culturems.common.http.HttpUtil;
@@ -120,6 +121,8 @@ public class FactoryChooseActivity extends BaseActivity {
                 hideSoftInputKeyboard();
             }
         });
+        TextView chooseHint = (TextView)findViewById(R.id.choose_hint);
+        chooseHint.setTextColor(getResources().getColor(VersionController.getDrawable(VersionController.THEME_COLOR)));
     }
 
     private void popConfirmDialog(final TeaFactory teaFactory) {

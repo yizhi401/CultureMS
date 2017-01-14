@@ -47,6 +47,8 @@ public class VersionController {
     public static final String THEME_BUTTON_NORMAL = "edit_icon";
     public static final String THEME_BUTTON_PRESSED = "edit_icon";
     public static final String EDIT_ICON = "edit_icon";
+    public static final String BG_TABLE = "bg_table";
+    public static final String LIST_BG = "list_bg";
 
     //--------------------------------------------------------------------------------------
 
