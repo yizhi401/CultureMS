@@ -31,8 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/goods_title"
             android:background="@color/trans"
-            android:gravity="center_vertical"
             android:drawableRight="@drawable/down_arrow"
+            android:gravity="center_vertical"
             android:padding="10dp"
             android:text="@string/choose_goods"
             android:textSize="15sp" />
@@ -68,6 +68,51 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/time_title"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:background="@color/trans"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="时间"
+            android:textColor="@color/text_gray"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/date_picker_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/goods_title"
+            android:background="@color/trans"
+            android:gravity="center_vertical"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp"
+            android:text="2017-05-12"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/time_picker_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/date_picker_text"
+            android:background="@color/trans"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:text="12:30"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -94,5 +139,6 @@
             android:text="结束"
             android:textColor="@color/white" />
     </LinearLayout>
+
 
 </LinearLayout>

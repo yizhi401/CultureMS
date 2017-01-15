@@ -1,6 +1,7 @@
 package com.gov.culturems.activities;
 
-import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
@@ -32,8 +35,7 @@ import com.gov.culturems.entities.Goods;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.utils.UIUtil;
 
-import junit.runner.Version;
-
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
@@ -46,6 +48,9 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
     private EditText remarkEdit;
     private Button startBtn;
     private Button endBtn;
+    private TextView timeText;
+    private TextView dateText;
+    private DateTime startDateTime;
 
     private List<Goods> goodsList = new ArrayList<>();
 
@@ -63,6 +68,7 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
         getGoodsList();
         dryingRoom = DryingRoomHelper.getInstance().getDryingRoom();
         getActionBar().setTitle(dryingRoom.getName());
+        startDateTime = DateTime.now(TimeZone.getTimeZone("Asia/Shanghai"));
         initViews();
     }
 
@@ -137,6 +143,11 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
         overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
     }
 
+    private String format00(int num) {
+        DecimalFormat mFormat = new DecimalFormat("00");
+        return mFormat.format(num);
+    }
+
     private void startBaking() {
         if (chosenGoods == null) {
             Toast.makeText(this, "请选择茶品类型", Toast.LENGTH_SHORT).show();
@@ -196,11 +207,49 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
         outerLayout = (LinearLayout) findViewById(R.id.outer_layout);
         outerLayout.setOnClickListener(this);
         outerLayout.setBackgroundResource(VersionController.getDrawable(VersionController.BG_UPPER));
-        LinearLayout remarkLayout = (LinearLayout)findViewById(R.id.remark_layout);
+        LinearLayout remarkLayout = (LinearLayout) findViewById(R.id.remark_layout);
         remarkLayout.setBackgroundResource(VersionController.getDrawable(VersionController.BG_BOTTOM));
+        timeText = (TextView) findViewById(R.id.time_picker_text);
+        timeText.setText(startDateTime.format("hh:mm"));
+        timeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTimePicker();
+            }
+        });
+
+        dateText = (TextView) findViewById(R.id.date_picker_text);
+        dateText.setText(startDateTime.format("YYYY-MM-DD"));
+        dateText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicker();
+            }
+        });
 
         refreshViewByBaking();
     }
+
+    private void showDatePicker() {
+        new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                dateText.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                startDateTime = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0, 0, 0);
+            }
+        }, startDateTime.getYear(), startDateTime.getMonth() - 1, startDateTime.getDay()).show();
+    }
+
+    private void showTimePicker() {
+        new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                startDateTime = new DateTime(startDateTime.getYear(), startDateTime.getMonth(), startDateTime.getDay(), hourOfDay, minute, 0, 0);
+                timeText.setText(format00(hourOfDay) + ":" + format00(minute));
+            }
+        }, startDateTime.getHour(), startDateTime.getMinute(), true).show();
+    }
+
 
     private void refreshViewByBaking() {
         if (isBaking()) {
