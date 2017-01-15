@@ -3,6 +3,7 @@ package com.gov.culturems.common.base;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.gov.culturems.R;
@@ -23,12 +24,13 @@ public class BaseActivity extends Activity {
     }
 
     private Drawable getDrawableByVersion() {
+        int resId = VersionController.getDrawable(VersionController.TITLE_BG);
         if(VersionController.CURRENT_VERSION == VersionController.GENERAL){
-            return getResources().getDrawable(R.drawable.title_bg_blue);
+            return getResources().getDrawable(resId);
         }else if(VersionController.CURRENT_VERSION == VersionController.TEACORP){
-            return getResources().getDrawable(R.drawable.title_bg_green);
+            return getResources().getDrawable(resId);
         }else if(VersionController.CURRENT_VERSION == VersionController.GONGWANGFU){
-            return new ColorDrawable(getResources().getColor(R.color.theme_color_red));
+            return new ColorDrawable(getResources().getColor(resId));
         }
         return null;
     }

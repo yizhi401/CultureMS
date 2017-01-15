@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -61,6 +62,7 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
             getActionBar().setDisplayHomeAsUpEnabled(true);
             getActionBar().setHomeButtonEnabled(true);
             getActionBar().setTitle(dryingRoom.getName());
+            getActionBar().setBackgroundDrawable(getDrawableByVersion());
         }
 
         initViews();
@@ -70,6 +72,17 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
         void onDataChanged(DateTime changedDate);
     }
 
+    private Drawable getDrawableByVersion() {
+        int resId = VersionController.getDrawable(VersionController.TITLE_BG);
+        if(VersionController.CURRENT_VERSION == VersionController.GENERAL){
+            return getResources().getDrawable(resId);
+        }else if(VersionController.CURRENT_VERSION == VersionController.TEACORP){
+            return getResources().getDrawable(resId);
+        }else if(VersionController.CURRENT_VERSION == VersionController.GONGWANGFU){
+            return new ColorDrawable(getResources().getColor(resId));
+        }
+        return null;
+    }
     private void getDryingRoomInfo() {
         dryingRoom = DryingRoomHelper.getInstance().getDryingRoom();
         device = DryingRoomHelper.getInstance().getDevice();

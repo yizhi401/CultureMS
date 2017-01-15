@@ -46,7 +46,7 @@ import java.util.List;
  * 登录前，用户选择所属工厂的页面
  * Created by peter on 3/25/16.
  */
-public class FactoryChooseActivity extends BaseActivity {
+public class FactoryChooseActivity extends Activity {
 
     private boolean doubleBackToExitPressedOnce = false;
 

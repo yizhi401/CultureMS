@@ -42,10 +42,10 @@ public class VersionController {
     public static final String SCENE_DATA_IC = "scene_data_ic";
     public static final String SCENE_WARNING_IC = "scene_warning_ic";
     public static final String WELCOME_PAGE = "welcome_page";
-    public static final String THEME_COLOR = "edit_icon";
-    public static final String THEME_COLOR_LIGHT = "edit_icon";
-    public static final String THEME_BUTTON_NORMAL = "edit_icon";
-    public static final String THEME_BUTTON_PRESSED = "edit_icon";
+    public static final String THEME_COLOR = "theme_color";
+    public static final String THEME_COLOR_LIGHT = "theme_color_light";
+    public static final String THEME_BUTTON_NORMAL = "theme_button_normal";
+    public static final String THEME_BUTTON_PRESSED = "theme_button_pressed";
     public static final String EDIT_ICON = "edit_icon";
     public static final String BG_TABLE = "bg_table";
     public static final String LIST_BG = "list_bg";
@@ -54,6 +54,7 @@ public class VersionController {
     public static final String BG_MIDDLE = "bg_middle";
     public static final String BG_UPPER = "bg_upper";
     public static final String TAB_SELECTOR = "tab_selector";
+    public static final String TITLE_BG = "title_bg";
 
     //--------------------------------------------------------------------------------------
 
@@ -65,6 +66,7 @@ public class VersionController {
     static {
 
         redResourceMap = new HashMap<>();
+        redResourceMap.put(TITLE_BG,R.color.theme_color_red);
         redResourceMap.put(TAB_SELECTOR,R.drawable.tab_selector_red);
         redResourceMap.put(BG_UPPER,R.drawable.bg_upper_red);
         redResourceMap.put(BG_TABLE,R.drawable.bg_table_red);
@@ -87,6 +89,7 @@ public class VersionController {
 
 
         blueResourceMap = new HashMap<>();
+        blueResourceMap.put(TITLE_BG,R.drawable.title_bg_blue);
         blueResourceMap.put(TAB_SELECTOR,R.drawable.tab_selector_blue);
         blueResourceMap.put(BG_UPPER,R.drawable.bg_upper_blue);
         blueResourceMap.put(BG_TABLE,R.drawable.bg_table_blue);
@@ -109,6 +112,7 @@ public class VersionController {
 
 
         greenResourceMap = new HashMap<>();
+        greenResourceMap.put(TITLE_BG,R.drawable.title_bg_green);
         greenResourceMap.put(TAB_SELECTOR,R.drawable.tab_selector_green);
         greenResourceMap.put(BG_UPPER,R.drawable.bg_upper_green);
         greenResourceMap.put(BG_TABLE,R.drawable.bg_table_green);

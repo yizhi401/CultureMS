@@ -9,6 +9,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gov.culturems.R;
+import com.gov.culturems.VersionController;
+
+import junit.runner.Version;
 
 /**
  * Created by peter on 6/9/15.
@@ -83,19 +86,19 @@ public class DeviceItemView extends RelativeLayout {
         switch (type) {
             case TYPE_ALONE:
                 Log.i("mInfo", "alone " + title + type);
-                setBackgroundResource(R.drawable.bg_alone);
+                setBackgroundResource(VersionController.getDrawable(VersionController.BG_ALONE));
                 break;
             case TYPE_UPPER:
                 Log.i("mInfo", "upper" + title + type);
-                setBackgroundResource(R.drawable.bg_upper);
+                setBackgroundResource(VersionController.getDrawable(VersionController.BG_UPPER));
                 break;
             case TYPE_MIDDLE:
                 Log.i("mInfo", "middle" + title + type);
-                setBackgroundResource(R.drawable.bg_middle);
+                setBackgroundResource(VersionController.getDrawable(VersionController.BG_MIDDLE));
                 break;
             case TYPE_BOTTOM:
                 Log.i("mInfo", "bottom" + title + type);
-                setBackgroundResource(R.drawable.bg_bottom);
+                setBackgroundResource(VersionController.getDrawable(VersionController.BG_BOTTOM));
                 break;
             default:
                 break;

@@ -14,7 +14,7 @@ import com.gov.culturems.common.base.BaseActivity;
 /**
  * Created by peter on 6/23/15.
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends Activity {
 
     private static final int delayTime = 2000;
 
