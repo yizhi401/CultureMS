@@ -51,6 +51,10 @@
             android:name=".activities.DeviceDataActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activities.SelectGoodsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activities.FanControlActivity"
             android:screenOrientation="portrait" />
 
@@ -66,8 +70,9 @@
             android:name=".activities.AppInfoActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".activities.GoodsManageActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.GoodsManageActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

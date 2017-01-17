@@ -35,6 +35,7 @@ import com.gov.culturems.entities.Goods;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.utils.UIUtil;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -259,7 +260,8 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
             if (!TextUtils.isEmpty(dryingRoom.getMemo())) {
                 remarkEdit.setText(dryingRoom.getMemo());
             }
-            goodsText.setOnClickListener(null);
+//            goodsText.setOnClickListener(null);
+            goodsText.setOnClickListener(getChoseGoodsClickListener());
             goodsText.setText(dryingRoom.getGoodsName());
         } else {
             startBtn.setEnabled(true);
@@ -278,10 +280,34 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
                 if (goodsList.size() == 0) {
                     getGoodsList();
                 } else {
-                    showChoseGoodsDialog();
+                    jumpToSelectActivity();
+//                    showChoseGoodsDialog();
                 }
             }
         };
+    }
+
+    public static final int REQUEST_SELECT_GOODS = 1001;
+
+    private void jumpToSelectActivity() {
+        Intent i = new Intent(this, SelectGoodsActivity.class);
+        i.putExtra("goodsList", (Serializable) goodsList);
+        startActivityForResult(i, REQUEST_SELECT_GOODS);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_SELECT_GOODS) {
+            String goodsName = data.getStringExtra("goods");
+            for (Goods temp : goodsList) {
+                if (goodsName.equals(temp.GoodsName)) {
+                    chosenGoods = temp;
+                    goodsText.setText(goodsName);
+                    break;
+                }
+            }
+        }
     }
 
     private void showChoseGoodsDialog() {
