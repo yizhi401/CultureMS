@@ -3,18 +3,21 @@ package com.gov.culturems.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.SectionIndexer;
+import android.widget.TextView;
 
 import com.gov.culturems.R;
 import com.gov.culturems.common.base.BaseActivity;
+import com.gov.culturems.common.base.MyBaseAdapter;
 import com.gov.culturems.entities.Goods;
 import com.gov.culturems.views.IndexableListView;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -23,7 +26,7 @@ import java.util.List;
 
 public class SelectGoodsActivity extends BaseActivity {
 
-    private ArrayList<String> mItems;
+    //    private ArrayList<String> mItems;
     private IndexableListView mListView;
 
     private List<Goods> goodsList;
@@ -42,40 +45,45 @@ public class SelectGoodsActivity extends BaseActivity {
             return;
         }
 
-        mItems = new ArrayList<String>();
+//        mItems = new ArrayList<String>();
         for (Goods item : goodsList) {
             try {
+                item.GoodsNamePinyin = " ";
                 if (TextUtils.isEmpty(item.GoodsName)) {
                     continue;
                 }
                 char firstChar = item.GoodsName.charAt(0);
                 String[] goodsName = PinyinHelper.toHanyuPinyinStringArray(firstChar);
                 if (goodsName.length >= 1) {
-                    mItems.add(goodsName[0]);
+                    item.GoodsNamePinyin = goodsName[0];
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
         }
-        Collections.sort(mItems);
+        Collections.sort(goodsList, new Comparator<Goods>() {
+            @Override
+            public int compare(Goods lhs, Goods rhs) {
+                return lhs.GoodsNamePinyin.compareTo(rhs.GoodsNamePinyin);
+            }
+        });
 
-        ContentAdapter adapter = new ContentAdapter(this,
-                android.R.layout.simple_list_item_1, mItems);
+        ContentAdapter adapter = new ContentAdapter(goodsList, this);
 
         mListView = (IndexableListView) findViewById(R.id.listview);
         mListView.setAdapter(adapter);
         mListView.setFastScrollEnabled(true);
     }
 
-    private class ContentAdapter extends ArrayAdapter<String> implements SectionIndexer {
+    private class ContentAdapter extends MyBaseAdapter<Goods> implements SectionIndexer {
 
         private String mSections = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        public ContentAdapter(Context context, int textViewResourceId,
-                              List<String> objects) {
-            super(context, textViewResourceId, objects);
+        public ContentAdapter(List<Goods> data, Context context) {
+            super(data, context);
         }
+
 
         @Override
         public int getPositionForSection(int section) {
@@ -85,11 +93,17 @@ public class SelectGoodsActivity extends BaseActivity {
                     if (i == 0) {
                         // For numeric section
                         for (int k = 0; k <= 9; k++) {
-                            if (String.valueOf(getItem(j).charAt(0)).toLowerCase().equals(String.valueOf(mSections.charAt(i))))
+                            if (String.valueOf(
+                                    getItem(j).GoodsNamePinyin.charAt(0)).toLowerCase().
+                                    equals(String.valueOf(mSections.charAt(i))
+                                    ))
                                 return j;
                         }
                     } else {
-                        if (String.valueOf(getItem(j).charAt(0)).toLowerCase().equals(String.valueOf(mSections.charAt(i))))
+                        if (String.valueOf(
+                                getItem(j).GoodsNamePinyin.charAt(0)).toLowerCase().
+                                equals(String.valueOf(mSections.charAt(i))
+                                ))
                             return j;
                     }
                 }
@@ -108,6 +122,19 @@ public class SelectGoodsActivity extends BaseActivity {
             for (int i = 0; i < mSections.length(); i++)
                 sections[i] = String.valueOf(mSections.charAt(i));
             return sections;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            TextView tv;
+            if (convertView == null) {
+                tv = new TextView(context);
+            } else {
+                tv = (TextView) convertView;
+            }
+
+            tv.setText(getItem(position).GoodsName);
+            return tv;
         }
     }
 }
