@@ -168,13 +168,13 @@ public class VersionController {
      */
     public static String getURLServer() {
         if (CURRENT_VERSION == GONGWANGFU) {
-            return "http://121.41.230.252:8018/";
+            return "http://121.41.230.252:8023/";
         } else if (CURRENT_VERSION == GENERAL) {
-            return "http://121.41.230.252:8019/";
+            return "http://121.41.230.252:8023/";
         } else if (CURRENT_VERSION == TEACORP) {
-            return "http://121.41.230.252:8019/";
+            return "http://121.41.230.252:8023/";
         }
-        return "http://121.41.230.252:8019/";
+        return "http://121.41.230.252:8023/";
     }
 
     /**

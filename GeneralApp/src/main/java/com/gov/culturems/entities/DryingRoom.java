@@ -3,6 +3,8 @@ package com.gov.culturems.entities;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.gov.culturems.common.http.response.DryingRoomResp;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +17,7 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
 
     public static final String STATE_FINISHED = "已完成";
     public static final String STATE_ONGOING = "进行中";
+
 
     public static Map<String, String> actionFeedbackMap;
 
@@ -36,6 +39,44 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
     private String HumidityValueTxt;
     private String DeviceDispTxt;
 
+    private String SceneUseType;
+    private String SceneUseTypeDisplayTxt;
+
+    private List<DryingRoomResp.DeviceMonitor> devMonitors;
+    private List<DryingRoomResp.DeviceControl> devContrls;
+
+
+    public String getSceneUseType() {
+        return SceneUseType;
+    }
+
+    public void setSceneUseType(String sceneUseType) {
+        SceneUseType = sceneUseType;
+    }
+
+    public String getSceneUseTypeDisplayTxt() {
+        return SceneUseTypeDisplayTxt;
+    }
+
+    public List<DryingRoomResp.DeviceMonitor> getDevMonitors() {
+        return devMonitors;
+    }
+
+    public void setDevMonitors(List<DryingRoomResp.DeviceMonitor> devMonitors) {
+        this.devMonitors = devMonitors;
+    }
+
+    public List<DryingRoomResp.DeviceControl> getDevContrls() {
+        return devContrls;
+    }
+
+    public void setDevContrls(List<DryingRoomResp.DeviceControl> devContrls) {
+        this.devContrls = devContrls;
+    }
+
+    public void setSceneUseTypeDisplayTxt(String sceneUseTypeDisplayTxt) {
+        SceneUseTypeDisplayTxt = sceneUseTypeDisplayTxt;
+    }
 
     public String getTempatureTxt() {
         return TemperatureValueTxt;

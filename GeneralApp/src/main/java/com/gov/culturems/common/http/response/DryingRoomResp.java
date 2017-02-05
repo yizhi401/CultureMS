@@ -22,17 +22,24 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
     private String GoodsName;
     private String SceneId;
     private String SceneName;
+    private String SceneUseType;
+    private String SceneUseTypeDisplayTxt;
     private String Memo;
     private String BeginTime;
     private String EndTime;
     private String State;
-    private List<DeviceData> DeviceDatas;
-    private List<SensorData> SensorDatas;
-    private List<DeviceCKData> DeviceCKDatas;
+    private String IsAlert;
+
     private String TemperatureValueTxt;
     private String HumidityValueTxt;
     private String DeviceDispTxt;
 
+    private List<DeviceData> DeviceDatas;
+    private List<SensorData> SensorDatas;
+    private List<DeviceCKData> DeviceCKDatas;
+
+    private List<DeviceMonitor> devMonitors;
+    private List<DeviceControl> devContrls;
 
     @Override
     public int compareTo(DryingRoomResp another) {
@@ -72,6 +79,17 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
             baseDevice.setDeviceStatus(DeviceStatus);
             return baseDevice;
         }
+    }
+
+    public static class DeviceMonitor implements Serializable{
+        public String DeviceId;
+        public String DeviceName;
+    }
+
+    public static class DeviceControl implements Serializable{
+        public String DeviceId;
+        public String DeviceName;
+        public String CtrlDirection;
     }
 
     public class DeviceCKData implements Serializable {
@@ -123,6 +141,8 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
         room.setEndTime(EndTime);
         room.setMemo(Memo);
         room.setState(State);
+        room.setSceneUseType(SceneUseType);
+        room.setSceneUseTypeDisplayTxt(SceneUseTypeDisplayTxt);
         try {
             List<BaseDevice> deviceList = new ArrayList<>();
             for (DeviceData temp : DeviceDatas) {
@@ -144,6 +164,8 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
         room.setTemperatureValueHTML(TemperatureValueTxt);
         room.setHumidityValueTxt(HumidityValueTxt);
         room.setDeviceDispTxt(DeviceDispTxt);
+        room.setDevContrls(devContrls);
+        room.setDevMonitors(devMonitors);
         return room;
     }
 
