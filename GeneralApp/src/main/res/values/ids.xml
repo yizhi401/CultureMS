@@ -2,4 +2,5 @@
 <resources>
     <item name="menu_search" type="id" />
     <item name="menu_more" type="id" />
+    <item name="menu_edit" type="id"/>
 </resources>

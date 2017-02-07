@@ -3,52 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/title_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:id="@+id/data_layout"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:background="@drawable/tab_selector_green">
-
-            <TextView
-                android:id="@+id/data_text"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_centerInParent="true"
-                android:drawablePadding="5dp"
-                android:gravity="center"
-                android:text="数据"
-                android:textSize="20sp" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/warning_layout"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_weight="1"
-            android:background="@drawable/tab_selector_green">
-
-            <TextView
-                android:id="@+id/warning_text"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_centerInParent="true"
-                android:drawablePadding="5dp"
-                android:gravity="center"
-                android:text="报警"
-                android:textSize="20sp" />
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
     <RelativeLayout
         android:id="@+id/bottom_layout"
         android:layout_width="wrap_content"
@@ -102,5 +56,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.v4.widget.SwipeRefreshLayout>
+
 
 </RelativeLayout>

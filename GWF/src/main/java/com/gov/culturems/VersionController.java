@@ -34,8 +34,8 @@ public class VersionController {
      * 5. Application Id (build.gradle)
      * 6. title_bar background (style.xml)
      */
-//    public static int CURRENT_VERSION = GONGWANGFU;
-    public static int CURRENT_VERSION = TEACORP;
+    public static int CURRENT_VERSION = GONGWANGFU;
+//    public static int CURRENT_VERSION = TEACORP;
 
     //--------------------------------------------------------------------------------------
     public static final String LAUNCHER = "launcher";

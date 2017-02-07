@@ -13,8 +13,8 @@ import com.gov.culturems.R;
 import com.gov.culturems.activities.DeviceDataActivity;
 import com.gov.culturems.activities.DryingRoomActivity;
 import com.gov.culturems.activities.DryingRoomHelper;
+import com.gov.culturems.activities.SceneActivity;
 import com.gov.culturems.common.base.MyBaseAdapter;
-import com.gov.culturems.entities.BaseDevice;
 import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.utils.LogUtil;
 import com.gov.culturems.utils.TimeUtil;
@@ -74,12 +74,12 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         holder.sensor1.setText(dryingRoom.getTempatureTxt());
         holder.sensor2.setVisibility(View.VISIBLE);
         holder.sensor2.setText(dryingRoom.getHumidityTxt());
-        if(!dryingRoom.hasOnlineDevice()){
+        if (!dryingRoom.hasOnlineDevice()) {
             holder.sensor1.setText("未知");
             holder.sensor1.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
             holder.sensor2.setText("未知");
             holder.sensor2.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
-        }else{
+        } else {
             holder.sensor1.setTextColor(context.getResources().getColor(R.color.main_green));
             holder.sensor2.setTextColor(context.getResources().getColor(R.color.main_green));
         }
@@ -107,7 +107,7 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
 //        return hasOnlineDevice;
 //    }
 
-    private void tryStartDeviceActivity(DryingRoom chosenRoom) {
+    private void tryStartDeviceActivity(final DryingRoom chosenRoom) {
         boolean hasOnlineDevice = chosenRoom.hasOnlineDevice();
         if (!hasOnlineDevice) {
             Toast.makeText(context, "设备离线!", Toast.LENGTH_SHORT).show();
@@ -116,9 +116,17 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
             helper.initDryingRoomInfo(chosenRoom, new DryingRoomHelper.DryingRoomInitListener() {
                 @Override
                 public void onInitSucceed() {
-                    Intent intent = new Intent(context, DeviceDataActivity.class);
-                    ((Activity) context).startActivityForResult(intent, DryingRoomActivity.REQUEST_CODE);
-                    ((Activity) context).overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+                    if (DryingRoom.ROOM_TYPE_CK.equals(chosenRoom.getSceneUseType())){
+                        Intent intent1 = new Intent(context, SceneActivity.class);
+                        intent1.putExtra("scene", chosenRoom);
+                        ((Activity) context).startActivityForResult(intent1, SceneActivity.REQUEST_CODE);
+                        ((Activity) context).overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+                    }else{
+                        Intent intent = new Intent(context, DeviceDataActivity.class);
+                        ((Activity) context).startActivityForResult(intent, DryingRoomActivity.REQUEST_CODE);
+                        ((Activity) context).overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+                    }
+
                 }
 
                 @Override
