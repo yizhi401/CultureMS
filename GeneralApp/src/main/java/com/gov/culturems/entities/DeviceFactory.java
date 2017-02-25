@@ -7,8 +7,8 @@ public class DeviceFactory {
     public static BaseDevice createDevice(String UseType) {
         if (BaseDevice.USE_TYPE_CK.equals(UseType)) {
             return new DCDevice();
-        } else if (BaseDevice.USE_TYPE_DETECTION.equals(UseType)) {
-            return new DetectionDevice();
+        } else if (BaseDevice.USE_TYPE_MONITOR.equals(UseType)) {
+            return new MonitorDevice();
         } else if (BaseDevice.USE_TYPE_CONTROL.equals(UseType)) {
             return new ControlDevice();
         } else {

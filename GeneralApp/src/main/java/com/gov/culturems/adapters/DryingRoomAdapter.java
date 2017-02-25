@@ -116,12 +116,13 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
             helper.initDryingRoomInfo(chosenRoom, new DryingRoomHelper.DryingRoomInitListener() {
                 @Override
                 public void onInitSucceed() {
-                    if (DryingRoom.ROOM_TYPE_CK.equals(chosenRoom.getSceneUseType())){
+                    if (!DryingRoom.ROOM_TYPE_CK.equals(chosenRoom.getSceneUseType())) {
                         Intent intent1 = new Intent(context, SceneActivity.class);
                         intent1.putExtra("scene", chosenRoom);
                         ((Activity) context).startActivityForResult(intent1, SceneActivity.REQUEST_CODE);
                         ((Activity) context).overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
-                    }else{
+                    } else {
+                        //测控设备 直接进入圆圈页面
                         Intent intent = new Intent(context, DeviceDataActivity.class);
                         ((Activity) context).startActivityForResult(intent, DryingRoomActivity.REQUEST_CODE);
                         ((Activity) context).overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);

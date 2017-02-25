@@ -312,6 +312,8 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
     private void jumpToGoodsManageActivity(){
         Intent i = new Intent(this,GoodsManageActivity.class);
         startActivity(i);
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+
     }
 
     @Override

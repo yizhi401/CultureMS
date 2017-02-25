@@ -31,16 +31,6 @@ public class DCDevice extends BaseDevice {
         conditionMap.put("3", DCDevice.HUMIDITY_LOWER);
     }
 
-    public static class DeviceRule implements Serializable{
-        public String DeviceId;
-        public String SensorType;
-        public String SensorTypeName;
-        public String ThresholdUp;
-        public String ThresholdDown;
-
-    }
-
-
     private String ActionFeedback;
     private List<DeviceRule> Rules;
     private List<AlertInfo> Alerts;

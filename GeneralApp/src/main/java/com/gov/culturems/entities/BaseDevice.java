@@ -10,7 +10,7 @@ import java.util.List;
 public class BaseDevice extends BaseObj implements Comparable<BaseDevice>{
 
 
-    public static final String USE_TYPE_DETECTION = "0";//该检测器是监视检测器
+    public static final String USE_TYPE_MONITOR = "0";//该检测器是监视检测器
     public static final String USE_TYPE_CONTROL = "1";//该检测器是控制检测器
     public static final String USE_TYPE_CK = "2";//该检测器是测控检测器
 

@@ -6,10 +6,10 @@ import com.gov.culturems.entities.ControlSensor;
 import com.gov.culturems.entities.DCDevice;
 import com.gov.culturems.entities.DeviceFactory;
 import com.gov.culturems.entities.DryingRoom;
+import com.gov.culturems.entities.MonitorDevice;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -37,6 +37,7 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
     private List<DeviceData> DeviceDatas;
     private List<SensorData> SensorDatas;
     private List<DeviceCKData> DeviceCKDatas;
+    private List<DeviceMonitorData> DeviceMonitorDatas;
 
     private List<DeviceMonitor> devMonitors;
     private List<DeviceControl> devContrls;
@@ -64,6 +65,7 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
         }
     }
 
+
     public class DeviceData implements Serializable {
         private String DeviceName;
         private String ActionFeedback;
@@ -81,15 +83,52 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
         }
     }
 
-    public static class DeviceMonitor implements Serializable{
+    public static class DeviceMonitor implements Serializable {
         public String DeviceId;
         public String DeviceName;
     }
 
-    public static class DeviceControl implements Serializable{
+    public static class DeviceControl implements Serializable {
         public String DeviceId;
         public String DeviceName;
         public String CtrlDirection;
+    }
+
+    public class DeviceMonitorData implements Serializable {
+        public String DeviceName;
+        public String DeviceId;
+        public String DeviceStatus;
+        private List<Rule> Rules;
+
+        private class Rule {
+            public String DeviceId;
+            public String SensorType;
+            public String SensorTypeName;
+            public String ThresholdUp;
+            public String ThresholdDown;
+        }
+
+        public MonitorDevice convertToMonitorDevice() {
+            MonitorDevice mDevice = new MonitorDevice();
+            mDevice.setId(DeviceId);
+            mDevice.setName(DeviceName);
+            mDevice.setDeviceStatus(DeviceStatus);
+            mDevice.setUseType(BaseDevice.USE_TYPE_MONITOR);
+            if (Rules != null) {
+                List<BaseSensor> baseSensors = new ArrayList<>();
+                for (Rule temp : Rules) {
+                    ControlSensor sensor = new ControlSensor();
+                    sensor.setParentDevice(mDevice);
+                    sensor.setSensorType(temp.SensorType);
+                    sensor.setSensorTypeName(temp.SensorTypeName);
+                    sensor.setThresholdDown(temp.ThresholdDown);
+                    sensor.setThresholdUp(temp.ThresholdUp);
+                    baseSensors.add(sensor);
+                }
+                mDevice.setSensorTypes(baseSensors);
+            }
+            return mDevice;
+        }
     }
 
     public class DeviceCKData implements Serializable {
@@ -145,12 +184,15 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
         room.setSceneUseTypeDisplayTxt(SceneUseTypeDisplayTxt);
         try {
             List<BaseDevice> deviceList = new ArrayList<>();
-            for (DeviceData temp : DeviceDatas) {
-                if (BaseDevice.USE_TYPE_DETECTION.equals(temp.UseType))
-                    deviceList.add(temp.convertToBaseDevice().setParentScene(room));
-            }
+//            for (DeviceData temp : DeviceDatas) {
+//                if (BaseDevice.USE_TYPE_MONITOR.equals(temp.UseType))
+//                    deviceList.add(temp.convertToBaseDevice().setParentScene(room));
+//            }
             for (DeviceCKData temp : DeviceCKDatas) {
                 deviceList.add(temp.convertToDCDevice().setParentScene(room));
+            }
+            for (DeviceMonitorData temp : DeviceMonitorDatas) {
+                deviceList.add(temp.convertToMonitorDevice().setParentScene(room));
             }
             room.setDeviceDatas(deviceList);
             List<BaseSensor> sensorList = new ArrayList<>();

@@ -1,6 +1,5 @@
 package com.gov.culturems.activities;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,14 +28,10 @@ import com.gov.culturems.common.http.URLRequest;
 import com.gov.culturems.common.http.VolleyRequestListener;
 import com.gov.culturems.entities.BaseSensor;
 import com.gov.culturems.entities.DCDevice;
-import com.gov.culturems.entities.DeviceInfo;
-import com.gov.culturems.entities.DeviceRule;
-import com.gov.culturems.utils.AndroidUtil;
+import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.utils.UIUtil;
 import com.gov.culturems.views.NumberView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,6 +101,11 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         setContentView(R.layout.fan_setting_activity);
 
         DCDevice deviceInfo = (DCDevice) getIntent().getSerializableExtra("dc_device");
+        DryingRoom dryingRoom = (DryingRoom) getIntent().getSerializableExtra("scene");
+        if (deviceInfo == null && dryingRoom == null) {
+            Toast.makeText(this, "内部错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
             getActionBar().setHomeButtonEnabled(true);

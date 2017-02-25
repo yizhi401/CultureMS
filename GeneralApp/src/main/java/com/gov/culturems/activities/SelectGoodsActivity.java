@@ -1,10 +1,13 @@
 package com.gov.culturems.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -26,7 +29,6 @@ import java.util.List;
 
 public class SelectGoodsActivity extends BaseActivity {
 
-    //    private ArrayList<String> mItems;
     private IndexableListView mListView;
 
     private List<Goods> goodsList;
@@ -39,13 +41,17 @@ public class SelectGoodsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_select_goods);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+        getActionBar().setTitle("选择物品");
 
         goodsList = (List<Goods>) getIntent().getSerializableExtra("goodsList");
         if (goodsList == null) {
             return;
         }
 
-//        mItems = new ArrayList<String>();
+        addTestGoodsList();
+
         for (Goods item : goodsList) {
             try {
                 item.GoodsNamePinyin = " ";
@@ -54,8 +60,10 @@ public class SelectGoodsActivity extends BaseActivity {
                 }
                 char firstChar = item.GoodsName.charAt(0);
                 String[] goodsName = PinyinHelper.toHanyuPinyinStringArray(firstChar);
-                if (goodsName.length >= 1) {
-                    item.GoodsNamePinyin = goodsName[0];
+                if (goodsName != null && goodsName.length >= 1) {
+                    item.GoodsNamePinyin = goodsName[0].toUpperCase();
+                } else {
+                    item.GoodsNamePinyin = String.valueOf(firstChar).toUpperCase();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -74,6 +82,182 @@ public class SelectGoodsActivity extends BaseActivity {
         mListView = (IndexableListView) findViewById(R.id.listview);
         mListView.setAdapter(adapter);
         mListView.setFastScrollEnabled(true);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent();
+                i.putExtra("goods", goodsList.get(position));
+                setResult(RESULT_OK, i);
+                finish();
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void addTestGoodsList() {
+        Goods g = new Goods();
+        g.GoodsName = "啊";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "aaa";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "432532";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "werew";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "吧";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "从";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "的";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "额";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "发";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "ffff";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "个";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "好";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "就";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "看";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "了";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "吗";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "mmmm";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "呢";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "哦";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "篇";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "去";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "人";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "是";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "他";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "我";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "想";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "要";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "在";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "啊";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "吧";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "从";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "的";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "额";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "发";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "个";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "好";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "就";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "看";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "了";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "吗";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "呢";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "哦";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "篇";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "去";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "人";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "是";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "他";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "我";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "想";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "要";
+        goodsList.add(g);
+        g = new Goods();
+        g.GoodsName = "在";
+        goodsList.add(g);
+
     }
 
     private class ContentAdapter extends MyBaseAdapter<Goods> implements SectionIndexer {
@@ -93,17 +277,13 @@ public class SelectGoodsActivity extends BaseActivity {
                     if (i == 0) {
                         // For numeric section
                         for (int k = 0; k <= 9; k++) {
-                            if (String.valueOf(
-                                    getItem(j).GoodsNamePinyin.charAt(0)).toLowerCase().
-                                    equals(String.valueOf(mSections.charAt(i))
-                                    ))
+                            if (String.valueOf(getItem(j).GoodsNamePinyin.charAt(0)).toUpperCase().
+                                    equals(String.valueOf(k)))
                                 return j;
                         }
                     } else {
-                        if (String.valueOf(
-                                getItem(j).GoodsNamePinyin.charAt(0)).toLowerCase().
-                                equals(String.valueOf(mSections.charAt(i))
-                                ))
+                        if (String.valueOf(getItem(j).GoodsNamePinyin.charAt(0)).toUpperCase().
+                                equals(String.valueOf(mSections.charAt(i))))
                             return j;
                     }
                 }
@@ -129,6 +309,8 @@ public class SelectGoodsActivity extends BaseActivity {
             TextView tv;
             if (convertView == null) {
                 tv = new TextView(context);
+                tv.setPadding(40, 20, 20, 20);
+                tv.setTextSize(20);
             } else {
                 tv = (TextView) convertView;
             }

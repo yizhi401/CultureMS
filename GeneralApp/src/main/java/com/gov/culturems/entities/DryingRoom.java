@@ -19,13 +19,13 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
     public static final String STATE_ONGOING = "进行中";
 
     //监测
-    public static final String ROOM_TYPE_MONITOR = "00";
+    public static final String ROOM_TYPE_MONITOR = "01";
     //分布式监测与控制
-    public static final String ROOM_TYPE_DISTRIBUTED = "01";
+    public static final String ROOM_TYPE_DISTRIBUTED = "02";
     //集中式监测与控制
-    public static final String ROOM_TYPE_CK = "02";
+    public static final String ROOM_TYPE_CK = "03";
     //空场景
-    public static final String ROOM_TYPE_EMPTY = "03";
+    public static final String ROOM_TYPE_EMPTY = "04";
 
 
     public static Map<String, String> actionFeedbackMap;

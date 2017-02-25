@@ -73,6 +73,9 @@ public class DryingRoomHelper {
 
 
     public void initDryingRoomInfo(DryingRoom thisRoom, DryingRoomInitListener listener) {
+        if (listener == null) {
+            return;
+        }
         this.dryingRoom = thisRoom;
         Context context = MyApplication.getInstance().getApplicationContext();
         if (dryingRoom == null) {
@@ -84,17 +87,24 @@ public class DryingRoomHelper {
             listener.onInitFailed();
             return;
         } else {
-            for (BaseDevice temp : dryingRoom.getDeviceDatas()) {
-                if (BaseDevice.USE_TYPE_CK.equals(temp.getUseType())) {
-                    //测控设备优先选择
-                    device = temp;
-                    refreshPieDatas(listener);
-                    return;
+            if (DryingRoom.ROOM_TYPE_MONITOR.equals(thisRoom.getSceneUseType()) ||
+                    DryingRoom.ROOM_TYPE_DISTRIBUTED.equals(thisRoom.getSceneUseType())) {
+                listener.onInitSucceed();
+            } else if (DryingRoom.ROOM_TYPE_CK.equals(thisRoom.getSceneUseType())) {
+                for (BaseDevice temp : dryingRoom.getDeviceDatas()) {
+                    if (BaseDevice.USE_TYPE_CK.equals(temp.getUseType())) {
+                        //测控设备优先选择
+                        device = temp;
+                        refreshPieDatas(listener);
+                        return;
+                    }
                 }
+            } else {
+                Toast.makeText(context, "未知的场景类型", Toast.LENGTH_SHORT).show();
             }
         }
         if (device == null) {
-            Toast.makeText(context, "找不到检测设备!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "找不到监测设备!", Toast.LENGTH_SHORT).show();
             listener.onInitFailed();
         }
     }
@@ -115,7 +125,6 @@ public class DryingRoomHelper {
             listener.onInitFailed();
         }
     }
-
 
 
     public class SceneDataListResponse {

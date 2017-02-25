@@ -191,8 +191,9 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
     }
 
     private String getCurrentTimestampPost() {
-        DateTime currentDate = DateTime.now(TimeZone.getTimeZone("Asia/Shanghai"));
-        String dateStr = currentDate.format("YYYY-MM-DD hh:mm:ss");
+        String dateStr = dateText.getText().toString() + timeText.getText().toString();
+//        DateTime currentDate = DateTime.now(TimeZone.getTimeZone("Asia/Shanghai"));
+//        String dateStr = currentDate.format("YYYY-MM-DD hh:mm:ss");
         return dateStr;
     }
 
@@ -257,11 +258,12 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
             startBtn.setEnabled(false);
             endBtn.setEnabled(true);
             remarkEdit.setEnabled(false);
+            dateText.setOnClickListener(null);
+            timeText.setOnClickListener(null);
             if (!TextUtils.isEmpty(dryingRoom.getMemo())) {
                 remarkEdit.setText(dryingRoom.getMemo());
             }
-//            goodsText.setOnClickListener(null);
-            goodsText.setOnClickListener(getChoseGoodsClickListener());
+            goodsText.setOnClickListener(null);
             goodsText.setText(dryingRoom.getGoodsName());
         } else {
             startBtn.setEnabled(true);
@@ -269,6 +271,18 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
             remarkEdit.setEnabled(true);
             goodsText.setOnClickListener(getChoseGoodsClickListener());
             goodsText.setText(getResources().getString(R.string.choose_goods));
+            dateText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDatePicker();
+                }
+            });
+            timeText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showTimePicker();
+                }
+            });
         }
     }
 
@@ -280,8 +294,11 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
                 if (goodsList.size() == 0) {
                     getGoodsList();
                 } else {
-                    jumpToSelectActivity();
-//                    showChoseGoodsDialog();
+//                    if (goodsList.size() > 5) {
+                        jumpToSelectActivity();
+//                    } else {
+//                        showChoseGoodsDialog();
+//                    }
                 }
             }
         };
@@ -293,20 +310,17 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
         Intent i = new Intent(this, SelectGoodsActivity.class);
         i.putExtra("goodsList", (Serializable) goodsList);
         startActivityForResult(i, REQUEST_SELECT_GOODS);
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_SELECT_GOODS) {
-            String goodsName = data.getStringExtra("goods");
-            for (Goods temp : goodsList) {
-                if (goodsName.equals(temp.GoodsName)) {
-                    chosenGoods = temp;
-                    goodsText.setText(goodsName);
-                    break;
-                }
-            }
+            Goods goods = (Goods) data.getSerializableExtra("goods");
+            chosenGoods = goods;
+            goodsText.setText(goods.GoodsName);
         }
     }
 

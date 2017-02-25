@@ -26,6 +26,7 @@ import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.R;
 import com.gov.culturems.VersionController;
 import com.gov.culturems.common.CommonConstant;
+import com.gov.culturems.common.base.BaseActivity;
 import com.gov.culturems.common.base.MyBaseAdapter;
 import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.ListResponse;
@@ -51,7 +52,7 @@ import java.util.List;
  * 显示了该场景所有设备的信息
  * Created by peter on 6/9/15.
  */
-public class SceneActivity extends Activity {
+public class SceneActivity extends BaseActivity{
 
     public static final int REQUEST_CODE = 1000;
     public static final int RESULT_NEED_REFRESH = 1100;

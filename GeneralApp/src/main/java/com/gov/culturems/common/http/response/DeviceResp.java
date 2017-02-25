@@ -5,6 +5,7 @@ import com.gov.culturems.entities.BaseDevice;
 import com.gov.culturems.entities.BaseScene;
 import com.gov.culturems.entities.BaseSensor;
 import com.gov.culturems.entities.DCDevice;
+import com.gov.culturems.entities.DeviceRule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +39,10 @@ public class DeviceResp {
     public String GateId;
     public String UseType;
     public List<BaseSensor> SensorTypes;
-    public List<DCDevice.DeviceRule> Rules;
+    public List<DeviceRule> Rules;
 
 
-
-    public DCDevice convertToDevice(){
+    public DCDevice convertToDevice() {
 
         DCDevice device = new DCDevice();
         device.setName(DeviceName);
@@ -82,12 +82,12 @@ public class DeviceResp {
         return device;
     }
 
-    public static List<DCDevice> convertToDeviceList(List<DeviceResp> deviceResps){
-        if(deviceResps == null){
+    public static List<DCDevice> convertToDeviceList(List<DeviceResp> deviceResps) {
+        if (deviceResps == null) {
             return null;
         }
         List<DCDevice> list = new ArrayList<>();
-        for(DeviceResp temp : deviceResps){
+        for (DeviceResp temp : deviceResps) {
             list.add(temp.convertToDevice());
         }
         return list;

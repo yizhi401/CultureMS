@@ -58,6 +58,10 @@
             android:name=".activities.FanControlActivity"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".activities.SceneActivity"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name=".provider.MySuggestionProvider"
             android:authorities="com.sean.tea.general.MySuggestionProvider" />
