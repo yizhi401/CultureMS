@@ -12,11 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.R;
+import com.gov.culturems.VersionController;
 import com.gov.culturems.WebsocketService;
 import com.gov.culturems.common.CommonConstant;
 import com.gov.culturems.common.UserManager;
@@ -44,6 +47,20 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
 
     private static final String TAG = FanControlActivity.class.getName();
 
+
+    private static final int TAB_CONTROL = 0;
+    private static final int TAB_WARNING = 1;
+    private static final int PAGE_SIZE = 20;
+
+
+    private LinearLayout titleLayout;
+    private LinearLayout controlLayout;
+    private LinearLayout warningLayout;
+    private RelativeLayout controlTitle;
+    private RelativeLayout warningTitle;
+
+    private int currentTab;
+
     private NumberView temperatureThresholUp;
     private NumberView temperatureThresholDown;
     private NumberView humidityThresholUp;
@@ -59,6 +76,8 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
     //新版的device接口，为了获取全部的device相关数据
 //    private DeviceInfo fullDeviceInfo;
     private DeviceRulesResponse deviceRulesResponse;
+
+    private DryingRoom dryingRoom;
 
     private Handler waitingDialogHandler;
     private Runnable handlerCallback = new Runnable() {
@@ -101,7 +120,7 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         setContentView(R.layout.fan_setting_activity);
 
         DCDevice deviceInfo = (DCDevice) getIntent().getSerializableExtra("dc_device");
-        DryingRoom dryingRoom = (DryingRoom) getIntent().getSerializableExtra("scene");
+        dryingRoom = (DryingRoom) getIntent().getSerializableExtra("scene");
         if (deviceInfo == null && dryingRoom == null) {
             Toast.makeText(this, "内部错误", Toast.LENGTH_SHORT).show();
             return;
@@ -109,9 +128,26 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
             getActionBar().setHomeButtonEnabled(true);
-            getActionBar().setTitle(deviceInfo.getName());
+            getActionBar().setTitle(deviceInfo == null ? dryingRoom.getName() : deviceInfo.getName());
         }
 
+        currentTab = TAB_CONTROL;
+
+        initView();
+
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WebsocketService.WEBSOCKET_SERVICE_RESPONSE);
+        registerReceiver(websocketResponseReceiver, filter);
+        if (deviceInfo == null) {
+            getDeviceRulesByScene(dryingRoom.getId());
+        } else {
+            getDeviceRules(deviceInfo.getId());
+        }
+
+    }
+
+    private void initView() {
         humidityThresholDown = (NumberView) findViewById(R.id.humidity_thresholddown);
         humidityThresholUp = (NumberView) findViewById(R.id.humidty_thresholdup);
         temperatureThresholDown = (NumberView) findViewById(R.id.temperature_thresholddown);
@@ -132,11 +168,22 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         finishedBtn = (Button) findViewById(R.id.finish_button);
         finishedBtn.setOnClickListener(this);
 
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(WebsocketService.WEBSOCKET_SERVICE_RESPONSE);
-        registerReceiver(websocketResponseReceiver, filter);
+        controlLayout = (LinearLayout) findViewById(R.id.control_layout);
+        warningLayout = (LinearLayout) findViewById(R.id.warning_layout);
+        controlTitle = (RelativeLayout) findViewById(R.id.control_title);
+        controlTitle.setBackgroundResource(VersionController.getDrawable(VersionController.TAB_SELECTOR));
+        controlTitle.setOnClickListener(this);
+        warningTitle = (RelativeLayout) findViewById(R.id.warning_title);
+        warningTitle.setOnClickListener(this);
+        warningTitle.setBackgroundResource(VersionController.getDrawable(VersionController.TAB_SELECTOR));
 
-        getDeviceRules(deviceInfo.getId());
+        titleLayout = (LinearLayout) findViewById(R.id.title_layout);
+        if (dryingRoom != null && DryingRoom.ROOM_TYPE_MONITOR.equals(dryingRoom.getSceneUseType())) {
+            titleLayout.setVisibility(View.GONE);
+            currentTab = TAB_WARNING;
+        }
+        refreshTabLayout();
+
     }
 
     @Override
@@ -151,10 +198,42 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         super.onDestroy();
     }
 
+
+    class RuleRsp {
+        String ThresholdUp;
+        String ThresholdDown;
+        String SensorType;
+        List<DevMonitor> DevMonitors;
+        List<DevControl> DevContrls;
+
+        void ensureFloat() {
+            if (TextUtils.isEmpty(ThresholdDown)) {
+                ThresholdDown = "0";
+            }
+            if (TextUtils.isEmpty(ThresholdUp)) {
+                ThresholdUp = "0";
+            }
+        }
+    }
+
+    class DevMonitor {
+        String DeviceName;
+        String DeviceId;
+    }
+
+    class DevControl {
+        String DeviceName;
+        String DeviceId;
+
+    }
+
+
     private class DeviceRulesResponse {
         String mt;
         String gi;
         String di;
+        String SceneId;
+        List<RuleRsp> Rules;
         List<Rule> rules;
         List<AlarmRsp> alarms;
     }
@@ -227,6 +306,7 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         String ai;
         String iscmded;
     }
+
 
     class Rule {
         String type;
@@ -304,6 +384,52 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         list.add(temperature);
         list.add(humidity);
         return list;
+    }
+
+    public void getDeviceRulesByScene(String sceneId) {
+        RequestParams params = new RequestParams();
+        params.put("SceneId", sceneId);
+        HttpUtil.jsonRequestGet(this, URLRequest.DEVICE_RULES_GET_BY_SCENE, params, new VolleyRequestListener() {
+                    @Override
+                    public void onSuccess(String response) {
+                        CommonResponse<DeviceRulesResponse> commonResponse = GsonUtils.fromJson(response, new TypeToken<CommonResponse<DeviceRulesResponse>>() {
+                        });
+                        deviceRulesResponse = commonResponse.getData();
+                        if (commonResponse.getRc() == 200 && deviceRulesResponse != null) {
+                            if (commonResponse.getData().Rules != null)
+                                for (RuleRsp temp : commonResponse.getData().Rules) {
+                                    temp.ensureFloat();
+                                    if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.SensorType)) {
+                                        temperatureThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
+                                        temperatureThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
+                                    }
+                                    if (BaseSensor.SENSOR_HUMIDITY.equals(temp.SensorType)) {
+                                        humidityThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
+                                        humidityThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
+                                    }
+                                }
+                            if (commonResponse.getData().alarms != null)
+                                for (AlarmRsp temp : commonResponse.getData().alarms) {
+                                    temp.ensureFloat();
+                                    if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.SensorType)) {
+                                        warningTemperatureThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
+                                        warningTemperatureThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
+                                    }
+                                    if (BaseSensor.SENSOR_HUMIDITY.equals(temp.SensorType)) {
+                                        warningHumidityThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
+                                        warningHumidityThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
+                                    }
+                                }
+                        }
+                    }
+
+                    @Override
+                    public void onNetError(VolleyError error) {
+
+                    }
+                }
+
+        );
     }
 
     public void getDeviceRules(String deviceId) {
@@ -452,13 +578,42 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         return num >= 0 && num <= 100;
     }
 
+    private void refreshTabLayout() {
+        switch (currentTab) {
+            case TAB_CONTROL:
+                controlTitle.setSelected(true);
+                warningTitle.setSelected(false);
+                controlLayout.setVisibility(View.VISIBLE);
+                warningLayout.setVisibility(View.GONE);
+                break;
+            case TAB_WARNING:
+                controlTitle.setSelected(false);
+                warningTitle.setSelected(true);
+                controlLayout.setVisibility(View.GONE);
+                warningLayout.setVisibility(View.VISIBLE);
+                break;
+        }
+
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.finish_button:
                 if (checkDataValidity()) {
-//                    uploadDeviceControl();
                     uploadDeviceDataUsingWebsocket();
+                }
+                break;
+            case R.id.control_title:
+                if (currentTab != TAB_CONTROL) {
+                    currentTab = TAB_CONTROL;
+                    refreshTabLayout();
+                }
+                break;
+            case R.id.warning_title:
+                if (currentTab != TAB_WARNING) {
+                    currentTab = TAB_WARNING;
+                    refreshTabLayout();
                 }
                 break;
             default:

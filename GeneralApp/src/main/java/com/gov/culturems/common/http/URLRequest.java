@@ -106,6 +106,8 @@ public class URLRequest {
      */
     public static final String DEVICE_RULES_GET = "api/RulesGet";
 
+    public static final String DEVICE_RULES_GET_BY_SCENE = "mgr/RulesGetByScene";
+
     /**
      * 物品列表获取
      */

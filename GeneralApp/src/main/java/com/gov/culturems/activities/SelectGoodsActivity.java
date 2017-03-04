@@ -29,9 +29,11 @@ import java.util.List;
 
 public class SelectGoodsActivity extends BaseActivity {
 
+
     private IndexableListView mListView;
 
     private List<Goods> goodsList;
+
 
     /**
      * Called when the activity is first created.
@@ -45,12 +47,12 @@ public class SelectGoodsActivity extends BaseActivity {
         getActionBar().setHomeButtonEnabled(true);
         getActionBar().setTitle("选择物品");
 
+
         goodsList = (List<Goods>) getIntent().getSerializableExtra("goodsList");
         if (goodsList == null) {
             return;
         }
 
-        addTestGoodsList();
 
         for (Goods item : goodsList) {
             try {
@@ -103,162 +105,6 @@ public class SelectGoodsActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void addTestGoodsList() {
-        Goods g = new Goods();
-        g.GoodsName = "啊";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "aaa";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "432532";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "werew";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "吧";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "从";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "的";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "额";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "发";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "ffff";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "个";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "好";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "就";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "看";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "了";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "吗";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "mmmm";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "呢";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "哦";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "篇";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "去";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "人";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "是";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "他";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "我";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "想";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "要";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "在";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "啊";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "吧";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "从";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "的";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "额";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "发";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "个";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "好";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "就";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "看";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "了";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "吗";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "呢";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "哦";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "篇";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "去";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "人";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "是";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "他";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "我";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "想";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "要";
-        goodsList.add(g);
-        g = new Goods();
-        g.GoodsName = "在";
-        goodsList.add(g);
-
-    }
 
     private class ContentAdapter extends MyBaseAdapter<Goods> implements SectionIndexer {
 
@@ -309,7 +155,7 @@ public class SelectGoodsActivity extends BaseActivity {
             TextView tv;
             if (convertView == null) {
                 tv = new TextView(context);
-                tv.setPadding(40, 20, 20, 20);
+                tv.setPadding(80, 40, 40, 40);
                 tv.setTextSize(20);
             } else {
                 tv = (TextView) convertView;

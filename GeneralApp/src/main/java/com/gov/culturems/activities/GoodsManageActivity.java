@@ -45,6 +45,7 @@ import hirondelle.date4j.DateTime;
 
 public class GoodsManageActivity extends BaseActivity implements View.OnClickListener {
 
+
     private TextView goodsText;
     private EditText remarkEdit;
     private Button startBtn;
@@ -52,6 +53,7 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
     private TextView timeText;
     private TextView dateText;
     private DateTime startDateTime;
+    private DateTime dateTimeNow;
 
     private List<Goods> goodsList = new ArrayList<>();
 
@@ -59,6 +61,7 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
     private Goods chosenGoods;
 
     private LinearLayout outerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,8 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
         dryingRoom = DryingRoomHelper.getInstance().getDryingRoom();
         getActionBar().setTitle(dryingRoom.getName());
         startDateTime = DateTime.now(TimeZone.getTimeZone("Asia/Shanghai"));
+        dateTimeNow = DateTime.now(TimeZone.getTimeZone("Asia/Shanghai"));
+
         initViews();
     }
 
@@ -236,8 +241,13 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
         new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                DateTime d = new DateTime(year, monthOfYear + 1, dayOfMonth, startDateTime.getHour(), startDateTime.getMinute(), 0, 0);
+                if (d.lt(dateTimeNow)) {
+                    Toast.makeText(GoodsManageActivity.this, "请选择未来的时间", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                startDateTime = d;
                 dateText.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-                startDateTime = new DateTime(year, monthOfYear + 1, dayOfMonth, 0, 0, 0, 0);
             }
         }, startDateTime.getYear(), startDateTime.getMonth() - 1, startDateTime.getDay()).show();
     }
@@ -246,7 +256,12 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
         new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                startDateTime = new DateTime(startDateTime.getYear(), startDateTime.getMonth(), startDateTime.getDay(), hourOfDay, minute, 0, 0);
+                DateTime d = new DateTime(startDateTime.getYear(), startDateTime.getMonth(), startDateTime.getDay(), hourOfDay, minute, 0, 0);
+                if (d.lt(dateTimeNow)) {
+                    Toast.makeText(GoodsManageActivity.this, "请选择未来的时间", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                startDateTime = d;
                 timeText.setText(format00(hourOfDay) + ":" + format00(minute));
             }
         }, startDateTime.getHour(), startDateTime.getMinute(), true).show();
@@ -295,7 +310,7 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
                     getGoodsList();
                 } else {
 //                    if (goodsList.size() > 5) {
-                        jumpToSelectActivity();
+                    jumpToSelectActivity();
 //                    } else {
 //                        showChoseGoodsDialog();
 //                    }
