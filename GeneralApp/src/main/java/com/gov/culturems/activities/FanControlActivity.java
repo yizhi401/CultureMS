@@ -28,6 +28,7 @@ import com.gov.culturems.common.http.CommonResponse;
 import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.RequestParams;
 import com.gov.culturems.common.http.URLRequest;
+import com.gov.culturems.common.http.UnCommonResponse;
 import com.gov.culturems.common.http.VolleyRequestListener;
 import com.gov.culturems.entities.BaseSensor;
 import com.gov.culturems.entities.DCDevice;
@@ -224,6 +225,7 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
     class DevControl {
         String DeviceName;
         String DeviceId;
+        String CtrlDirection;
 
     }
 
@@ -285,7 +287,7 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
 //                        }
 //                    }
 //                }
-//            }
+//      }
 //
 //            @Override
 //            public void onNetError(VolleyError error) {
@@ -392,10 +394,10 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         HttpUtil.jsonRequestGet(this, URLRequest.DEVICE_RULES_GET_BY_SCENE, params, new VolleyRequestListener() {
                     @Override
                     public void onSuccess(String response) {
-                        CommonResponse<DeviceRulesResponse> commonResponse = GsonUtils.fromJson(response, new TypeToken<CommonResponse<DeviceRulesResponse>>() {
+                        UnCommonResponse<DeviceRulesResponse> commonResponse = GsonUtils.fromJson(response, new TypeToken<UnCommonResponse<DeviceRulesResponse>>() {
                         });
                         deviceRulesResponse = commonResponse.getData();
-                        if (commonResponse.getRc() == 200 && deviceRulesResponse != null) {
+                        if (commonResponse.ResultCode == 200 && deviceRulesResponse != null) {
                             if (commonResponse.getData().Rules != null)
                                 for (RuleRsp temp : commonResponse.getData().Rules) {
                                     temp.ensureFloat();

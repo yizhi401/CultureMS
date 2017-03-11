@@ -132,5 +132,17 @@
             android:textColor="@color/text_gray_deep"
             android:textSize="15sp" />
 
+        <TextView
+            android:id="@+id/room_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:textStyle="bold"
+            android:textColor="@color/text_gray_light"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentRight="true"
+            android:text="集中式"/>
+
     </RelativeLayout>
 </RelativeLayout>

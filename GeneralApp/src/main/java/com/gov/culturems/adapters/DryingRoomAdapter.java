@@ -40,7 +40,7 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
         TextView startTime;
         TextView endTime;
         TextView daysPassed;
-
+        TextView roomType;
     }
 
 
@@ -57,12 +57,14 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
             holder.startTime = (TextView) convertView.findViewById(R.id.start_time);
             holder.endTime = (TextView) convertView.findViewById(R.id.end_time);
             holder.daysPassed = (TextView) convertView.findViewById(R.id.days_passed);
+            holder.roomType = (TextView)convertView.findViewById(R.id.room_type);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
         }
 
         final DryingRoom dryingRoom = data.get(position);
+        holder.roomType.setText(dryingRoom.getSceneTypeName());
         holder.roomName.setText(dryingRoom.getName());
         holder.teaType.setText(String.format(context.getResources().getString(R.string.good_type), dryingRoom.getGoodsNameNonNull()));
         holder.startTime.setText(String.format(context.getResources().getString(R.string.begin_time), dryingRoom.getBeginTimeNonNull()));

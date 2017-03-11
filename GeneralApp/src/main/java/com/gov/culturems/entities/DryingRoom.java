@@ -221,6 +221,18 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
         }
     }
 
+    public String getSceneTypeName(){
+       if(getSceneUseType().equals(DryingRoom.ROOM_TYPE_DISTRIBUTED)){
+           return "分布式";
+       }else if(getSceneUseType().equals(DryingRoom.ROOM_TYPE_MONITOR)){
+           return "监控";
+       }else if(DryingRoom.ROOM_TYPE_CK.equals(getSceneUseType())){
+           return "集中式";
+       }else{
+           return "未知";
+       }
+    }
+
     private String getQuerableStr() {
         return name + id + getGoodsName() + getState();
     }
