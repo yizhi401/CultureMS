@@ -74,15 +74,16 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
 
     private Drawable getDrawableByVersion() {
         int resId = VersionController.getDrawable(VersionController.TITLE_BG);
-        if(VersionController.CURRENT_VERSION == VersionController.GENERAL){
+        if (VersionController.CURRENT_VERSION == VersionController.GENERAL) {
             return getResources().getDrawable(resId);
-        }else if(VersionController.CURRENT_VERSION == VersionController.TEACORP){
+        } else if (VersionController.CURRENT_VERSION == VersionController.TEACORP) {
             return getResources().getDrawable(resId);
-        }else if(VersionController.CURRENT_VERSION == VersionController.GONGWANGFU){
+        } else if (VersionController.CURRENT_VERSION == VersionController.GONGWANGFU) {
             return new ColorDrawable(getResources().getColor(resId));
         }
         return null;
     }
+
     private void getDryingRoomInfo() {
         dryingRoom = DryingRoomHelper.getInstance().getDryingRoom();
         device = DryingRoomHelper.getInstance().getDevice();
@@ -231,10 +232,11 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
 //            menuItem.setIcon(R.drawable.setting_icon);
 //            menuItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 //        }
-        MenuItem itemMore = menu.add(0, R.id.menu_more, 0, "更多");
-        itemMore.setIcon(R.drawable.menu_more);
-        itemMore.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
+        if (DryingRoom.ROOM_TYPE_CK.equals(dryingRoom.getSceneUseType())) {
+            MenuItem itemMore = menu.add(0, R.id.menu_more, 0, "更多");
+            itemMore.setIcon(R.drawable.menu_more);
+            itemMore.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -245,7 +247,7 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
             overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
             return true;
         } else if (item.getItemId() == MENU_INFO) {
-           return true;
+            return true;
         } else if (item.getItemId() == R.id.menu_more) {
             showMoreMenu();
             return true;
@@ -274,12 +276,12 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
                 menuPopup.dismiss();
             }
         });
-        if(showFanControl()){
+        if (showFanControl()) {
             ruleManageBtn.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             ruleManageBtn.setVisibility(View.GONE);
         }
-        Button goodsManageBtn= (Button) popupMenuView.findViewById(R.id.goods_manage);
+        Button goodsManageBtn = (Button) popupMenuView.findViewById(R.id.goods_manage);
         goodsManageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -287,30 +289,30 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
                 menuPopup.dismiss();
             }
         });
-   }
-
-    private void jumpToRuleManageActivity() {
-            Intent intent = new Intent(DeviceDataActivity.this, FanControlActivity.class);
-            DCDevice dcDevice = null;
-            for (BaseDevice temp : dryingRoom.getDeviceDatas()) {
-                if (temp.getUseType().equals(BaseDevice.USE_TYPE_CK) &&
-                        temp instanceof DCDevice &&
-                        temp.getSensorTypes() != null) {
-                    dcDevice = (DCDevice) temp;
-                    break;
-                }
-            }
-            if (dcDevice != null) {
-                intent.putExtra("dc_device", dcDevice);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
-            } else {
-                Toast.makeText(this, "未找到测控设备", Toast.LENGTH_SHORT).show();
-            }
     }
 
-    private void jumpToGoodsManageActivity(){
-        Intent i = new Intent(this,GoodsManageActivity.class);
+    private void jumpToRuleManageActivity() {
+        Intent intent = new Intent(DeviceDataActivity.this, FanControlActivity.class);
+        DCDevice dcDevice = null;
+        for (BaseDevice temp : dryingRoom.getDeviceDatas()) {
+            if (temp.getUseType().equals(BaseDevice.USE_TYPE_CK) &&
+                    temp instanceof DCDevice &&
+                    temp.getSensorTypes() != null) {
+                dcDevice = (DCDevice) temp;
+                break;
+            }
+        }
+        if (dcDevice != null) {
+            intent.putExtra("dc_device", dcDevice);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
+        } else {
+            Toast.makeText(this, "未找到测控设备", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void jumpToGoodsManageActivity() {
+        Intent i = new Intent(this, GoodsManageActivity.class);
         startActivity(i);
         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
 

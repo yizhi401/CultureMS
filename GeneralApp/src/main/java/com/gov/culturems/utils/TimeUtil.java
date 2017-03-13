@@ -16,38 +16,37 @@ import hirondelle.date4j.DateTime;
  */
 public class TimeUtil {
     public static String getTimeLast(String beginTime) {
-        if(TextUtils.isEmpty(beginTime)){
+        if (TextUtils.isEmpty(beginTime)) {
             return "";
         }
         DateTime today = DateTime.now(TimeZone.getTimeZone("Asia/Shanghai"));
         @SuppressLint("SimpleDateFormat") DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date date = sdf.parse(beginTime);
-            long time = System.currentTimeMillis() - date.getTime();
-            if (time < 24 * 60 * 60 * 1000) {
-                //The time is in 24 hours
-                if (time < 60 * 60 * 1000) {
-                    //with in one hour
-                    return time / 60 / 1000 + "分钟";
-                } else {
-                    int hour = (int) (time / (60 * 60 * 1000));
-                    int minute = (int) ((time - hour * 60 * 60 * 1000) / 60 / 1000);
-                    return hour + "小时" + minute + "分钟";
-                }
-            } else {
-                //计算天数
-                long oneDay = 24 * 60 * 60 * 1000;
-                int dayPassed = (int) (time / oneDay);
-                if (dayPassed * oneDay == time) {
-                    return "第" + dayPassed + "天";
-                } else {
-                    return "第" + (dayPassed + 1) + "天";
-                }
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
+//            Date date = sdf.parse(beginTime);
+        DateTime date = new DateTime(beginTime);
+        long time = today.getMilliseconds(TimeZone.getTimeZone("Asia/Shanghai")) - date.getMilliseconds(TimeZone.getTimeZone("Asia/Shanghai"));
+        if (time < 0) {
+            return "小于1分钟";
         }
-        return "";
+        if (time < 24 * 60 * 60 * 1000) {
+            //The time is in 24 hours
+            if (time < 60 * 60 * 1000) {
+                //with in one hour
+                return time / 60 / 1000 + "分钟";
+            } else {
+                int hour = (int) (time / (60 * 60 * 1000));
+                int minute = (int) ((time - hour * 60 * 60 * 1000) / 60 / 1000);
+                return hour + "小时" + minute + "分钟";
+            }
+        } else {
+            //计算天数
+            long oneDay = 24 * 60 * 60 * 1000;
+            int dayPassed = (int) (time / oneDay);
+            if (dayPassed * oneDay == time) {
+                return "第" + dayPassed + "天";
+            } else {
+                return "第" + (dayPassed + 1) + "天";
+            }
+        }
     }
 
     public static String getRecentTime(String timeStr) {
