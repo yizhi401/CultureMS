@@ -52,7 +52,7 @@ import java.util.List;
  * 显示了该场景所有设备的信息
  * Created by peter on 6/9/15.
  */
-public class SceneActivity extends BaseActivity{
+public class SceneActivity extends BaseActivity {
 
     public static final int REQUEST_CODE = 1000;
     public static final int RESULT_NEED_REFRESH = 1100;
@@ -215,6 +215,10 @@ public class SceneActivity extends BaseActivity{
             Toast.makeText(this, "设备离线!", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (BaseDevice.USE_TYPE_CONTROL.equals(device.getUseType())) {
+            Toast.makeText(this, "控制设备", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         DryingRoomHelper helper = DryingRoomHelper.getInstance();
         helper.initDryingRoomInfo(scene, device, new DryingRoomHelper.DryingRoomInitListener() {
@@ -312,7 +316,7 @@ public class SceneActivity extends BaseActivity{
 
             List<BaseSensor> sensors = temp.getSensorTypes();
             holder.deviceName.setText(temp.getName());
-            if (temp.isOffline() || sensors == null || sensors.size() == 0) {
+            if (temp.isOffline()) {
                 holder.sensor1.setText("状态：离线");
                 convertView.setBackgroundColor(getResources().getColor(R.color.gray_bg));
                 holder.sensor2.setVisibility(View.GONE);
@@ -333,7 +337,8 @@ public class SceneActivity extends BaseActivity{
             holder.sensor3.setVisibility(View.GONE);
             if (sensors == null || sensors.size() == 0) {
                 //无传感器
-                holder.sensor1.setText("暂无数据");
+                holder.sensor1.setVisibility(View.GONE);
+//                holder.sensor1.setText("暂无数据");
             } else if (sensors.size() == 1) {
                 //仅有浸水传感器
 //                holder.sensor1.setText();

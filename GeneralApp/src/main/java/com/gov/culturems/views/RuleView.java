@@ -45,6 +45,8 @@ public class RuleView extends RelativeLayout {
     public void setSensorType(String sensorType) {
         this.sensorType = sensorType;
         titleView.setText(BaseSensor.sensorNameMap.get(sensorType));
+        thresholdUpView.setUnit(BaseSensor.sensorUnitMap.get(sensorType));
+        thresholdDownView.setUnit(BaseSensor.sensorUnitMap.get(sensorType));
     }
 
     public void setThresholdUp(String thresholdUp) {

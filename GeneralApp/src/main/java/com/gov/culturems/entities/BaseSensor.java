@@ -16,11 +16,16 @@ public class BaseSensor extends BaseObj {
     public static final String SENSOR_CONTROL = "Control";
 
     public static Map<String, String> sensorNameMap;
+    public static Map<String, String> sensorUnitMap;
 
     static {
         sensorNameMap = new HashMap<>();
         sensorNameMap.put(SENSOR_TEMPERATURE, "温度");
         sensorNameMap.put(SENSOR_HUMIDITY, "湿度");
+
+        sensorUnitMap = new HashMap<>();
+        sensorUnitMap.put(SENSOR_TEMPERATURE, "℃");
+        sensorUnitMap.put(SENSOR_HUMIDITY, "%RH");
     }
 
 
