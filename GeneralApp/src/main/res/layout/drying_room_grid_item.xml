@@ -140,7 +140,6 @@
             android:textStyle="bold"
             android:textColor="@color/text_gray_light"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_alignParentRight="true"
             android:text="集中式"/>
 

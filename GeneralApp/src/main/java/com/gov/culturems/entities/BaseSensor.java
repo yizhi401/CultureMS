@@ -2,6 +2,9 @@ package com.gov.culturems.entities;
 
 import android.text.TextUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 传感器的基类
  * Created by peter on 4/6/16.
@@ -11,6 +14,15 @@ public class BaseSensor extends BaseObj {
     public static final String SENSOR_TEMPERATURE = "Temperature";
     public static final String SENSOR_HUMIDITY = "Humidity";
     public static final String SENSOR_CONTROL = "Control";
+
+    public static Map<String, String> sensorNameMap;
+
+    static {
+        sensorNameMap = new HashMap<>();
+        sensorNameMap.put(SENSOR_TEMPERATURE, "温度");
+        sensorNameMap.put(SENSOR_HUMIDITY, "湿度");
+    }
+
 
     private String SensorType;
     private String SensorTypeName;

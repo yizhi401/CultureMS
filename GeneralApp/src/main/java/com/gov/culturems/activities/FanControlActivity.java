@@ -30,16 +30,14 @@ import com.gov.culturems.common.http.RequestParams;
 import com.gov.culturems.common.http.URLRequest;
 import com.gov.culturems.common.http.UnCommonResponse;
 import com.gov.culturems.common.http.VolleyRequestListener;
-import com.gov.culturems.entities.BaseSensor;
 import com.gov.culturems.entities.DCDevice;
 import com.gov.culturems.entities.DryingRoom;
 import com.gov.culturems.utils.GsonUtils;
 import com.gov.culturems.utils.UIUtil;
-import com.gov.culturems.views.NumberView;
+import com.gov.culturems.views.RuleView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 /**
  * 风扇类，控制规则和告警规则查看以及修改
@@ -62,15 +60,9 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
 
     private int currentTab;
 
-    private NumberView temperatureThresholUp;
-    private NumberView temperatureThresholDown;
-    private NumberView humidityThresholUp;
-    private NumberView humidityThresholDown;
+    private List<RuleView> controlViewList = new ArrayList<>();
+    private List<RuleView> warningViewList = new ArrayList<>();
 
-    private NumberView warningTemperatureThresholUp;
-    private NumberView warningTemperatureThresholDown;
-    private NumberView warningHumidityThresholUp;
-    private NumberView warningHumidityThresholDown;
 
     private Button finishedBtn;
 
@@ -165,15 +157,7 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initView() {
-        humidityThresholDown = (NumberView) findViewById(R.id.humidity_thresholddown);
-        humidityThresholUp = (NumberView) findViewById(R.id.humidty_thresholdup);
-        temperatureThresholDown = (NumberView) findViewById(R.id.temperature_thresholddown);
-        temperatureThresholUp = (NumberView) findViewById(R.id.temperature_thresholdup);
 
-        warningHumidityThresholDown = (NumberView) findViewById(R.id.warning_humidity_thresholddown);
-        warningHumidityThresholUp = (NumberView) findViewById(R.id.warning_humidty_thresholdup);
-        warningTemperatureThresholDown = (NumberView) findViewById(R.id.warning_temperature_thresholddown);
-        warningTemperatureThresholUp = (NumberView) findViewById(R.id.warning_temperature_thresholdup);
         findViewById(R.id.outer_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,7 +184,6 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
             currentTab = TAB_WARNING;
         }
         refreshTabLayout();
-
     }
 
     @Override
@@ -360,29 +343,25 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         newMessage.mt = deviceRulesResponse.mt;
 //        newMessage.ai = AndroidUtil.getMyUUID(this);
         newMessage.ai = UserManager.getInstance().getUserId();
-        Rule temp = new Rule();
-        temp.lower = temperatureThresholDown.getCurrentNumStr();
-        temp.upper = temperatureThresholUp.getCurrentNumStr();
-        temp.type = BaseSensor.SENSOR_TEMPERATURE;
-        Rule humi = new Rule();
-        humi.lower = humidityThresholDown.getCurrentNumStr();
-        humi.upper = humidityThresholUp.getCurrentNumStr();
-        humi.type = BaseSensor.SENSOR_HUMIDITY;
+
         newMessage.rules = new ArrayList<>();
-        newMessage.rules.add(temp);
-        newMessage.rules.add(humi);
+        for (RuleView r : controlViewList) {
+            Rule temp = new Rule();
+            temp.lower = r.thresholdDownView.getCurrentNumStr();
+            temp.upper = r.thresholdUpView.getCurrentNumStr();
+            temp.type = r.getSensorType();
+            newMessage.rules.add(temp);
+        }
 
         newMessage.alarms = new ArrayList<>();
-        AlarmReq alarmReq = new AlarmReq();
-        alarmReq.SensorType = BaseSensor.SENSOR_TEMPERATURE;
-        alarmReq.ThresholdUp = warningTemperatureThresholUp.getCurrentNumStr();
-        alarmReq.ThresholdDown = warningTemperatureThresholDown.getCurrentNumStr();
-        newMessage.alarms.add(alarmReq);
-        alarmReq = new AlarmReq();
-        alarmReq.SensorType = BaseSensor.SENSOR_HUMIDITY;
-        alarmReq.ThresholdUp = warningHumidityThresholUp.getCurrentNumStr();
-        alarmReq.ThresholdDown = warningHumidityThresholDown.getCurrentNumStr();
-        newMessage.alarms.add(alarmReq);
+        for (RuleView r : warningViewList) {
+
+            AlarmReq alarmReq = new AlarmReq();
+            alarmReq.SensorType = r.getSensorType();
+            alarmReq.ThresholdUp = r.thresholdUpView.getCurrentNumStr();
+            alarmReq.ThresholdDown = r.thresholdDownView.getCurrentNumStr();
+            newMessage.alarms.add(alarmReq);
+        }
 
         String sentMessage = GsonUtils.toJson(newMessage);
         Log.e("mInfo", "send message: " + sentMessage);
@@ -402,23 +381,19 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
      */
     private void uploadDeviceDataUsingWebsocketNew() {
         for (RuleRsp temp : deviceRulesResponseNew.Rules) {
-            if (BaseSensor.SENSOR_HUMIDITY.equals(temp.SensorType)) {
-                temp.ThresholdDown = humidityThresholDown.getCurrentNumStr();
-                temp.ThresholdUp = humidityThresholUp.getCurrentNumStr();
-            }
-            if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.SensorType)) {
-                temp.ThresholdDown = temperatureThresholDown.getCurrentNumStr();
-                temp.ThresholdUp = temperatureThresholUp.getCurrentNumStr();
+            for (RuleView r : controlViewList) {
+                if (temp.SensorType.equals(r.getSensorType())) {
+                    temp.ThresholdDown = r.thresholdDownView.getCurrentNumStr();
+                    temp.ThresholdUp = r.thresholdUpView.getCurrentNumStr();
+                }
             }
         }
         for (AlarmRsp temp : deviceRulesResponseNew.alarms) {
-            if (BaseSensor.SENSOR_HUMIDITY.equals(temp.SensorType)) {
-                temp.ThresholdDown = warningHumidityThresholDown.getCurrentNumStr();
-                temp.ThresholdUp = warningHumidityThresholUp.getCurrentNumStr();
-            }
-            if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.SensorType)) {
-                temp.ThresholdDown = warningTemperatureThresholDown.getCurrentNumStr();
-                temp.ThresholdUp = warningTemperatureThresholUp.getCurrentNumStr();
+            for (RuleView r : warningViewList) {
+                if (temp.SensorType.equals(r.getSensorType())) {
+                    temp.ThresholdDown = r.thresholdDownView.getCurrentNumStr();
+                    temp.ThresholdUp = r.thresholdUpView.getCurrentNumStr();
+                }
             }
         }
 
@@ -438,17 +413,13 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
 
     private List<UploadParam> getUploadData() {
         List<UploadParam> list = new ArrayList<>();
-        UploadParam temperature = new UploadParam();
-        temperature.SensorType = BaseSensor.SENSOR_TEMPERATURE;
-        temperature.ThresholdUp = temperatureThresholUp.getCurrentNumStr();
-        temperature.ThresholdDown = temperatureThresholDown.getCurrentNumStr();
-
-        UploadParam humidity = new UploadParam();
-        humidity.SensorType = BaseSensor.SENSOR_HUMIDITY;
-        humidity.ThresholdUp = humidityThresholUp.getCurrentNumStr();
-        humidity.ThresholdDown = humidityThresholDown.getCurrentNumStr();
-        list.add(temperature);
-        list.add(humidity);
+        for (RuleView r : controlViewList) {
+            UploadParam param = new UploadParam();
+            param.SensorType = r.getSensorType();
+            param.ThresholdDown = r.getThresholdDown();
+            param.ThresholdUp = r.getThresholdUp();
+            list.add(param);
+        }
         return list;
     }
 
@@ -465,28 +436,26 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
                             if (commonResponse.getData().Rules != null)
                                 for (RuleRsp temp : commonResponse.getData().Rules) {
                                     temp.ensureFloat();
-                                    if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.SensorType)) {
-                                        temperatureThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
-                                        temperatureThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
-                                    }
-                                    if (BaseSensor.SENSOR_HUMIDITY.equals(temp.SensorType)) {
-                                        humidityThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
-                                        humidityThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
-                                    }
+                                    RuleView r = new RuleView(FanControlActivity.this, RuleView.TYPE_CONTROL);
+                                    r.setSensorType(temp.SensorType);
+                                    r.setThresholdDown(temp.ThresholdDown);
+                                    r.setThresholdUp(temp.ThresholdUp);
+                                    controlViewList.add(r);
+                                    controlLayout.addView(r);
                                 }
                             if (commonResponse.getData().alarms != null)
                                 for (AlarmRsp temp : commonResponse.getData().alarms) {
                                     temp.ensureFloat();
-                                    if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.SensorType)) {
-                                        warningTemperatureThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
-                                        warningTemperatureThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
-                                    }
-                                    if (BaseSensor.SENSOR_HUMIDITY.equals(temp.SensorType)) {
-                                        warningHumidityThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
-                                        warningHumidityThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
-                                    }
+                                    RuleView r = new RuleView(FanControlActivity.this, RuleView.TYPE_WARNING);
+                                    r.setThresholdDown(temp.ThresholdDown);
+                                    r.setThresholdUp(temp.ThresholdUp);
+                                    r.setSensorType(temp.SensorType);
+                                    warningViewList.add(r);
+                                    warningLayout.addView(r);
                                 }
                         }
+                        controlLayout.requestLayout();
+                        warningLayout.requestLayout();
                     }
 
                     @Override
@@ -511,28 +480,26 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
                             if (commonResponse.getData().rules != null)
                                 for (Rule temp : commonResponse.getData().rules) {
                                     temp.ensureFloat();
-                                    if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.type)) {
-                                        temperatureThresholDown.setNumberText(Float.parseFloat(temp.lower));
-                                        temperatureThresholUp.setNumberText(Float.parseFloat(temp.upper));
-                                    }
-                                    if (BaseSensor.SENSOR_HUMIDITY.equals(temp.type)) {
-                                        humidityThresholDown.setNumberText(Float.parseFloat(temp.lower));
-                                        humidityThresholUp.setNumberText(Float.parseFloat(temp.upper));
-                                    }
+                                    RuleView r = new RuleView(FanControlActivity.this, RuleView.TYPE_CONTROL);
+                                    r.setSensorType(temp.type);
+                                    r.setThresholdDown(temp.lower);
+                                    r.setThresholdUp(temp.upper);
+                                    controlViewList.add(r);
+                                    controlLayout.addView(r);
                                 }
                             if (commonResponse.getData().alarms != null)
                                 for (AlarmRsp temp : commonResponse.getData().alarms) {
                                     temp.ensureFloat();
-                                    if (BaseSensor.SENSOR_TEMPERATURE.equals(temp.SensorType)) {
-                                        warningTemperatureThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
-                                        warningTemperatureThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
-                                    }
-                                    if (BaseSensor.SENSOR_HUMIDITY.equals(temp.SensorType)) {
-                                        warningHumidityThresholDown.setNumberText(Float.parseFloat(temp.ThresholdDown));
-                                        warningHumidityThresholUp.setNumberText(Float.parseFloat(temp.ThresholdUp));
-                                    }
+                                    RuleView r = new RuleView(FanControlActivity.this, RuleView.TYPE_WARNING);
+                                    r.setThresholdDown(temp.ThresholdDown);
+                                    r.setThresholdUp(temp.ThresholdUp);
+                                    r.setSensorType(temp.SensorType);
+                                    warningViewList.add(r);
+                                    warningLayout.addView(r);
                                 }
                         }
+                        warningLayout.requestLayout();
+                        controlLayout.requestLayout();
                     }
 
                     @Override
@@ -613,30 +580,30 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
     }
 
     public boolean checkDataValidity() {
-        if (!permissible(temperatureThresholUp.getCurrentNum()) ||
-                !permissible(temperatureThresholDown.getCurrentNum()) ||
-                !permissible(humidityThresholUp.getCurrentNum()) ||
-                !permissible(humidityThresholDown.getCurrentNum())) {
-            Toast.makeText(this, "请输入0-100之间的值", Toast.LENGTH_SHORT).show();
-            return false;
+        for (RuleView r : controlViewList) {
+            if (!permissible(r.thresholdUpView.getCurrentNum()) ||
+                    !permissible(r.thresholdDownView.getCurrentNum())) {
+                Toast.makeText(this, "请输入0-100之间的值", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (r.thresholdDownView.getCurrentNum() > r.thresholdUpView.getCurrentNum()) {
+                Toast.makeText(this, "最低值必须小于最高值！", Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
-        if (temperatureThresholDown.getCurrentNum() > temperatureThresholUp.getCurrentNum()
-                || humidityThresholDown.getCurrentNum() > humidityThresholUp.getCurrentNum()) {
-            Toast.makeText(this, "最低值必须小于最高值！", Toast.LENGTH_SHORT).show();
-            return false;
+        for (RuleView r : warningViewList) {
+            if (!permissible(r.thresholdUpView.getCurrentNum()) ||
+                    !permissible(r.thresholdDownView.getCurrentNum())) {
+                Toast.makeText(this, "请输入0-100之间的值", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (r.thresholdDownView.getCurrentNum() > r.thresholdUpView.getCurrentNum()) {
+                Toast.makeText(this, "最低值必须小于最高值！", Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
-        if (!permissible(warningTemperatureThresholUp.getCurrentNum()) ||
-                !permissible(warningTemperatureThresholDown.getCurrentNum()) ||
-                !permissible(warningHumidityThresholUp.getCurrentNum()) ||
-                !permissible(warningHumidityThresholDown.getCurrentNum())) {
-            Toast.makeText(this, "请输入0-100之间的值", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (warningTemperatureThresholDown.getCurrentNum() > warningTemperatureThresholUp.getCurrentNum()
-                || warningHumidityThresholDown.getCurrentNum() > warningHumidityThresholUp.getCurrentNum()) {
-            Toast.makeText(this, "最低值必须小于最高值！", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+
+
         return true;
     }
 
