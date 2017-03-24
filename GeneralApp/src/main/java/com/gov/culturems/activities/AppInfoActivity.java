@@ -1,6 +1,5 @@
 package com.gov.culturems.activities;
 
-import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -8,8 +7,9 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.gov.culturems.R;
+import com.gov.culturems.common.base.BaseActivity;
 
-public class AppInfoActivity extends Activity {
+public class AppInfoActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

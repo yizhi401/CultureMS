@@ -88,6 +88,11 @@ public class URLRequest {
      * 测控设备上报
      */
     public static final String DEVICE_CK = "mgr/devicectrlrule";
+    /**
+     * 报警规则上报
+     */
+    public static final String ALERT_SETTING_ADD_BATCH = "Mgr/AlertSettingAddBatch";
+
 
     /**
      * 场景简单数据获取，主要是温度湿度

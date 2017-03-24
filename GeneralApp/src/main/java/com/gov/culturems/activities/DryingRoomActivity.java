@@ -365,6 +365,7 @@ public class DryingRoomActivity extends BaseActivity {
     private void jumpToAppInfo() {
         Intent i = new Intent(this, AppInfoActivity.class);
         startActivity(i);
+        overridePendingTransition(R.anim.slide_right_in, R.anim.slide_left_out);
     }
 
     private void showLogOutDialog() {

@@ -37,6 +37,8 @@ import com.gov.culturems.utils.UIUtil;
 import com.gov.culturems.views.RuleView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -73,6 +75,10 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
     private DeviceRulesResponse deviceRulesResponse;
 
     private DryingRoom dryingRoom;
+    private DCDevice deviceInfo;
+
+    private boolean warningUploadSucceeded = false;
+    private boolean controlRuleUploadSucceeded = false;
 
     private Handler waitingDialogHandler;
     private Runnable handlerCallback = new Runnable() {
@@ -95,16 +101,23 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
                     //确保是我发的信息
                     if ("1".equals(response.iscmded)) {
                         //请求成功
-                        Toast.makeText(FanControlActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
-                        startMainActivity();
+                        //需要等待控制和报警都成功才算成功
+                        controlRuleUploadSucceeded = true;
+                        if (warningUploadSucceeded) {
+                            Toast.makeText(FanControlActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
+                            startMainActivity();
+                        }
                     } else {
+                        controlRuleUploadSucceeded = false;
                         Log.e(TAG, "websocket request failed");
                         Toast.makeText(FanControlActivity.this, "保存失败", Toast.LENGTH_SHORT).show();
                     }
                 } else {
+                    controlRuleUploadSucceeded = false;
                     Log.e(TAG, "Check ai failed");
                 }
             } else {
+                controlRuleUploadSucceeded = false;
                 Log.e(TAG, "websocket request failed");
             }
 
@@ -128,7 +141,7 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fan_setting_activity);
 
-        DCDevice deviceInfo = (DCDevice) getIntent().getSerializableExtra("dc_device");
+        deviceInfo = (DCDevice) getIntent().getSerializableExtra("dc_device");
         dryingRoom = (DryingRoom) getIntent().getSerializableExtra("scene");
         if (deviceInfo == null && dryingRoom == null) {
             Toast.makeText(this, "内部错误", Toast.LENGTH_SHORT).show();
@@ -153,7 +166,6 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         } else {
             getDeviceRules(deviceInfo.getId());
         }
-
     }
 
     private void initView() {
@@ -181,6 +193,7 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         titleLayout = (LinearLayout) findViewById(R.id.title_layout);
         if (dryingRoom != null && DryingRoom.ROOM_TYPE_MONITOR.equals(dryingRoom.getSceneUseType())) {
             titleLayout.setVisibility(View.GONE);
+            controlRuleUploadSucceeded = true;
             currentTab = TAB_WARNING;
         }
         refreshTabLayout();
@@ -411,9 +424,9 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
     }
 
 
-    private List<UploadParam> getUploadData() {
+    private List<UploadParam> getWarningUploadData() {
         List<UploadParam> list = new ArrayList<>();
-        for (RuleView r : controlViewList) {
+        for (RuleView r : warningViewList) {
             UploadParam param = new UploadParam();
             param.SensorType = r.getSensorType();
             param.ThresholdDown = r.getThresholdDown();
@@ -433,7 +446,13 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
                         });
                         deviceRulesResponseNew = commonResponse.getData();
                         if (commonResponse.ResultCode == 200 && deviceRulesResponseNew != null) {
-                            if (commonResponse.getData().Rules != null)
+                            if (commonResponse.getData().Rules != null) {
+                                Collections.sort(commonResponse.getData().Rules, new Comparator<RuleRsp>() {
+                                    @Override
+                                    public int compare(RuleRsp lhs, RuleRsp rhs) {
+                                        return lhs.SensorType.compareTo(rhs.SensorType);
+                                    }
+                                });
                                 for (RuleRsp temp : commonResponse.getData().Rules) {
                                     temp.ensureFloat();
                                     RuleView r = new RuleView(FanControlActivity.this, RuleView.TYPE_CONTROL);
@@ -443,7 +462,14 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
                                     controlViewList.add(r);
                                     controlLayout.addView(r);
                                 }
-                            if (commonResponse.getData().alarms != null)
+                            }
+                            if (commonResponse.getData().alarms != null) {
+                                Collections.sort(commonResponse.getData().alarms, new Comparator<AlarmRsp>() {
+                                    @Override
+                                    public int compare(AlarmRsp lhs, AlarmRsp rhs) {
+                                        return lhs.SensorType.compareTo(rhs.SensorType);
+                                    }
+                                });
                                 for (AlarmRsp temp : commonResponse.getData().alarms) {
                                     temp.ensureFloat();
                                     RuleView r = new RuleView(FanControlActivity.this, RuleView.TYPE_WARNING);
@@ -453,6 +479,7 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
                                     warningViewList.add(r);
                                     warningLayout.addView(r);
                                 }
+                            }
                         }
                         controlLayout.requestLayout();
                         warningLayout.requestLayout();
@@ -477,7 +504,13 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
                         });
                         deviceRulesResponse = commonResponse.getData();
                         if (commonResponse.getRc() == 200 && deviceRulesResponse != null) {
-                            if (commonResponse.getData().rules != null)
+                            if (commonResponse.getData().rules != null) {
+                                Collections.sort(commonResponse.getData().rules, new Comparator<Rule>() {
+                                    @Override
+                                    public int compare(Rule lhs, Rule rhs) {
+                                        return lhs.type.compareTo(rhs.type);
+                                    }
+                                });
                                 for (Rule temp : commonResponse.getData().rules) {
                                     temp.ensureFloat();
                                     RuleView r = new RuleView(FanControlActivity.this, RuleView.TYPE_CONTROL);
@@ -486,8 +519,16 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
                                     r.setThresholdUp(temp.upper);
                                     controlViewList.add(r);
                                     controlLayout.addView(r);
+
                                 }
-                            if (commonResponse.getData().alarms != null)
+                            }
+                            if (commonResponse.getData().alarms != null) {
+                                Collections.sort(commonResponse.getData().alarms, new Comparator<AlarmRsp>() {
+                                    @Override
+                                    public int compare(AlarmRsp lhs, AlarmRsp rhs) {
+                                        return lhs.SensorType.compareTo(rhs.SensorType);
+                                    }
+                                });
                                 for (AlarmRsp temp : commonResponse.getData().alarms) {
                                     temp.ensureFloat();
                                     RuleView r = new RuleView(FanControlActivity.this, RuleView.TYPE_WARNING);
@@ -497,6 +538,7 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
                                     warningViewList.add(r);
                                     warningLayout.addView(r);
                                 }
+                            }
                         }
                         warningLayout.requestLayout();
                         controlLayout.requestLayout();
@@ -557,18 +599,38 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
     }
 
 
-    private void uploadDeviceControl(String deviceId) {
+    private void uploadDeviceControl() {
         RequestParams params = new RequestParams();
-        params.put("DeviceId", deviceId);
-        params.put("Rules", getUploadData());
-        HttpUtil.jsonRequest(this, URLRequest.DEVICE_CK, params, new VolleyRequestListener() {
+        if (dryingRoom != null) {
+            params.put("SceneId", dryingRoom.getId());
+        } else {
+            params.put("SceneId", "");
+        }
+        if (deviceInfo != null) {
+            params.put("DeviceId", deviceInfo.getId());
+        } else {
+            params.put("DeviceId", "");
+        }
+        params.put("AlertSettings", "");
+        params.put("Alarms", getWarningUploadData());
+        params.put("LinkMans", "");
+        params.put("AlertControl", "0");
+        HttpUtil.jsonRequest(this, URLRequest.ALERT_SETTING_ADD_BATCH, params, new VolleyRequestListener() {
             @Override
             public void onSuccess(String response) {
                 CommonResponse commonResponse = GsonUtils.fromJson(response, CommonResponse.class);
                 if (commonResponse.getRc() == 200) {
-                    Toast.makeText(FanControlActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
-                    finish();
+                    Log.i(TAG, "Upload Warning Data Succeeded");
+                    //需要等待控制和报警都成功才算成功
+                    warningUploadSucceeded = true;
+                    if (controlRuleUploadSucceeded) {
+                        Toast.makeText(FanControlActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
+                        startMainActivity();
+                    }
+//                    Toast.makeText(FanControlActivity.this, "保存成功!", Toast.LENGTH_SHORT).show();
+//                    finish();
                 } else {
+                    warningUploadSucceeded = false;
                     Toast.makeText(FanControlActivity.this, commonResponse.getRm(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -639,6 +701,7 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
                     } else {
                         uploadDeviceDataUsingWebsocket();
                     }
+                    uploadDeviceControl();
                 }
                 break;
             case R.id.control_title:

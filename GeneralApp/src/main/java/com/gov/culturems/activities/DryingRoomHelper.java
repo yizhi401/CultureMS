@@ -90,6 +90,7 @@ public class DryingRoomHelper {
             if (DryingRoom.ROOM_TYPE_MONITOR.equals(thisRoom.getSceneUseType()) ||
                     DryingRoom.ROOM_TYPE_DISTRIBUTED.equals(thisRoom.getSceneUseType())) {
                 listener.onInitSucceed();
+                return;
             } else if (DryingRoom.ROOM_TYPE_CK.equals(thisRoom.getSceneUseType())) {
                 for (BaseDevice temp : dryingRoom.getDeviceDatas()) {
                     if (BaseDevice.USE_TYPE_CK.equals(temp.getUseType())) {
