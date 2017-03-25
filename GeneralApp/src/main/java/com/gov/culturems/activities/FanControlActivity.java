@@ -604,13 +604,16 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
         if (dryingRoom != null) {
             params.put("SceneId", dryingRoom.getId());
         } else {
-            params.put("SceneId", "");
+            //集中式报警无需通过服务器上传
+            warningUploadSucceeded = true;
+            return;
+//            params.put("SceneId", "");
         }
-        if (deviceInfo != null) {
-            params.put("DeviceId", deviceInfo.getId());
-        } else {
-            params.put("DeviceId", "");
-        }
+//        if (deviceInfo != null) {
+//            params.put("DeviceId", deviceInfo.getId());
+//        } else {
+//            params.put("DeviceId", "");
+//        }
         params.put("AlertSettings", "");
         params.put("Alarms", getWarningUploadData());
         params.put("LinkMans", "");
