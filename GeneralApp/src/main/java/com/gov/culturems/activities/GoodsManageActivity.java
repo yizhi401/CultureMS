@@ -196,7 +196,7 @@ public class GoodsManageActivity extends BaseActivity implements View.OnClickLis
     }
 
     private String getCurrentTimestampPost() {
-        String dateStr = dateText.getText().toString() + timeText.getText().toString();
+        String dateStr = dateText.getText().toString() + " " + timeText.getText().toString() + ":00";
 //        DateTime currentDate = DateTime.now(TimeZone.getTimeZone("Asia/Shanghai"));
 //        String dateStr = currentDate.format("YYYY-MM-DD hh:mm:ss");
         return dateStr;
