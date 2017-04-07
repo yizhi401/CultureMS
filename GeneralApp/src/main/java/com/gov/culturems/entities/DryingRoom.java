@@ -50,6 +50,8 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
 
     private String SceneUseType;
     private String SceneUseTypeDisplayTxt;
+    private String IsAlert;
+    private String AlertStatus;
 
     private List<DryingRoomResp.DeviceMonitor> devMonitors;
     private List<DryingRoomResp.DeviceControl> devContrls;
@@ -211,6 +213,22 @@ public class DryingRoom extends BaseScene implements Serializable, Comparable<Dr
 
     public void setState(String state) {
         State = state;
+    }
+
+    public String getIsAlert() {
+        return IsAlert;
+    }
+
+    public void setIsAlert(String isAlert) {
+        IsAlert = isAlert;
+    }
+
+    public String getAlertStatus() {
+        return AlertStatus;
+    }
+
+    public void setAlertStatus(String alertStatus) {
+        AlertStatus = alertStatus;
     }
 
     public boolean query(String query) {

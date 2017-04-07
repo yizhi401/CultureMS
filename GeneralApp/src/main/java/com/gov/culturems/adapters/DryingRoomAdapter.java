@@ -57,7 +57,7 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
             holder.startTime = (TextView) convertView.findViewById(R.id.start_time);
             holder.endTime = (TextView) convertView.findViewById(R.id.end_time);
             holder.daysPassed = (TextView) convertView.findViewById(R.id.days_passed);
-            holder.roomType = (TextView)convertView.findViewById(R.id.room_type);
+            holder.roomType = (TextView) convertView.findViewById(R.id.room_type);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -82,8 +82,13 @@ public class DryingRoomAdapter extends MyBaseAdapter<DryingRoom> {
             holder.sensor2.setText("未知");
             holder.sensor2.setTextColor(context.getResources().getColor(R.color.text_gray_deep));
         } else {
-            holder.sensor1.setTextColor(context.getResources().getColor(R.color.main_green));
-            holder.sensor2.setTextColor(context.getResources().getColor(R.color.main_green));
+            if ("1".equals(dryingRoom.getIsAlert())) {
+                holder.sensor1.setTextColor(context.getResources().getColor(R.color.main_red));
+                holder.sensor2.setTextColor(context.getResources().getColor(R.color.main_red));
+            } else {
+                holder.sensor1.setTextColor(context.getResources().getColor(R.color.main_green));
+                holder.sensor2.setTextColor(context.getResources().getColor(R.color.main_green));
+            }
         }
 
         convertView.setOnClickListener(new View.OnClickListener() {

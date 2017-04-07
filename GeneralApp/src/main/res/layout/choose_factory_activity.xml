@@ -16,6 +16,15 @@
         android:text="选择你所在的茶厂名称"
         android:textSize="18sp" />
 
+    <TextView
+        android:id="@+id/change_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="30dp"
+        android:text="切换主题"
+        android:textColor="@color/blue" />
+
     <RelativeLayout
         android:id="@+id/search_layout"
         android:layout_width="wrap_content"

@@ -75,10 +75,12 @@ public class DeviceDataActivity extends FragmentActivity implements View.OnClick
     private Drawable getDrawableByVersion() {
         int resId = VersionController.getDrawable(VersionController.TITLE_BG);
         if (VersionController.CURRENT_VERSION == VersionController.GENERAL) {
+            getActionBar().setDisplayShowHomeEnabled(false);
             return getResources().getDrawable(resId);
         } else if (VersionController.CURRENT_VERSION == VersionController.TEACORP) {
             return getResources().getDrawable(resId);
         } else if (VersionController.CURRENT_VERSION == VersionController.GONGWANGFU) {
+            getActionBar().setDisplayShowHomeEnabled(false);
             return new ColorDrawable(getResources().getColor(resId));
         }
         return null;

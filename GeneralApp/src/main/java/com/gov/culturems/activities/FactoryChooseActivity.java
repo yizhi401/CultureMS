@@ -27,7 +27,6 @@ import com.android.volley.VolleyError;
 import com.google.gson.reflect.TypeToken;
 import com.gov.culturems.R;
 import com.gov.culturems.VersionController;
-import com.gov.culturems.common.base.BaseActivity;
 import com.gov.culturems.common.base.MyBaseAdapter;
 import com.gov.culturems.common.http.HttpUtil;
 import com.gov.culturems.common.http.ListResponse;
@@ -38,6 +37,7 @@ import com.gov.culturems.common.http.response.SceneResp;
 import com.gov.culturems.entities.TeaFactory;
 import com.gov.culturems.provider.MySuggestionProvider;
 import com.gov.culturems.utils.GsonUtils;
+import com.gov.culturems.utils.SharePreferUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +56,8 @@ public class FactoryChooseActivity extends Activity {
     private ChooseFactoryAdapter adapter;
     private List<TeaFactory> fullData;
     private List<TeaFactory> searchData;
+
+    private TextView changeThemeText;
 
 
     @Override
@@ -121,8 +123,48 @@ public class FactoryChooseActivity extends Activity {
                 hideSoftInputKeyboard();
             }
         });
-        TextView chooseHint = (TextView)findViewById(R.id.choose_hint);
+        TextView chooseHint = (TextView) findViewById(R.id.choose_hint);
         chooseHint.setTextColor(getResources().getColor(VersionController.getDrawable(VersionController.THEME_COLOR)));
+        changeThemeText = (TextView) findViewById(R.id.change_theme);
+        changeThemeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showChangeThemeDialog();
+            }
+        });
+    }
+
+    private void showChangeThemeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View changeThemeDialog = LayoutInflater.from(this).inflate(R.layout.dialog_change_theme, null);
+        builder.setView(changeThemeDialog);
+        changeThemeDialog.findViewById(R.id.red_theme).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharePreferUtil.saveIntToSharePrefer(VersionController.VERSION_KEY, VersionController.GONGWANGFU);
+                jumpToWelcomeActivity();
+            }
+        });
+        changeThemeDialog.findViewById(R.id.blue_theme).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharePreferUtil.saveIntToSharePrefer(VersionController.VERSION_KEY, VersionController.GENERAL);
+                jumpToWelcomeActivity();
+            }
+        });
+        changeThemeDialog.findViewById(R.id.green_theme).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharePreferUtil.saveIntToSharePrefer(VersionController.VERSION_KEY, VersionController.TEACORP);
+                jumpToWelcomeActivity();
+            }
+        });
+        builder.show();
+    }
+
+    private void jumpToWelcomeActivity() {
+        startActivity(new Intent(this, SplashActivity.class));
+        finish();
     }
 
     private void popConfirmDialog(final TeaFactory teaFactory) {

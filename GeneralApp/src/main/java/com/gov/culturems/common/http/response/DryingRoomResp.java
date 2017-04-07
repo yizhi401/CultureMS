@@ -28,6 +28,7 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
     private String BeginTime;
     private String EndTime;
     private String State;
+    private String AlertStatus;
     private String IsAlert;
 
     private String TemperatureValueTxt;
@@ -181,6 +182,8 @@ public class DryingRoomResp implements Comparable<DryingRoomResp> {
         room.setMemo(Memo);
         room.setState(State);
         room.setSceneUseType(SceneUseType);
+        room.setAlertStatus(AlertStatus);
+        room.setIsAlert(IsAlert);
         room.setSceneUseTypeDisplayTxt(SceneUseTypeDisplayTxt);
         try {
             List<BaseDevice> deviceList = new ArrayList<>();

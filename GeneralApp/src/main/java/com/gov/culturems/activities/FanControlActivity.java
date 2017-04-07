@@ -481,6 +481,11 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
                                 }
                             }
                         }
+                        if (warningViewList.size() == 0 && controlViewList.size() == 0) {
+                            Toast.makeText(FanControlActivity.this, "找不到可设置的规则", Toast.LENGTH_SHORT).show();
+                            finish();
+                            return;
+                        }
                         controlLayout.requestLayout();
                         warningLayout.requestLayout();
                     }
@@ -539,6 +544,11 @@ public class FanControlActivity extends BaseActivity implements View.OnClickList
                                     warningLayout.addView(r);
                                 }
                             }
+                        }
+                        if (warningViewList.size() == 0 && controlViewList.size() == 0) {
+                            Toast.makeText(FanControlActivity.this, "找不到可设置的规则", Toast.LENGTH_SHORT).show();
+                            finish();
+                            return;
                         }
                         warningLayout.requestLayout();
                         controlLayout.requestLayout();

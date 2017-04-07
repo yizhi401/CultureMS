@@ -10,6 +10,7 @@ import com.gov.culturems.R;
 import com.gov.culturems.VersionController;
 import com.gov.culturems.common.UserManager;
 import com.gov.culturems.common.base.BaseActivity;
+import com.gov.culturems.utils.SharePreferUtil;
 
 /**
  * Created by peter on 6/23/15.
@@ -23,7 +24,7 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity);
-
+        VersionController.setVersion(SharePreferUtil.getIntDataFromSharePreference(VersionController.VERSION_KEY));
         LinearLayout outerLayout = (LinearLayout) findViewById(R.id.outer_layout);
         outerLayout.setBackgroundResource(VersionController.getDrawable(VersionController.WELCOME_PAGE));
         new Handler().postDelayed(new Runnable() {
@@ -37,13 +38,16 @@ public class SplashActivity extends Activity {
                     overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
 
                 } else {
-                    Intent intent = new Intent(SplashActivity.this, FactoryChooseActivity.class);
+                    Intent intent = null;
+                    if (VersionController.CURRENT_VERSION == VersionController.GONGWANGFU) {
+                        intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    } else {
+                        intent = new Intent(SplashActivity.this, FactoryChooseActivity.class);
+                    }
 //                    Intent intent = new Intent(SplashActivity.this, ChooseActivity.class);
-//                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
                 }
-
                 finish();
             }
         }, delayTime);

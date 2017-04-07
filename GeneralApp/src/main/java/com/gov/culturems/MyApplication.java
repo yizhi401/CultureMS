@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.gov.culturems.common.UserManager;
+import com.gov.culturems.utils.SharePreferUtil;
 
 /**
  * Created by peter on 6/20/15.
@@ -20,6 +21,7 @@ public class MyApplication extends Application {
         super.onCreate();
         instance = this;
         UserManager.init(getApplicationContext());
+        VersionController.setVersion(SharePreferUtil.getIntDataFromSharePreference(VersionController.VERSION_KEY));
         startWebSocketService();
         //this added by
     }

@@ -25,6 +25,8 @@ public class TimeUtil {
         DateTime date = new DateTime(beginTime);
         long time = today.getMilliseconds(TimeZone.getTimeZone("Asia/Shanghai")) - date.getMilliseconds(TimeZone.getTimeZone("Asia/Shanghai"));
         if (time < 0) {
+            return "尚未开始";
+        } else if (time < 60 * 1000) {
             return "小于1分钟";
         }
         if (time < 24 * 60 * 60 * 1000) {

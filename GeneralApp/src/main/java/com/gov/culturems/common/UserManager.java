@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.gov.culturems.common.http.response.LoginResp;
+import com.gov.culturems.entities.BaseScene;
 import com.gov.culturems.entities.TeaFactory;
 import com.gov.culturems.entities.User;
 import com.gov.culturems.utils.SharePreferUtil;
@@ -91,7 +92,7 @@ public class UserManager {
         return user.getUserID();
     }
 
-    public void login(LoginResp loginInfo, TeaFactory teaFactory) {
+    public void login(LoginResp loginInfo, BaseScene teaFactory) {
         if (isLogin) {
             logout();
         }

@@ -140,7 +140,7 @@
         android:layout_below="@id/login_btn"
         android:padding="10dp"
         android:text="返回重选"
-        android:textColor="@color/blue" />
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/or_divider"

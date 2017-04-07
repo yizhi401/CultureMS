@@ -1,11 +1,13 @@
 package com.gov.culturems.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -28,9 +30,11 @@ import com.gov.culturems.common.http.RequestParams;
 import com.gov.culturems.common.http.URLRequest;
 import com.gov.culturems.common.http.VolleyRequestListener;
 import com.gov.culturems.common.http.response.LoginResp;
+import com.gov.culturems.entities.BaseScene;
 import com.gov.culturems.entities.TeaFactory;
 import com.gov.culturems.utils.EncodeUtil;
 import com.gov.culturems.utils.GsonUtils;
+import com.gov.culturems.utils.SharePreferUtil;
 import com.gov.culturems.utils.UIUtil;
 
 /**
@@ -51,7 +55,7 @@ public class LoginActivity extends Activity {
     private Button loginBtn;
     private RelativeLayout outerLayout;
 
-    private TeaFactory teaFactory;
+    private BaseScene teaFactory;
     private TextView returnText;
 
     @Override
@@ -64,11 +68,18 @@ public class LoginActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        teaFactory = (TeaFactory) getIntent().getSerializableExtra("factory");
-        if (teaFactory == null) {
-            Intent intent = new Intent(LoginActivity.this, FactoryChooseActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+        if (VersionController.CURRENT_VERSION == VersionController.GONGWANGFU) {
+            teaFactory = new BaseScene();
+            teaFactory.setId("279");
+            teaFactory.setName("恭王府");
+        } else {
+            teaFactory = (TeaFactory) getIntent().getSerializableExtra("factory");
+            if (teaFactory == null) {
+                Intent intent = new Intent(LoginActivity.this, FactoryChooseActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+                finish();
+            }
         }
     }
 
@@ -99,13 +110,58 @@ public class LoginActivity extends Activity {
         returnText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, FactoryChooseActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+                if (VersionController.CURRENT_VERSION == VersionController.GONGWANGFU) {
+                    showChangeThemeDialog();
+                } else {
+                    Intent intent = new Intent(LoginActivity.this, FactoryChooseActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+                    finish();
+                }
+
             }
         });
+        if (VersionController.CURRENT_VERSION == VersionController.GONGWANGFU) {
+            returnText.setText("选择主题");
+        } else {
+            returnText.setText("返回重选");
+        }
 
     }
+
+    private void showChangeThemeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View changeThemeDialog = LayoutInflater.from(this).inflate(R.layout.dialog_change_theme, null);
+        builder.setView(changeThemeDialog);
+        changeThemeDialog.findViewById(R.id.red_theme).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharePreferUtil.saveIntToSharePrefer(VersionController.VERSION_KEY, VersionController.GONGWANGFU);
+                jumpToWelcomeActivity();
+            }
+        });
+        changeThemeDialog.findViewById(R.id.blue_theme).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharePreferUtil.saveIntToSharePrefer(VersionController.VERSION_KEY, VersionController.GENERAL);
+                jumpToWelcomeActivity();
+            }
+        });
+        changeThemeDialog.findViewById(R.id.green_theme).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharePreferUtil.saveIntToSharePrefer(VersionController.VERSION_KEY, VersionController.TEACORP);
+                jumpToWelcomeActivity();
+            }
+        });
+        builder.show();
+    }
+
+    private void jumpToWelcomeActivity() {
+        startActivity(new Intent(this, SplashActivity.class));
+        finish();
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -126,7 +182,6 @@ public class LoginActivity extends Activity {
 
 
     private void login() {
-
         if (TextUtils.isEmpty(usernameEdit.getText().toString()) || TextUtils.isEmpty(passwordEdit.getText().toString())) {
             Toast.makeText(this, "用户名或密码不能为空", Toast.LENGTH_SHORT).show();
             return;

@@ -23,7 +23,7 @@ public class User implements Serializable {
     private String userID;
     private String email;
     private String mobileNo;
-    private TeaFactory teaFactory;//用户所属于的工厂
+    private BaseScene teaFactory;//用户所属于的工厂
 
 
     public void saveUser(SharedPreferences userSP) {
@@ -61,11 +61,11 @@ public class User implements Serializable {
         }
     }
 
-    public TeaFactory getTeaFactory() {
+    public BaseScene getTeaFactory() {
         return teaFactory;
     }
 
-    public void setTeaFactory(TeaFactory teaFactory) {
+    public void setTeaFactory(BaseScene teaFactory) {
         this.teaFactory = teaFactory;
     }
 

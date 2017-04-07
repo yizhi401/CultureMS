@@ -348,9 +348,9 @@ public class SceneActivity extends BaseActivity {
                 holder.sensor2.setVisibility(View.VISIBLE);
                 holder.sensor1.setText(Html.fromHtml(getSensorText(getSpecificSenser(sensors, BaseSensor.SENSOR_TEMPERATURE))));
                 holder.sensor2.setText(Html.fromHtml(getSensorText(getSpecificSenser(sensors, BaseSensor.SENSOR_HUMIDITY))));
-                if (sensors.size() >= 3) {
-                    holder.sensor3.setVisibility(View.VISIBLE);
-                }
+//                if (sensors.size() >= 3) {
+//                    holder.sensor3.setVisibility(View.VISIBLE);
+//                }
             }
             if (temp.getAlerts() == null || temp.getAlerts().size() == 0) {
                 holder.alertInfo.setTextColor(getResources().getColor(R.color.text_green));

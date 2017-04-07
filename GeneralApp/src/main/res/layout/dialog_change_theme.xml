@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/red_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_red_selector"
+        android:padding="20dp"
+        android:text="红色主题"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/blue_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_blue_selector"
+        android:text="蓝色主题"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/green_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/btn_green_selector"
+        android:text="绿色主题"
+        android:textColor="@color/white" />
+
+</LinearLayout>
